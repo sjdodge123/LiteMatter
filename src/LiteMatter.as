@@ -28,8 +28,8 @@ package
 		{
 			Initialize();
 			stage.addEventListener(Event.ENTER_FRAME, update);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, gameBoard.ship.keyPressed);
-			stage.addEventListener(KeyboardEvent.KEY_UP, gameBoard.ship.keyReleased);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, gameBoard.ship.inputModel.keyPressed);
+			stage.addEventListener(KeyboardEvent.KEY_UP, gameBoard.ship.inputModel.keyReleased);
 		}
 		 
 		private function Initialize():void

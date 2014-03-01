@@ -10,6 +10,8 @@ package Classes.GameBoard
 	import Classes.PlayerObject;
 	import Classes.StaticObject;
 	
+	import Models.Player1InputModel;
+	
 
 	public class GameBoardObjects extends GameObject 
 	{
@@ -26,6 +28,7 @@ package Classes.GameBoard
 		
 		public var testHit:Boolean = false;
 		private var planet2:StaticObject;
+		
 		
 		public function GameBoardObjects()
 		{
@@ -81,7 +84,7 @@ package Classes.GameBoard
 			Sprite(tempSprite);
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new PlayerObject(pointArray);
+			tempSprite = new PlayerObject(pointArray, new Player1InputModel);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
 			objectArray.push(tempSprite);                 // Adding on creation to the objectArray

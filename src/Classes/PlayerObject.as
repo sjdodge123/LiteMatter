@@ -1,18 +1,12 @@
 package Classes
 {
-	import flash.events.KeyboardEvent;
-	import flash.ui.Keyboard;
-	
+	import Interfaces.IInputHandling;
 	import Interfaces.IPlayerMethods;
 
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 		
 	{
-		private var moveForward:Boolean =false;
-		private var moveReverse:Boolean = false;
-		private var moveLeft:Boolean= false;
-		private var moveRight:Boolean = false;
 		private var fireWeapon:Boolean = false;
 		
 		private var thrustAccelConst:Number = 4;
@@ -27,10 +21,11 @@ package Classes
 		private var dirX:Number = 1;
 		private var dirY:Number = 0;
 		
+		public var inputModel;
 		
-		
-		public function PlayerObject(pointArray:Array)
+		public function PlayerObject(pointArray:Array, inputModel)
 		{
+			this.inputModel = inputModel;
 			super(pointArray);
 		}
 		override public function update(deltaT:Number):void
@@ -41,21 +36,21 @@ package Classes
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
 			checkScreenBounds();    // Added this pass to keep the object on the screen. 
-
+			
 		}
 		public function updatePlayerInput(deltaT:Number):void
 		{
-			if (moveForward == true)
+			if (inputModel.moveForward == true)
 			{
 				thrustAccelX += thrustAccelConst*dirX;
 				thrustAccelY += thrustAccelConst*dirY;
 			}
-			if (moveReverse == true)
+			if (inputModel.moveReverse == true)
 			{
 				thrustAccelX -= thrustAccelConst*dirX;
 				thrustAccelY -= thrustAccelConst*dirY;
 			}
-			if (moveForward == false && moveReverse == false)
+			if (inputModel.moveForward == false && inputModel.moveReverse == false)
 			{
 				if (velocity <= velocityMax)
 				{	
@@ -88,16 +83,16 @@ package Classes
 				
 			}
 			
-			if (moveLeft == true)
+			if (inputModel.moveLeft == true)
 			{
 				rotAccel -= rotJerk;
 				
 			}
-			if (moveRight == true)
+			if (inputModel.moveRight == true)
 			{
 				rotAccel += rotJerk;
 			}	
-			if (moveLeft == false && moveRight == false)
+			if (inputModel.moveLeft == false && inputModel.moveRight == false)
 			{
 				if (rotRate > 1)
 				{
@@ -140,68 +135,6 @@ package Classes
 			dirX=Math.cos((Math.PI*rotationZ)/180);
 			dirY=Math.sin((Math.PI*rotationZ)/180);
 		}
-		public function keyPressed(event:KeyboardEvent):void
-		{	
-			switch(event.keyCode)
-			{
-				case Keyboard.W:
-				{
-					moveForward = true;
-					break;
-				}
-				case Keyboard.S:
-				{
-					moveReverse = true;
-					break;
-				}
-				case Keyboard.A:
-				{
-					moveLeft = true;
-					break;
-				}
-				case Keyboard.D:
-				{
-					moveRight = true;
-					break;
-				}
-				case Keyboard.SPACE:
-				{
-					fireWeapon = true;
-					break;
-				}
-			}
-		}
-		public function keyReleased(event:KeyboardEvent):void
-		{
-			switch(event.keyCode)
-				
-			{	
-				case Keyboard.W:
-				{
-					moveForward = false;
-					break;
-				}
-				case Keyboard.S:
-				{
-					moveReverse = false;
-					break;
-				}
-				case Keyboard.A:
-				{
-					moveLeft = false;
-					break;
-				}
-				case Keyboard.D:
-				{
-					moveRight = false;
-					break;
-				}
-				case Keyboard.SPACE:
-				{
-					fireWeapon = false;
-					break;
-				}
-			}
-		}
+	
 	}
 }

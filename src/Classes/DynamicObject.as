@@ -12,7 +12,7 @@ package Classes
 		public var rotRate:Number = 0;
 		public var rotAngle:Number = 0;
 		
-		public var gravConst:Number = 0;
+		public var gravConst:Number = 2600000;
 		public var gravAccelContribution: Number;
 		public var gravAccelX:Number = 0;
 		public var gravAccelY:Number = 0;
