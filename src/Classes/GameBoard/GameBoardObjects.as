@@ -10,7 +10,10 @@ package Classes.GameBoard
 	import Classes.PlayerObject;
 	import Classes.StaticObject;
 	
+	import Interfaces.IInputHandling;
+	
 	import Models.Player1InputModel;
+	import Models.Player2InputModel;
 	
 
 	public class GameBoardObjects extends GameObject 
@@ -19,7 +22,7 @@ package Classes.GameBoard
 		public var objectArray:Array = new Array();
 		public var ship:PlayerObject;
 		public var planet:StaticObject;
-		private var ship2:PlayerObject;
+		public var ship2:PlayerObject;
 		private var asteroid:DynamicObject;
 		private var collisionBuilder:CollisionBuilder;
 		private var collisionEngine:CollisionEngine;
@@ -38,17 +41,18 @@ package Classes.GameBoard
 		
 		public function initializeGameObjects(): void
 		{
-			planet = addStatic("../Images/Moon.png",-83.5,-83.5,300,400);  
-			planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400);				//Static Objects need to be added first to generate the points to push into the dynamic objects
-			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,pointArray);         // added a new parameter to player and dynamic. They new take a pointArray. This is the array of all static object points
+			planet = addStatic("../Images/Moon.png",-83.5,-83.5,600,400);  
+//			planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400);				//Static Objects need to be added first to generate the points to push into the dynamic objects
+			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,pointArray, new Player1InputModel());         // added a new parameter to player and dynamic. They new take a pointArray. This is the array of all static object points
+			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,100,50,pointArray, new Player2InputModel());
 			asteroid =  addDynamic("../Images/asteroid.png",-73/2,-43/2,100,100, pointArray);
 			
-			
-			collisionBuilder.createHitBox(ship,"objHitBox", 0,0,0,0,1);
+		
+			collisionBuilder.createHitBox(ship,"objHitBox", 0,0,0,0,0);
 			collisionBuilder.createHitBox(ship.objHitBox,"bodyHitBox", -71/2,-11,65,23,0);
 			collisionBuilder.createHitBox(ship.objHitBox,"leftWingHitBox", -20,-38/2,18,10,0);
 			collisionBuilder.createHitBox(ship.objHitBox,"rightWingHitBox", -20,11,18,10,0);
-			collisionBuilder.createHitCircle(planet,"objHitBox",0,0,83.5,1);
+			collisionBuilder.createHitCircle(planet,"objHitBox",0,0,83.5,0);
 		
 			asteroid.velX = 200;
 		}
@@ -77,14 +81,14 @@ package Classes.GameBoard
 			
 		}
 		
-		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,pointArray:Array):PlayerObject
+		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,pointArray:Array,inputModel:IInputHandling):PlayerObject
 		{
 			
 			var tempSprite: PlayerObject;
 			Sprite(tempSprite);
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new PlayerObject(pointArray, new Player1InputModel);
+			tempSprite = new PlayerObject(pointArray, inputModel);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
 			objectArray.push(tempSprite);                 // Adding on creation to the objectArray
