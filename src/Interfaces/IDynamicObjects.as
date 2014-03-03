@@ -1,6 +1,6 @@
 package Interfaces
 {
-	public interface IDynamicMethods extends IObjectMethods
+	public interface IDynamicObjects extends IObjectMethods
 	{
 		function update(deltaT:Number):void;
 		function updateVelocity(deltaT:Number):void;

@@ -6,5 +6,10 @@ package Interfaces
 	{
 		function keyPressed(event:KeyboardEvent):void;
 		function keyReleased(event:KeyboardEvent):void;
+		function getMoveForward():Boolean
+		function getMoveReverse():Boolean
+		function getMoveLeft():Boolean
+		function getMoveRight():Boolean
+		function getFireWeapon():Boolean
 	}
 }

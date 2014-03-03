@@ -2,9 +2,10 @@ package Classes
 {
 	import flash.geom.Point;
 	
-	import Interfaces.IDynamicMethods;
+	import Interfaces.IDynamicObjects;
+	import Interfaces.IStaticMethods;
 
-	public class DynamicObject extends GameObject implements IDynamicMethods
+	public class DynamicObject extends GameObject implements IDynamicObjects
 	{
 		public var velX:Number = 0;
 		public var velY:Number = 0;
@@ -12,18 +13,15 @@ package Classes
 		public var rotRate:Number = 0;
 		public var rotAngle:Number = 0;
 		
-		public var gravConst:Number = 2600000;
 		public var gravAccelContribution: Number;
 		public var gravAccelX:Number = 0;
 		public var gravAccelY:Number = 0;
 
-		
 		private var distX:Number = 0;
 		private var distY:Number = 0;
 		private var dist:Number = 0;
 		
 		public var staticArray:Array;
-		
 		
 		public function DynamicObject(staticArray:Array)
 		{	
@@ -42,10 +40,10 @@ package Classes
 		{
 			for(var i:int=0;i<staticArray.length;i++)
 			{
-				calcDist(staticArray[i].position);
+				calcDist(staticArray[i].getPosition());
 				if(dist>83.5)
 				{
-					calcGravAccel();
+					calcGravAccel(staticArray[i]);
 				}
 			}
 		}
@@ -55,9 +53,9 @@ package Classes
 			distY = point.y - this.y;
 			dist = Math.sqrt(Math.pow(distX,2)+Math.pow(distY,2));
 		}
-		public function calcGravAccel():void
+		public function calcGravAccel(staticObj:IStaticMethods):void
 		{
-			gravAccelContribution = gravConst/Math.pow(dist,2);
+			gravAccelContribution = staticObj.getGravityConst()/Math.pow(dist,2);
 			
 			gravAccelX += gravAccelContribution*distX/dist;
 			gravAccelY += gravAccelContribution*distY/dist;

@@ -10,10 +10,13 @@ package Classes.GameBoard
 	import Classes.PlayerObject;
 	import Classes.StaticObject;
 	
+	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
 	
 	import Models.Player1InputModel;
 	import Models.Player2InputModel;
+	import Models.ShipCollisionModel;
+	import Models.PlanetCollisionModel;
 	
 
 	public class GameBoardObjects extends GameObject 
@@ -42,41 +45,21 @@ package Classes.GameBoard
 		public function initializeGameObjects(): void
 		{
 			addStaticObjects();
-			addDynamicObjects();
-	
-			collisionBuilder.createHitBox(ship,"objHitBox", 0,0,0,0,0);
-			collisionBuilder.createHitBox(ship.objHitBox,"bodyHitBox", -71/2,-11,65,23,0);
-			collisionBuilder.createHitBox(ship.objHitBox,"leftWingHitBox", -20,-38/2,18,10,0);
-			collisionBuilder.createHitBox(ship.objHitBox,"rightWingHitBox", -20,11,18,10,0);
-			collisionBuilder.createHitCircle(planet,"objHitBox",0,0,83.5,0);
-		
-			asteroid.velX = 200;
+			addDynamicObjects();	
 		}
 		private function addStaticObjects():void
 		{
-			planet = addStatic("../Images/Moon.png",-83.5,-83.5,600,400);  
+			planet = addStatic("../Images/Moon.png",-83.5,-83.5,600,400, new PlanetCollisionModel());  
 			//planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400);
 		}
 		private function addDynamicObjects():void
 		{
-			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(),this);  
-			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,100,50,staticArray, new Player2InputModel(),this);
-			asteroid =  addDynamic("../Images/asteroid.png",-73/2,-43/2,100,100, staticArray);				
+			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(),new ShipCollisionModel(),this);  
+			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,100,50,staticArray, new Player2InputModel(),new ShipCollisionModel(),this);
+			asteroid =  addDynamic("../Images/asteroid.png",-73/2,-43/2,100,100, staticArray);
+			asteroid.velX = 200;
 		}
 		
-		
-		
-		private function collisionCalc():void
-		{
-			if(collisionEngine.testGeneralCollision(ship,"objHitBox",planet,"objHitBox"))
-			{
-				testHit = true;
-			}
-			else
-			{
-				testHit = false;
-			}
-		}
 		
 		public function updateGameBoard(deltaT:Number):void 
 		{
@@ -84,20 +67,16 @@ package Classes.GameBoard
 			for(var i:int=0;i<objectArray.length;i++) 
 			{
 				objectArray[i].update(deltaT);
-				collisionCalc();
-				
-			}
-			
+			}	
 		}
 		
-		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,pointArray:Array,inputModel:IInputHandling, gameBoard:GameBoardObjects):PlayerObject
+		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,pointArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel, gameBoard:GameBoardObjects):PlayerObject
 		{
-			
 			var tempSprite: PlayerObject;
 			Sprite(tempSprite);
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new PlayerObject(pointArray, inputModel, gameBoard);
+			tempSprite = new PlayerObject(pointArray, inputModel,collisionModel, gameBoard);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
 			objectArray.push(tempSprite);                
@@ -118,12 +97,12 @@ package Classes.GameBoard
 			tempSprite.addChild(imageLoad);
 			return tempSprite;
 		}
-		private function addStatic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number):StaticObject
+		private function addStatic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,collisionModel:ICollisionModel):StaticObject
 		{
 			var tempSprite:StaticObject;
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new StaticObject(objInitialX, objInitialY);
+			tempSprite = new StaticObject(objInitialX, objInitialY,collisionModel);
 			staticArray.push(tempSprite);   
 			addChild(tempSprite);		
 			tempSprite.addChild(imageLoad);

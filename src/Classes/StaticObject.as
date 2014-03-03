@@ -2,18 +2,31 @@ package Classes
 {
 	import flash.geom.Point;
 	
+	import Interfaces.ICollisionModel;
 	import Interfaces.IStaticMethods;
 
 	public class StaticObject extends GameObject implements IStaticMethods
 	{
-		public var position:Point;
+		private var position:Point;
+		private var collisionModel:ICollisionModel;
+		private const gravConst:Number = 2600000;
 		
-		
-		public function StaticObject(x:int, y:int)
+		public function StaticObject(x:int, y:int,collisionModel)
 		{
 			this.x = x;
 			this.y = y;
+			this.collisionModel = collisionModel;
+			this.collisionModel.buildModel(this);
 			position = new Point(this.x, this.y);
+		}
+		
+		public function getGravityConst():Number
+		{
+			return gravConst;
+		}
+		public function getPosition():Point
+		{
+			return position;
 		}
 		public function updateGravity():void
 		{

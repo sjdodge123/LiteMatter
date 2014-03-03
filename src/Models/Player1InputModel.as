@@ -7,15 +7,16 @@ package Models
 
 	public class Player1InputModel implements IInputHandling
 	{
-		public var moveForward:Boolean = false;
-		public var moveReverse:Boolean = false;
-		public var moveLeft:Boolean = false;
-		public var moveRight:Boolean = false;
-		public var fireWeapon:Boolean = false;
+		private var moveForward:Boolean = false;
+		private var moveReverse:Boolean = false;
+		private var moveLeft:Boolean = false;
+		private var moveRight:Boolean = false;
+		private var fireWeapon:Boolean = false;
 		
 		public function Player1InputModel() 
 		{
 		}
+		
 		public function keyPressed(event:KeyboardEvent):void
 		{	
 			switch(event.keyCode)
@@ -47,11 +48,10 @@ package Models
 				}
 			}
 		}
-		public function keyReleased(event:KeyboardEvent):void
-		{
-			switch(event.keyCode)
-				
-			{	
+		  public function keyReleased(event:KeyboardEvent):void
+		  {
+			  switch(event.keyCode)	
+			  {	
 				case Keyboard.W:
 				{
 					moveForward = false;
@@ -77,7 +77,27 @@ package Models
 					fireWeapon = false;
 					break;
 				}
-			}
-		}
+			  }			
+		  }
+		  public function getMoveForward():Boolean
+		  {
+			  return moveForward;
+		  }
+		  public function getMoveReverse():Boolean
+		  {
+			  return moveReverse;
+		  }
+		  public function getMoveLeft():Boolean
+		  {
+			  return moveLeft;
+		  }
+		  public function getMoveRight():Boolean
+		  {
+			  return moveRight;
+		  }
+		  public function getFireWeapon():Boolean
+		  {
+			  return fireWeapon;
+		  }
 	}
 }

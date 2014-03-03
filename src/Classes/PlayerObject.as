@@ -2,14 +2,14 @@ package Classes
 {
 	
 	import Classes.GameBoard.GameBoardObjects;
+	
+	import Interfaces.ICollisionModel;
+	import Interfaces.IInputHandling;
 	import Interfaces.IPlayerMethods;
 
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
-		
-	{
-		private var fireWeapon:Boolean = false;
-		
+	{		
 		private var thrustAccelConst:Number = 4;
 		public var thrustAccelX:Number = 0;
 		private var thrustAccelY:Number = 0;
@@ -22,38 +22,56 @@ package Classes
 		private var dirX:Number = 1;
 		private var dirY:Number = 0;
 		
-		public var inputModel;
+		
+		public var hit:Boolean= false;
+		public var inputModel:IInputHandling;
+		public var collisionModel:ICollisionModel;
 		private var gameBoard:GameBoardObjects;
 		
-		public function PlayerObject(staticArray:Array, inputModel, gameBoard:GameBoardObjects)
+		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel, gameBoard:GameBoardObjects)
 		{
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
+			this.collisionModel = collisionModel;
+			collisionModel.buildModel(this);
 			super(staticArray);
 		}
+		
 		override public function update(deltaT:Number):void
 		{
+			
 			updatePlayerInput(deltaT);
-			updateRotation(deltaT); 
+			updateRotation(deltaT);
+			hit = checkHit();
 			calculateGravity();
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
-			checkScreenBounds();    
-			
+			checkScreenBounds();    	
 		}
+		
+		private function checkHit():Boolean
+		{
+			var value:Boolean = false;
+			for(var i:int=0;i<staticArray.length;i++)
+			{
+				return collisionModel.checkHit(staticArray[i]);
+			}		
+			return value;
+		}		
+	
 		public function updatePlayerInput(deltaT:Number):void
 		{
-			if (inputModel.moveForward == true)
+			if (inputModel.getMoveForward() == true)
 			{
 				thrustAccelX += thrustAccelConst*dirX;
 				thrustAccelY += thrustAccelConst*dirY;
 			}
-			if (inputModel.moveReverse == true)
+			if (inputModel.getMoveReverse() == true)
 			{
 				thrustAccelX -= thrustAccelConst*dirX;
 				thrustAccelY -= thrustAccelConst*dirY;
 			}
-			if (inputModel.moveForward == false && inputModel.moveReverse == false)
+			if (inputModel.getMoveForward()== false && inputModel.getMoveReverse() == false)
 			{
 				if (velocity <= velocityMax)
 				{	
@@ -82,20 +100,18 @@ package Classes
 						thrustAccelX = .5*velocity*Math.abs(velocityDirX);
 						thrustAccelY = .5*velocity*Math.abs(velocityDirY);
 					}
-				}
-				
+				}	
 			}
-			
-			if (inputModel.moveLeft == true)
+			if (inputModel.getMoveLeft() == true)
 			{
 				rotAccel -= rotJerk;
 				
 			}
-			if (inputModel.moveRight == true)
+			if (inputModel.getMoveRight() == true)
 			{
 				rotAccel += rotJerk;
 			}	
-			if (inputModel.moveLeft == false && inputModel.moveRight == false)
+			if (inputModel.getMoveLeft() == false && inputModel.getMoveRight() == false)
 			{
 				if (rotRate > 1)
 				{
@@ -111,7 +127,7 @@ package Classes
 					rotAccel = 0;
 				}
 			}
-			if(fireWeapon==true)
+			if(inputModel.getFireWeapon()==true)
 			{
 				
 			}
