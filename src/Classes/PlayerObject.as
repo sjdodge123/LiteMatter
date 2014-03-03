@@ -1,7 +1,9 @@
 package Classes
 {
-	import Interfaces.IInputHandling;
+	
+	import Classes.GameBoard.GameBoardObjects;
 	import Interfaces.IPlayerMethods;
+	import Interfaces.IInputHandling;
 
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
@@ -22,20 +24,22 @@ package Classes
 		private var dirY:Number = 0;
 		
 		public var inputModel;
+		private var gameBoard:GameBoardObjects;
 		
-		public function PlayerObject(pointArray:Array, inputModel)
+		public function PlayerObject(pointArray:Array, inputModel, gameBoard:GameBoardObjects)
 		{
+			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
 			super(pointArray);
 		}
 		override public function update(deltaT:Number):void
 		{
 			updatePlayerInput(deltaT);
-			updateRotation(deltaT);  // Added this pass to rotate the object. The directional movement doesn't quite work yet.
+			updateRotation(deltaT); 
 			calculateGravity();
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
-			checkScreenBounds();    // Added this pass to keep the object on the screen. 
+			checkScreenBounds();    
 			
 		}
 		public function updatePlayerInput(deltaT:Number):void
@@ -59,22 +63,22 @@ package Classes
 				}
 				if (velocity > velocityMax)
 				{
-					if (velX > 0 && velY > 0)			//moving right and down
+					if (velX > 0 && velY > 0)			
 					{
 						thrustAccelX = -.5*velocity*Math.abs(velocityDirX);
 						thrustAccelY = -.5*velocity*Math.abs(velocityDirY);
 					}
-					if (velX > 0 && velY < 0)			//moving right and up
+					if (velX > 0 && velY < 0)			
 					{
 						thrustAccelX = -.5*velocity*Math.abs(velocityDirX);
 						thrustAccelY = .5*velocity*Math.abs(velocityDirY);
 					}
-					if (velX < 0 && velY > 0)			//moving left and down
+					if (velX < 0 && velY > 0)			
 					{
 						thrustAccelX = .5*velocity*Math.abs(velocityDirX);
 						thrustAccelY = -.5*velocity*Math.abs(velocityDirY);
 					}
-					if (velX < 0 && velY < 0)			//moving left and up
+					if (velX < 0 && velY < 0)	
 					{
 						thrustAccelX = .5*velocity*Math.abs(velocityDirX);
 						thrustAccelY = .5*velocity*Math.abs(velocityDirY);

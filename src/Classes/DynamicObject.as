@@ -43,7 +43,10 @@ package Classes
 			for(var i:int=0;i<pointArray.length;i++)
 			{
 				calcDist(pointArray[i]);
-				calcGravAccel();
+				if(dist>83.5)
+				{
+					calcGravAccel();
+				}
 			}
 		}
 		public function calcDist(point:Point):void

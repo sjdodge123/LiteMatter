@@ -38,16 +38,12 @@ package Classes.GameBoard
 			collisionBuilder = new CollisionBuilder();
 			collisionEngine = new CollisionEngine();
 		}
-		
+
 		public function initializeGameObjects(): void
 		{
-			planet = addStatic("../Images/Moon.png",-83.5,-83.5,600,400);  
-//			planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400);				//Static Objects need to be added first to generate the points to push into the dynamic objects
-			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,pointArray, new Player1InputModel());         // added a new parameter to player and dynamic. They new take a pointArray. This is the array of all static object points
-			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,100,50,pointArray, new Player2InputModel());
-			asteroid =  addDynamic("../Images/asteroid.png",-73/2,-43/2,100,100, pointArray);
-			
-		
+			addStaticObjects();
+			addDynamicObjects();
+	
 			collisionBuilder.createHitBox(ship,"objHitBox", 0,0,0,0,0);
 			collisionBuilder.createHitBox(ship.objHitBox,"bodyHitBox", -71/2,-11,65,23,0);
 			collisionBuilder.createHitBox(ship.objHitBox,"leftWingHitBox", -20,-38/2,18,10,0);
@@ -55,6 +51,19 @@ package Classes.GameBoard
 			collisionBuilder.createHitCircle(planet,"objHitBox",0,0,83.5,0);
 		
 			asteroid.velX = 200;
+		}
+		
+		private function addDynamicObjects():void
+		{
+			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,pointArray, new Player1InputModel(),this);  
+			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,100,50,pointArray, new Player2InputModel(),this);
+			asteroid =  addDynamic("../Images/asteroid.png",-73/2,-43/2,100,100, pointArray);				
+		}
+		
+		private function addStaticObjects():void
+		{
+			planet = addStatic("../Images/Moon.png",-83.5,-83.5,600,400);  
+			//planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400);
 		}
 		
 		private function collisionCalc():void
@@ -72,7 +81,7 @@ package Classes.GameBoard
 		public function updateGameBoard(deltaT:Number):void 
 		{
 			mousePoint = new Point(mouseX,mouseY);
-			for(var i:int=0;i<objectArray.length;i++) //This for loop cycles through all of the objects in objectArray and calls their updates. Only dynamic Objects are stored in this array.
+			for(var i:int=0;i<objectArray.length;i++) 
 			{
 				objectArray[i].update(deltaT);
 				collisionCalc();
@@ -81,17 +90,17 @@ package Classes.GameBoard
 			
 		}
 		
-		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,pointArray:Array,inputModel:IInputHandling):PlayerObject
+		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,pointArray:Array,inputModel:IInputHandling, gameBoard:GameBoardObjects):PlayerObject
 		{
 			
 			var tempSprite: PlayerObject;
 			Sprite(tempSprite);
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new PlayerObject(pointArray, inputModel);
+			tempSprite = new PlayerObject(pointArray, inputModel, gameBoard);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
-			objectArray.push(tempSprite);                 // Adding on creation to the objectArray
+			objectArray.push(tempSprite);                
 			addChild(tempSprite);
 			tempSprite.addChild(imageLoad);
 			return tempSprite;
@@ -104,7 +113,7 @@ package Classes.GameBoard
 			tempSprite = new DynamicObject(pointArray);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
-			objectArray.push(tempSprite);                   // Adding on creation to the objectArray
+			objectArray.push(tempSprite);                  
 			addChild(tempSprite);
 			tempSprite.addChild(imageLoad);
 			return tempSprite;
@@ -116,7 +125,7 @@ package Classes.GameBoard
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
 			tempSprite = new StaticObject(objInitialX, objInitialY);
 			pointArray.push(tempSprite.position);   
-			addChild(tempSprite);					// Adding on creation to the pointArray
+			addChild(tempSprite);		
 			tempSprite.addChild(imageLoad);
 			return tempSprite;
 		}
