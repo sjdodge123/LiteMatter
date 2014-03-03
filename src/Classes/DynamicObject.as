@@ -22,13 +22,13 @@ package Classes
 		private var distY:Number = 0;
 		private var dist:Number = 0;
 		
-		public var pointArray:Array;
+		public var staticArray:Array;
 		
 		
-		public function DynamicObject(pointArray:Array)
+		public function DynamicObject(staticArray:Array)
 		{	
-			this.pointArray = new Array();
-			this.pointArray = pointArray;
+			this.staticArray = new Array();
+			this.staticArray = staticArray;
 			
 		}
 		public function update(deltaT:Number):void
@@ -40,9 +40,9 @@ package Classes
 		}
 		public function calculateGravity():void
 		{
-			for(var i:int=0;i<pointArray.length;i++)
+			for(var i:int=0;i<staticArray.length;i++)
 			{
-				calcDist(pointArray[i]);
+				calcDist(staticArray[i].position);
 				if(dist>83.5)
 				{
 					calcGravAccel();

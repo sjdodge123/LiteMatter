@@ -3,7 +3,6 @@ package Classes
 	
 	import Classes.GameBoard.GameBoardObjects;
 	import Interfaces.IPlayerMethods;
-	import Interfaces.IInputHandling;
 
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
@@ -26,11 +25,11 @@ package Classes
 		public var inputModel;
 		private var gameBoard:GameBoardObjects;
 		
-		public function PlayerObject(pointArray:Array, inputModel, gameBoard:GameBoardObjects)
+		public function PlayerObject(staticArray:Array, inputModel, gameBoard:GameBoardObjects)
 		{
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
-			super(pointArray);
+			super(staticArray);
 		}
 		override public function update(deltaT:Number):void
 		{
