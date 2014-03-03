@@ -22,8 +22,6 @@ package Classes
 		private var dirX:Number = 1;
 		private var dirY:Number = 0;
 		
-		
-		public var hit:Boolean= false;
 		public var inputModel:IInputHandling;
 		public var collisionModel:ICollisionModel;
 		private var gameBoard:GameBoardObjects;
@@ -33,13 +31,16 @@ package Classes
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
 			this.collisionModel = collisionModel;
+			buildModel();
+			super(staticArray,collisionModel);
+		}
+		override public function buildModel():void
+		{
 			collisionModel.buildModel(this);
-			super(staticArray);
 		}
 		
 		override public function update(deltaT:Number):void
 		{
-			
 			updatePlayerInput(deltaT);
 			updateRotation(deltaT);
 			hit = checkHit();

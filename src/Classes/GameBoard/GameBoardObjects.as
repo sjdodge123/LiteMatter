@@ -13,10 +13,11 @@ package Classes.GameBoard
 	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
 	
+	import Models.AsteriodCollisionModel;
+	import Models.PlanetCollisionModel;
 	import Models.Player1InputModel;
 	import Models.Player2InputModel;
 	import Models.ShipCollisionModel;
-	import Models.PlanetCollisionModel;
 	
 
 	public class GameBoardObjects extends GameObject 
@@ -26,7 +27,7 @@ package Classes.GameBoard
 		public var ship:PlayerObject;
 		public var planet:StaticObject;
 		public var ship2:PlayerObject;
-		private var asteroid:DynamicObject;
+		public var asteroid:DynamicObject;
 		private var collisionBuilder:CollisionBuilder;
 		private var collisionEngine:CollisionEngine;
 		
@@ -56,7 +57,7 @@ package Classes.GameBoard
 		{
 			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(),new ShipCollisionModel(),this);  
 			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,100,50,staticArray, new Player2InputModel(),new ShipCollisionModel(),this);
-			asteroid =  addDynamic("../Images/asteroid.png",-73/2,-43/2,100,100, staticArray);
+			asteroid =  addDynamic("../Images/asteroid.png",-73/2,-43/2,100,100, staticArray,new AsteriodCollisionModel());
 			asteroid.velX = 200;
 		}
 		
@@ -84,12 +85,12 @@ package Classes.GameBoard
 			tempSprite.addChild(imageLoad);
 			return tempSprite;
 		}
-		private function addDynamic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number, pointArray:Array):DynamicObject
+		private function addDynamic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number, pointArray:Array,collisionModel:ICollisionModel):DynamicObject
 		{
 			var tempSprite:DynamicObject;
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new DynamicObject(pointArray);
+			tempSprite = new DynamicObject(pointArray,collisionModel);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
 			objectArray.push(tempSprite);                  

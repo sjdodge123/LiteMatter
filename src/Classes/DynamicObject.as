@@ -2,6 +2,7 @@ package Classes
 {
 	import flash.geom.Point;
 	
+	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
 	import Interfaces.IStaticMethods;
 
@@ -22,19 +23,39 @@ package Classes
 		private var dist:Number = 0;
 		
 		public var staticArray:Array;
+		private var collisionModel:ICollisionModel;
+		public var hit:Boolean;
 		
-		public function DynamicObject(staticArray:Array)
+		public function DynamicObject(staticArray:Array,collisionModel:ICollisionModel)
 		{	
 			this.staticArray = new Array();
 			this.staticArray = staticArray;
+			this.collisionModel = collisionModel;
+			buildModel();
 			
+		}
+		public function buildModel():void
+		{
+			collisionModel.buildModel(this);
 		}
 		public function update(deltaT:Number):void
 		{
+			hit = checkHit();
 			calculateGravity();
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
 			checkScreenBounds();
+			
+		}
+		
+		private function checkHit():Boolean
+		{
+			var value:Boolean = false;
+			for(var i:int=0;i<staticArray.length;i++)
+			{
+				return collisionModel.checkHit(staticArray[i]);
+			}		
+			return value;
 		}
 		public function calculateGravity():void
 		{

@@ -52,7 +52,7 @@ package
 //			mousePoint = new Point(stage.mouseX,stage.mouseY);
 			
 			
-			print(gameBoard.ship.hit, text1);
+			print("Astroid hit = " + gameBoard.asteroid.hit, text1);
 		}
 		
 		public function print(o:Object, field:TextField):void

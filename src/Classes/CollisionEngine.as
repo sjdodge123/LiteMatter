@@ -4,9 +4,10 @@ package Classes
 	import flash.geom.Rectangle;
 	
 	public class CollisionEngine
-	{
+	{		
 		public function CollisionEngine()
 		{
+			
 		}
 		
 		public function testGeneralCollision(movingObj:GameObject, staticObj:GameObject,boxArray:Array):Boolean
@@ -20,6 +21,7 @@ package Classes
 						if(testCollisionExp(boxArray[i],staticObj))
 						{
 						return true;
+						break;
 						}
 						else
 						{
