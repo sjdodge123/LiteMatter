@@ -10,6 +10,7 @@ package Interfaces
 		function getMoveReverse():Boolean
 		function getMoveLeft():Boolean
 		function getMoveRight():Boolean
-		function getFireWeapon():Boolean
+		function getFireWeaponOne():Boolean
+		function getFireWeaponTwo():Boolean
 	}
 }

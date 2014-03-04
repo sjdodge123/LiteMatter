@@ -1,5 +1,7 @@
 package Models
 {
+	import flash.geom.Point;
+	
 	import Classes.CollisionBuilder;
 	import Classes.CollisionEngine;
 	import Classes.GameObject;
@@ -12,20 +14,23 @@ package Models
 		private var collisionEngine:CollisionEngine;
 		private var hitCircle:GameObject;
 		private var boxArray:Array;
+		private var collisionPoint:Point;
 		
 		public function AsteriodCollisionModel()
 		{
 			collisionBuilder = new CollisionBuilder();
 			collisionEngine = new CollisionEngine();
 		}
-		public function buildModel(obj:GameObject):void
+		public function buildModel(obj:GameObject):GameObject
 		{
-			hitCircle = collisionBuilder.createHitCircle(obj,0,0,10,1);	
+			hitCircle = collisionBuilder.createHitCircle(obj,0,0,15,1);
+			return hitCircle;
 		}
 		public function checkHit(obj:GameObject):Boolean
 		{
 			if(collisionEngine.testGeneralCollision(hitCircle,obj,boxArray))
 			{
+				collisionPoint = new Point(collisionEngine.getCollisionPoint().x,collisionEngine.getCollisionPoint().y);
 				return true;
 			}
 			else
@@ -33,5 +38,10 @@ package Models
 				return false;	
 			}
 		}
+		public function getCollisionPoint():Point
+		{
+			return collisionPoint;
+		}
+		
 	}
 }

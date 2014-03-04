@@ -53,7 +53,7 @@ package
 			
 			
 //			print("Astroid hit = " + gameBoard.asteroid.hit, text1);
-			print(gameBoard.ship.numChildren,text1);
+			print(gameBoard.ship.hit,text1);
 		}
 		
 		public function print(o:Object, field:TextField):void

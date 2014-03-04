@@ -4,34 +4,30 @@ package Classes
 	import flash.geom.Rectangle;
 	
 	public class CollisionEngine
-	{		
+	{	
+		private var collisionPoint:Point;
 		public function CollisionEngine()
 		{
 			
 		}
 		
-		public function testGeneralCollision(movingObj:GameObject, staticObj:GameObject,boxArray:Array):Boolean
+		public function testGeneralCollision(movingObj:GameObject, staticObj,boxArray:Array):Boolean
 		{
-			if(testCollisionCheap(movingObj,staticObj))
+			if(testCollisionCheap(movingObj,staticObj.getHitArea()))
 			{
 				if(boxArray != null)
 				{
 					for(var i:int=0; i<boxArray.length;i++)
 					{
-						if(testCollisionExp(boxArray[i],staticObj))
+						if(testCollisionExp(boxArray[i],staticObj.getHitArea()))
 						{
 						return true;
-						break;
-						}
-						else
-						{
-						return false;
 						}
 					}
 				}				
 				else
 				{
-					if(testCollisionExp(movingObj,staticObj))
+					if(testCollisionExp(movingObj,staticObj.getHitArea()))
 					{
 						return true;
 					}
@@ -68,17 +64,34 @@ package Classes
 				topRightPoint = movingObj.localToGlobal(topRightPoint);
 			var bottomLeftPoint:Point = new Point(ob1Bounds.left, ob1Bounds.bottom);
 				bottomLeftPoint = movingObj.localToGlobal(bottomLeftPoint);
-			if (staticObj.hitTestPoint(topLeftPoint.x,topLeftPoint.y,true)||
-				staticObj.hitTestPoint(bottomRightPoint.x, bottomRightPoint.y, true)||
-				staticObj.hitTestPoint(topRightPoint.x, topRightPoint.y, true)||
-				staticObj.hitTestPoint(bottomLeftPoint.x, bottomLeftPoint.y, true))
+			if (staticObj.hitTestPoint(topLeftPoint.x,topLeftPoint.y,true))
 			{
+				collisionPoint = new Point(topLeftPoint.x,topLeftPoint.y);
+				return true;
+			}
+			else if(staticObj.hitTestPoint(bottomRightPoint.x, bottomRightPoint.y, true))
+			{
+				collisionPoint = new Point(bottomRightPoint.x,bottomRightPoint.y);
+				return true;
+			}
+			else if(staticObj.hitTestPoint(topRightPoint.x, topRightPoint.y, true))
+			{
+				collisionPoint = new Point(topRightPoint.x,topRightPoint.y);
+				return true;
+			}
+			else if(staticObj.hitTestPoint(bottomLeftPoint.x, bottomLeftPoint.y, true))
+			{
+				collisionPoint = new Point(bottomLeftPoint.x,bottomLeftPoint.y);
 				return true;
 			}
 			else
 			{
 				return false;
 			}		
-		}	
+		}
+		public function getCollisionPoint():Point
+		{
+			return collisionPoint;
+		}
 	}
 }

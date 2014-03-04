@@ -1,5 +1,7 @@
 package Models
 {
+	import flash.geom.Point;
+	
 	import Classes.CollisionBuilder;
 	import Classes.GameObject;
 	
@@ -9,13 +11,15 @@ package Models
 	{
 		private var collisionBuilder:CollisionBuilder;
 		private var hitCircle:GameObject;
+		private var collisionPoint:Point;
 		public function PlanetCollisionModel()
 		{
 			collisionBuilder = new CollisionBuilder();
 		}
-		public function buildModel(obj:GameObject):void
+		public function buildModel(obj:GameObject):GameObject
 		{
 			hitCircle = collisionBuilder.createHitCircle(obj,0,0,83.5,1);
+			return hitCircle;
 		}
 		public function checkHit(obj:GameObject):Boolean
 		{
@@ -25,5 +29,10 @@ package Models
 		{
 			return hitCircle;
 		}
+		public function getCollisionPoint():Point
+		{
+			return collisionPoint;
+		}
+		
 	}
 }

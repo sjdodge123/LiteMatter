@@ -1,8 +1,11 @@
 package Models
 {
+	import flash.geom.Point;
+	
 	import Classes.CollisionBuilder;
 	import Classes.CollisionEngine;
 	import Classes.GameObject;
+	import Classes.StaticObject;
 	
 	import Interfaces.ICollisionModel;
 
@@ -17,6 +20,7 @@ package Models
 		private var leftWingHitBox:GameObject;
 		private var rightWingHitBox:GameObject;
 		private var boxArray:Array;
+		private var collisionPoint:Point;
 		
 		public function ShipCollisionModel()
 		{
@@ -25,27 +29,33 @@ package Models
 			boxArray = new Array();
 		}
 		
-		public function buildModel(obj:GameObject):void
+		public function buildModel(obj:GameObject):GameObject
 		{
 			objHitBox = collisionBuilder.createHitBox(obj,0,0,0,0,0);
 			bodyHitBox = collisionBuilder.createHitBox(objHitBox,-71/2,-11,65,23,0);
 			leftWingHitBox = collisionBuilder.createHitBox(objHitBox, -20,-19,18,10,0);
 			rightWingHitBox = collisionBuilder.createHitBox(objHitBox,-20,11,18,10,0);
-
+			
 			boxArray.push(bodyHitBox);
 			boxArray.push(leftWingHitBox);
 			boxArray.push(rightWingHitBox);
+			return objHitBox;
 		}
 		public function checkHit(obj:GameObject):Boolean
 		{
 			if(collisionEngine.testGeneralCollision(objHitBox,obj,boxArray))
 			{
+				collisionPoint = new Point(collisionEngine.getCollisionPoint().x,collisionEngine.getCollisionPoint().y);
 				return true;
 			}
 			else
 			{
 				return false;	
 			}
+		}
+		public function getCollisionPoint():Point
+		{
+			return collisionPoint;
 		}
 		
 		

@@ -11,7 +11,8 @@ package Models
 		private var moveReverse:Boolean = false;
 		private var moveLeft:Boolean = false;
 		private var moveRight:Boolean = false;
-		private var fireWeapon:Boolean = false;
+		private var fireWeaponOne:Boolean = false;
+		private var fireWeaponTwo:Boolean = false;
 		
 		public function Player1InputModel() 
 		{
@@ -41,9 +42,14 @@ package Models
 					moveRight = true;
 					break;
 				}
-				case Keyboard.SPACE:
+				case Keyboard.Q:
 				{
-					fireWeapon = true;
+					fireWeaponOne = true;
+					break;
+				}
+				case Keyboard.E:
+				{
+					fireWeaponTwo = true;
 					break;
 				}
 			}
@@ -72,9 +78,14 @@ package Models
 					moveRight = false;
 					break;
 				}
-				case Keyboard.SPACE:
+				case Keyboard.Q:
 				{
-					fireWeapon = false;
+					fireWeaponOne = false;
+					break;
+				}
+				case Keyboard.E:
+				{
+					fireWeaponTwo = false;
 					break;
 				}
 			  }			
@@ -95,9 +106,13 @@ package Models
 		  {
 			  return moveRight;
 		  }
-		  public function getFireWeapon():Boolean
+		  public function getFireWeaponOne():Boolean
 		  {
-			  return fireWeapon;
+			  return fireWeaponOne;
+		  }
+		  public function getFireWeaponTwo():Boolean
+		  {
+			  return fireWeaponTwo;
 		  }
 	}
 }

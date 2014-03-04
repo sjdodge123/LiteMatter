@@ -12,7 +12,7 @@ package Classes
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 	{		
-		private var thrustAccelConst:Number = 4;
+		private const thrustAccelConst:Number = 40;
 		public var thrustAccelX:Number = 0;
 		private var thrustAccelY:Number = 0;
 		private var rotAccel:Number = 0;
@@ -49,7 +49,7 @@ package Classes
 			calculateGravity();
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
-			checkScreenBounds();    	
+			checkScreenBounds();  
 		}
 		
 		private function checkHit():Boolean
@@ -130,9 +130,17 @@ package Classes
 					rotAccel = 0;
 				}
 			}
-			if(inputModel.getFireWeapon()==true)
+			if(inputModel.getFireWeaponOne()==true)
 			{
-				gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel(),gameBoard);
+				var projectileOne:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel(),gameBoard);
+				projectileOne.velX = 200*dirY;
+				projectileOne.velY = -200*dirX;
+			}
+			if(inputModel.getFireWeaponTwo()==true)
+			{
+				var projectileTwo:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel(),gameBoard);
+				projectileTwo.velX = -200*dirY;
+				projectileTwo.velY = 200*dirX;
 			}
 			
 		}

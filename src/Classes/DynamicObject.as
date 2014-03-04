@@ -26,8 +26,10 @@ package Classes
 		
 		private var gameBoard:GameBoardObjects;
 		private var collisionModel:ICollisionModel;
+		private var collisionPoint:Point;
 		public var staticArray:Array;
 		public var hit:Boolean;
+		
 		
 		
 		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel)
@@ -71,18 +73,25 @@ package Classes
 				{
 					calcGravAccel(staticArray[i]);
 				}
-				else if(hit)
+				if(hit)
 				{
+//					bounce();
 					explode();
 				}
 			}
 		}
 		
+		private function bounce():void
+		{
+			
+		}
+		
 		private function explode():void
 		{
+			
 			var explosion:GameObject = new GameObject();
 			explosion.graphics.beginFill(0xFF0000,1);
-			explosion.graphics.drawCircle(x,y,5);
+			explosion.graphics.drawCircle(collisionModel.getCollisionPoint().x,collisionModel.getCollisionPoint().y,5);
 			explosion.graphics.endFill();
 			gameBoard.addChild(explosion);
 			gameBoard.removeChild(this);
@@ -131,6 +140,10 @@ package Classes
 			{
 				y = 940;
 			}
+		}
+		public function setCollisionPoint(collisionPoint:Point):void
+		{
+			this.collisionPoint = new Point(collisionPoint.x,collisionPoint.y);
 		}
 		
 	}
