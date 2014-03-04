@@ -8,5 +8,6 @@ package Interfaces
 		function updatePosition(deltaT:Number):void;
 		function checkScreenBounds():void;
 		function buildModel():void;
+		function checkHit():Boolean
 	}
 }

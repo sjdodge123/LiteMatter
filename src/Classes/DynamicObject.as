@@ -58,14 +58,16 @@ package Classes
 			
 		}
 		
-		private function checkHit():Boolean
+		public function checkHit():Boolean
 		{
-			var value:Boolean = false;
 			for(var i:int=0;i<staticArray.length;i++)
 			{
-				return collisionModel.checkHit(staticArray[i]);
+				if (collisionModel.checkHit(staticArray[i]))
+				{
+				return true
+				}
 			}		
-			return value;
+			return false;
 		}
 		public function calculateGravity():void
 		{
@@ -97,8 +99,10 @@ package Classes
 			explosion.graphics.drawCircle(collisionModel.getCollisionPoint().x,collisionModel.getCollisionPoint().y,5);
 			explosion.graphics.endFill();
 			gameBoard.addChild(explosion);
-			gameBoard.removeChild(this);
-			
+			if (gameBoard.contains(this))
+			{
+				gameBoard.removeObject(this);
+			}
 		}
 		public function calcDist(point:Point):void
 		{

@@ -9,10 +9,6 @@ package
 	import Classes.GameBoard.GameBoardObjects;
 	import Classes.GameBoard.StopWatch;
 	
-//	import Interfaces.IDynamicMethods;
-//	import Interfaces.IObjectMethods;
-//	import Interfaces.IPlayerMethods;
-//	import Interfaces.IStaticMethods;
 	
 	[SWF(backgroundColor= "0xffffff", width="1200", height ="900")]
 	public class LiteMatter extends Sprite
@@ -47,13 +43,12 @@ package
 		{
 			deltaT = stopWatch.calcTime();
 			gameBoard.updateGameBoard(deltaT);
-//			gameBoard.planet.updateGravity();
-//			gameBoard.planet2.updateGravity();
+			
 //			mousePoint = new Point(stage.mouseX,stage.mouseY);
 			
 			
 //			print("Astroid hit = " + gameBoard.asteroid.hit, text1);
-			print(gameBoard.ship.hit,text1);
+			print(gameBoard.index,text1);
 		}
 		
 		public function print(o:Object, field:TextField):void

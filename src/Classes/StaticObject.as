@@ -34,26 +34,5 @@ package Classes
 		{
 			return hitCircle;
 		}
-		public function updateGravity():void
-		{
-//			for all i in gameboardobjects
-//				if [i].type = static
-//					calcDist(i);
-//					gravAccel(i);
-			
-			
-		}
-		public function calcDist():void
-		{
-//			[i].distX = x - [i].x;
-//			same for y
-//			dist = sqrt(distX^2+distY^2)
-			
-		}
-		public function gravAccel():void
-		{
-//			gravAccelContribution = gravConst/dist^2;
-//			gravAccel += gravAccelContribution;
-		}
 	}
 }

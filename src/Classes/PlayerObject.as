@@ -52,14 +52,16 @@ package Classes
 			checkScreenBounds();  
 		}
 		
-		private function checkHit():Boolean
+		override public function checkHit():Boolean
 		{
-			var value:Boolean = false;
 			for(var i:int=0;i<staticArray.length;i++)
 			{
-				return collisionModel.checkHit(staticArray[i]);
+				if (collisionModel.checkHit(staticArray[i]))
+				{
+					return true
+				}
 			}		
-			return value;
+			return false;
 		}		
 	
 		public function updatePlayerInput(deltaT:Number):void
@@ -132,7 +134,7 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
-				var projectileOne:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel(),gameBoard);
+				var projectileOne:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel());
 				projectileOne.velX = 200*dirY;
 				projectileOne.velY = -200*dirX;
 				projectileOne.rotRate =-100;
@@ -140,7 +142,7 @@ package Classes
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
-				var projectileTwo:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel(),gameBoard);
+				var projectileTwo:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel());
 				projectileTwo.velX = -200*dirY;
 				projectileTwo.velY = 200*dirX;
 				projectileTwo.rotRate = 100;
