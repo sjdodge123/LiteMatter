@@ -2,6 +2,8 @@ package Classes
 {
 	import flash.geom.Point;
 	
+	import Classes.GameBoard.GameBoardObjects;
+	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
 	import Interfaces.IStaticMethods;
@@ -22,13 +24,16 @@ package Classes
 		private var distY:Number = 0;
 		private var dist:Number = 0;
 		
-		public var staticArray:Array;
+		private var gameBoard:GameBoardObjects;
 		private var collisionModel:ICollisionModel;
+		public var staticArray:Array;
 		public var hit:Boolean;
 		
-		public function DynamicObject(staticArray:Array,collisionModel:ICollisionModel)
+		
+		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel)
 		{	
 			this.staticArray = new Array();
+			this.gameBoard = gameBoard;
 			this.staticArray = staticArray;
 			this.collisionModel = collisionModel;
 			buildModel();
@@ -66,7 +71,21 @@ package Classes
 				{
 					calcGravAccel(staticArray[i]);
 				}
+				else if(hit)
+				{
+					explode();
+				}
 			}
+		}
+		
+		private function explode():void
+		{
+			var explosion:GameObject = new GameObject();
+			explosion.graphics.beginFill(0xFF0000,1);
+			explosion.graphics.drawCircle(x,y,5);
+			explosion.graphics.endFill();
+			gameBoard.addChild(explosion);
+			gameBoard.removeChild(this);
 		}
 		public function calcDist(point:Point):void
 		{

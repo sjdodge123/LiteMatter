@@ -20,7 +20,7 @@ package Models
 		}
 		public function buildModel(obj:GameObject):void
 		{
-			hitCircle = collisionBuilder.createHitCircle(obj,-26,-10.5,10,0);	
+			hitCircle = collisionBuilder.createHitCircle(obj,0,0,10,1);	
 		}
 		public function checkHit(obj:GameObject):Boolean
 		{

@@ -6,6 +6,8 @@ package Classes
 	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
 	import Interfaces.IPlayerMethods;
+	
+	import Models.AsteriodCollisionModel;
 
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
@@ -32,7 +34,7 @@ package Classes
 			this.inputModel = inputModel;
 			this.collisionModel = collisionModel;
 			buildModel();
-			super(staticArray,collisionModel);
+			super(staticArray,gameBoard,collisionModel);
 		}
 		override public function buildModel():void
 		{
@@ -130,7 +132,7 @@ package Classes
 			}
 			if(inputModel.getFireWeapon()==true)
 			{
-				
+				gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel(),gameBoard);
 			}
 			
 		}
