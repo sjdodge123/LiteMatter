@@ -51,7 +51,7 @@ package Classes.GameBoard
 		private function addStaticObjects():void
 		{
 			planet = addStatic("../Images/Moon.png",-83.5,-83.5,600,400, new PlanetCollisionModel());  
-			//planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400);
+//			planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400, new PlanetCollisionModel());
 		}
 		private function addDynamicObjects():void
 		{

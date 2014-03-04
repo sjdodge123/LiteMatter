@@ -7,6 +7,7 @@ package Classes
 	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
 	import Interfaces.IStaticMethods;
+	import flash.display.DisplayObjectContainer;
 
 	public class DynamicObject extends GameObject implements IDynamicObjects
 	{
@@ -32,6 +33,7 @@ package Classes
 		
 		
 		
+		
 		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel)
 		{	
 			this.staticArray = new Array();
@@ -51,6 +53,7 @@ package Classes
 			calculateGravity();
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
+			updateRotation(deltaT);
 			checkScreenBounds();
 			
 		}
@@ -95,6 +98,7 @@ package Classes
 			explosion.graphics.endFill();
 			gameBoard.addChild(explosion);
 			gameBoard.removeChild(this);
+			
 		}
 		public function calcDist(point:Point):void
 		{
@@ -116,6 +120,10 @@ package Classes
 			velocity = Math.sqrt(Math.pow(velX, 2) + Math.pow(velY, 2));
 			gravAccelX = 0;
 			gravAccelY = 0;
+		}
+		public function updateRotation(deltaT:Number):void
+		{
+			rotationZ += rotRate*deltaT;
 		}
 		public function updatePosition(deltaT:Number):void
 		{

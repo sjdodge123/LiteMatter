@@ -135,12 +135,16 @@ package Classes
 				var projectileOne:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel(),gameBoard);
 				projectileOne.velX = 200*dirY;
 				projectileOne.velY = -200*dirX;
+				projectileOne.rotRate =-100;
+				
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
 				var projectileTwo:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel(),gameBoard);
 				projectileTwo.velX = -200*dirY;
 				projectileTwo.velY = 200*dirX;
+				projectileTwo.rotRate = 100;
+				
 			}
 			
 		}
@@ -158,7 +162,7 @@ package Classes
 			this.x += velX*deltaT;
 			this.y += velY*deltaT;
 		}
-		public function updateRotation(deltaT:Number):void
+		override public function updateRotation(deltaT:Number):void
 		{
 			rotRate += rotAccel*deltaT;
 			rotationZ += rotRate*deltaT;
