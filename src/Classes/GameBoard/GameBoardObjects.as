@@ -37,10 +37,14 @@ package Classes.GameBoard
 		private var planet2:StaticObject;
 		private var planet3:StaticObject;
 		private var planet4:StaticObject;
+		private var stageWidth:int;
+		private var stageHeight:int;
 		public var index:int;
 		
-		public function GameBoardObjects()
+		public function GameBoardObjects(stageWidth:int, stageHeight:int)
 		{
+			this.stageWidth = stageWidth;
+			this.stageHeight = stageHeight;
 			collisionBuilder = new CollisionBuilder();
 			collisionEngine = new CollisionEngine();
 		}
@@ -52,16 +56,17 @@ package Classes.GameBoard
 		}
 		private function addStaticObjects():void
 		{
-			planet = addStatic("../Images/Moon.png",-83.5,-83.5,300,400, new PlanetCollisionModel());  
-			planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400, new PlanetCollisionModel());
-			planet3 = addStatic("../Images/Moon.png",-83.5,-83.5,600,100, new PlanetCollisionModel());
-			planet4 = addStatic("../Images/Moon.png",-83.5,-83.5,600,700, new PlanetCollisionModel());
+			planet = addStatic("../Images/Moon.png",-83.5,-83.5,stageWidth/2,stageHeight/2, new PlanetCollisionModel());  
+//			planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400, new PlanetCollisionModel());
+//			planet3 = addStatic("../Images/Moon.png",-83.5,-83.5,600,100, new PlanetCollisionModel());
+//			planet4 = addStatic("../Images/Moon.png",-83.5,-83.5,600,700, new PlanetCollisionModel());
 
 		}
 		private function addDynamicObjects():void
 		{
 			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(),new ShipCollisionModel());  
-			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,100,50,staticArray, new Player2InputModel(),new ShipCollisionModel());
+			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(),new ShipCollisionModel());
+			ship2.rotationZ +=180;
 			asteroid =  addDynamic("../Images/asteroid.png",-10,-10,100,100, staticArray,new AsteriodCollisionModel());
 			asteroid.velX = 250;
 		}
@@ -83,13 +88,13 @@ package Classes.GameBoard
 			}	
 		}
 		
-		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,pointArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel):PlayerObject
+		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel):PlayerObject
 		{
 			var tempSprite: PlayerObject;
 			Sprite(tempSprite);
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new PlayerObject(pointArray, inputModel,collisionModel, this);
+			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel, this);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
 			objectArray.push(tempSprite);                
@@ -97,12 +102,12 @@ package Classes.GameBoard
 			tempSprite.addChild(imageLoad);
 			return tempSprite;
 		}
-		public function addDynamic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number, pointArray:Array,collisionModel:ICollisionModel):DynamicObject
+		public function addDynamic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number, staticArray:Array,collisionModel:ICollisionModel):DynamicObject
 		{
 			var tempSprite:DynamicObject;
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new DynamicObject(pointArray, this, collisionModel);
+			tempSprite = new DynamicObject(staticArray, this, collisionModel);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
 			objectArray.push(tempSprite);                  

@@ -18,7 +18,10 @@ package
 		
 		private var stopWatch:StopWatch;
 		private var deltaT:Number;
-		private var gameBoard:GameBoardObjects = new GameBoardObjects();
+		
+		private var stageWidth:int;
+		private var stageHeight:int;
+		private var gameBoard:GameBoardObjects; 
 		
 		public function LiteMatter()
 		{
@@ -32,12 +35,14 @@ package
 		 
 		private function Initialize():void
 		{
+			this.stageWidth = stage.stageWidth;
+			this.stageHeight = stage.stageHeight;
+			gameBoard = new GameBoardObjects(stageWidth,stageHeight);
 			gameBoard.initializeGameObjects();
 			addChild(gameBoard);
 			stopWatch = new StopWatch();
 			addChild(text1);
 		}
-		
 		
 		public function update(e:Event):void
 		{
@@ -45,7 +50,6 @@ package
 			gameBoard.updateGameBoard(deltaT);
 			
 //			mousePoint = new Point(stage.mouseX,stage.mouseY);
-			
 			
 //			print("Astroid hit = " + gameBoard.asteroid.hit, text1);
 			print(gameBoard.index,text1);

@@ -9,7 +9,7 @@ package Classes
 	{
 		private var position:Point;
 		private var collisionModel:ICollisionModel;
-		private const gravConst:Number = 2600000;
+		private const gravConst:Number = 26000000;
 //		private const gravConst:Number = 0;
 		private var hitCircle:GameObject;
 		

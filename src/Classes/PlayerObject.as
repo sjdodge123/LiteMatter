@@ -6,6 +6,7 @@ package Classes
 	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
 	import Interfaces.IPlayerMethods;
+	import Interfaces.IStaticMethods;
 	
 	import Models.AsteriodCollisionModel;
 
@@ -51,7 +52,13 @@ package Classes
 			updatePosition(deltaT);
 			checkScreenBounds();  
 		}
-		
+		override public function calcGravAccel(staticObj:IStaticMethods):void
+		{
+			gravAccelContribution = (staticObj.getGravityConst()/10)/Math.pow(dist,2);
+			
+			gravAccelX += gravAccelContribution*distX/dist;
+			gravAccelY += gravAccelContribution*distY/dist;
+		}
 		override public function checkHit():Boolean
 		{
 			for(var i:int=0;i<staticArray.length;i++)

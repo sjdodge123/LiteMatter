@@ -7,23 +7,22 @@ package Classes
 	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
 	import Interfaces.IStaticMethods;
-	import flash.display.DisplayObjectContainer;
 
 	public class DynamicObject extends GameObject implements IDynamicObjects
 	{
 		public var velX:Number = 0;
 		public var velY:Number = 0;
-		public var velocity:Number = 0;
+		protected var velocity:Number = 0;
 		public var rotRate:Number = 0;
 		public var rotAngle:Number = 0;
 		
-		public var gravAccelContribution: Number;
-		public var gravAccelX:Number = 0;
-		public var gravAccelY:Number = 0;
+		protected var gravAccelContribution: Number;
+		protected var gravAccelX:Number = 0;
+		protected var gravAccelY:Number = 0;
 
-		private var distX:Number = 0;
-		private var distY:Number = 0;
-		private var dist:Number = 0;
+		protected var distX:Number = 0;
+		protected var distY:Number = 0;
+		protected var dist:Number = 0;
 		
 		private var gameBoard:GameBoardObjects;
 		private var collisionModel:ICollisionModel;
@@ -91,7 +90,7 @@ package Classes
 			
 		}
 		
-		private function explode():void
+		public function explode():void
 		{
 			
 			var explosion:GameObject = new GameObject();
