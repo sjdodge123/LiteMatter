@@ -12,9 +12,11 @@ package Classes.GameBoard
 	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
+	import Interfaces.IStaticPhysicsModel;
 	
 	import Models.AsteriodCollisionModel;
 	import Models.PlanetCollisionModel;
+	import Models.PlanetPhysicsModel;
 	import Models.Player1InputModel;
 	import Models.Player2InputModel;
 	import Models.ShipCollisionModel;
@@ -56,7 +58,7 @@ package Classes.GameBoard
 		}
 		private function addStaticObjects():void
 		{
-			planet = addStatic("../Images/Moon.png",-83.5,-83.5,stageWidth/2,stageHeight/2, new PlanetCollisionModel());  
+			planet = addStatic("../Images/Moon.png",-83.5,-83.5,stageWidth/2,stageHeight/2, new PlanetCollisionModel(),new PlanetPhysicsModel());  
 //			planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400, new PlanetCollisionModel());
 //			planet3 = addStatic("../Images/Moon.png",-83.5,-83.5,600,100, new PlanetCollisionModel());
 //			planet4 = addStatic("../Images/Moon.png",-83.5,-83.5,600,700, new PlanetCollisionModel());
@@ -115,12 +117,12 @@ package Classes.GameBoard
 			tempSprite.addChild(imageLoad);
 			return tempSprite;
 		}
-		private function addStatic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,collisionModel:ICollisionModel):StaticObject
+		private function addStatic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,collisionModel:ICollisionModel,physicsModel:IStaticPhysicsModel):StaticObject
 		{
 			var tempSprite:StaticObject;
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new StaticObject(objInitialX, objInitialY,collisionModel);
+			tempSprite = new StaticObject(objInitialX, objInitialY,collisionModel,physicsModel);
 			staticArray.push(tempSprite);   
 			addChild(tempSprite);		
 			tempSprite.addChild(imageLoad);
