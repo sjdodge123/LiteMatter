@@ -142,18 +142,17 @@ package Classes
 			if(inputModel.getFireWeaponOne()==true)
 			{
 				var projectileOne:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel());
-				projectileOne.velX = 200*dirY;
-				projectileOne.velY = -200*dirX;
+				projectileOne.velX = (200*dirY)+this.velX;;
+				projectileOne.velY = (-200*dirX)+this.velY;;
 				projectileOne.rotRate =-100;
 				
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
 				var projectileTwo:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel());
-				projectileTwo.velX = -200*dirY;
-				projectileTwo.velY = 200*dirX;
+				projectileTwo.velX = -200*dirY+this.velX;
+				projectileTwo.velY = (200*dirX)+this.velY;
 				projectileTwo.rotRate = 100;
-				
 			}
 			
 		}
