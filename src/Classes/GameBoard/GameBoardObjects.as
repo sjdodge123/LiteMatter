@@ -1,5 +1,6 @@
 package Classes.GameBoard
 {
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
@@ -127,6 +128,19 @@ package Classes.GameBoard
 			addChild(tempSprite);		
 			tempSprite.addChild(imageLoad);
 			return tempSprite;
+		}
+		public function addClip(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number, scaleX:Number, scaleY:Number):MovieClip
+		{
+			var tempClip:MovieClip = new MovieClip();
+			var imageLoad:AnimationLoader;
+			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY);
+			tempClip.x = objInitialX;
+			tempClip.y = objInitialY;   
+			tempClip.scaleX = scaleX;
+			tempClip.scaleY = scaleY;
+			addChild(tempClip);
+			tempClip.addChild(imageLoad);
+			return tempClip;
 		}
 	}
 }

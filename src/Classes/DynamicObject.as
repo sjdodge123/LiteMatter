@@ -7,6 +7,7 @@ package Classes
 	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
 	import Interfaces.IStaticMethods;
+	import flash.display.MovieClip;
 
 	public class DynamicObject extends GameObject implements IDynamicObjects
 	{
@@ -93,10 +94,7 @@ package Classes
 		public function explode():void
 		{
 			
-			var explosion:GameObject = new GameObject();
-			explosion.graphics.beginFill(0xFF0000,1);
-			explosion.graphics.drawCircle(collisionModel.getCollisionPoint().x,collisionModel.getCollisionPoint().y,5);
-			explosion.graphics.endFill();
+			var explosion:MovieClip= gameBoard.addClip("../Images/explosion.swf",-321,-185,collisionModel.getCollisionPoint().x,collisionModel.getCollisionPoint().y, .5, .5)
 			gameBoard.addChild(explosion);
 			if (gameBoard.contains(this))
 			{
