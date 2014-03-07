@@ -40,8 +40,8 @@ package Classes.GameBoard
 		private var planet2:StaticObject;
 		private var planet3:StaticObject;
 		private var planet4:StaticObject;
-		private var stageWidth:int;
-		private var stageHeight:int;
+		public var stageWidth:int;
+		public var stageHeight:int;
 		public var index:int;
 		
 		public function GameBoardObjects(stageWidth:int, stageHeight:int)

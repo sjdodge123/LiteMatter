@@ -132,21 +132,21 @@ package Classes
 		}
 		public function checkScreenBounds():void 
 		{	
-			if (x > 1240)
+			if (x > gameBoard.stageWidth + this.width/2)
 			{
-				x = -40;
+				x = -this.width/2;
 			}
-			if (x < -40)
+			if (x < -this.width/2)
 			{
-				x = 1240;
+				x = gameBoard.stageWidth + this.width/2;
 			}
-			if (y >  940)
+			if (y >  gameBoard.stageHeight + this.height/2)
 			{
-				y = -40;
+				y = -this.height/2;
 			}
-			if (y < -40)
+			if (y < -this.height/2)
 			{
-				y = 940;
+				y = gameBoard.stageHeight + this.height/2;
 			}
 		}
 		public function setCollisionPoint(collisionPoint:Point):void
