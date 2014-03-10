@@ -9,8 +9,6 @@ package Classes
 	public class StaticObject extends GameObject implements IStaticMethods
 	{
 		private var position:Point;
-		
-//		private const gravConst:Number = 0;
 		private var hitCircle:GameObject;
 		private var physicsModel:IStaticPhysicsModel;
 		private var collisionModel:ICollisionModel;
@@ -33,7 +31,7 @@ package Classes
 		{
 			return position;
 		}
-		public function getHitArea():GameObject
+		override public function getHitArea():GameObject
 		{
 			return hitCircle;
 		}

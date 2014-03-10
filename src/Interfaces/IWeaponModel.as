@@ -4,6 +4,7 @@ package Interfaces
 
 	public interface IWeaponModel
 	{
-		function fireWeapon(weaponNum:int,playerObject:PlayerObject):void
+		function buildModel(playerObject:PlayerObject):void
+		function fireWeapon(weaponNum:int):void
 	}
 }

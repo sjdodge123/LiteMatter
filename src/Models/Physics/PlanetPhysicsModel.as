@@ -5,6 +5,7 @@ package Models.Physics
 	public class PlanetPhysicsModel implements IStaticPhysicsModel
 	{
 		private const gravConst:Number = 26000000;
+		//private const gravConst:Number = 0;
 		public function PlanetPhysicsModel()
 		{
 		}

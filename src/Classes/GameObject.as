@@ -12,5 +12,10 @@ package Classes
 		{
 
 		}
+		
+		public function getHitArea():GameObject 
+		{
+			return null; 
+		}
 	}
 }

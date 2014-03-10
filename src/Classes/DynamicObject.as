@@ -95,7 +95,7 @@ package Classes
 		
 		public function explode():void
 		{	
-			var explosion:MovieClip= gameBoard.addClip("../Images/explosion.swf",-321,-185,x,y, .5, .5)
+			var explosion:MovieClip= gameBoard.addClip("./Images/explosion.swf",-321,-185,x,y, .5, .5)
 			gameBoard.addChild(explosion);
 			if (gameBoard.contains(this))
 			{
@@ -156,7 +156,7 @@ package Classes
 			this.collisionPoint = new Point(collisionPoint.x,collisionPoint.y);
 		}
 		
-		public function getHitArea():GameObject
+		override public function getHitArea():GameObject
 		{
 			return objHitBox;
 		}

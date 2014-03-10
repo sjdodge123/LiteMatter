@@ -61,17 +61,14 @@ package Classes.GameBoard
 		}
 		private function addStaticObjects():void
 		{
-			planet = addStatic("../Images/Moon.png",-83.5,-83.5,stageWidth/2,stageHeight/2, new PlanetCollisionModel(),new PlanetPhysicsModel());  
-//			planet2 = addStatic("../Images/Moon.png",-83.5,-83.5,900,400, new PlanetCollisionModel());
-//			planet3 = addStatic("../Images/Moon.png",-83.5,-83.5,600,100, new PlanetCollisionModel());
-//			planet4 = addStatic("../Images/Moon.png",-83.5,-83.5,600,700, new PlanetCollisionModel());
+			planet = addStatic("./Images/Moon.png",-83.5,-83.5,stageWidth/2,stageHeight/2, new PlanetCollisionModel(),new PlanetPhysicsModel());  
 
 		}
 		private function addDynamicObjects():void
 		{
-			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(),new ShipCollisionModel(), new CannonModel(this));  
-			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(),new ShipCollisionModel(), new CannonModel(this));
-			asteroid =  addDynamic("../Images/asteroid.png",-10,-10,100,100, staticArray,new AsteriodCollisionModel());
+			ship = addPlayer("./Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(),new ShipCollisionModel(), new CannonModel(this));  
+			ship2 = addPlayer("./Images/space ship.png",-73/2,-43/2,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(),new ShipCollisionModel(), new CannonModel(this));
+			asteroid =  addDynamic("./Images/asteroid.png",-10,-10,100,100, staticArray,new AsteriodCollisionModel());
 			asteroid.velX = 250;
 		}
 		

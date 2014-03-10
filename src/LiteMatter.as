@@ -51,7 +51,7 @@ package
 			
 //			mousePoint = new Point(stage.mouseX,stage.mouseY);
 			
-			print(gameBoard.ship.getDirX(),text1);
+			//print(gameBoard.ship.coolDownTime,text1);
 		}
 		
 		public function print(o:Object, field:TextField):void

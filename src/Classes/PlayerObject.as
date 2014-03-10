@@ -41,6 +41,7 @@ package Classes
 		override public function buildModel():void
 		{
 			shipHitBox = collisionModel.buildModel(this);
+			weaponModel.buildModel(this);
 		}
 		
 		override public function update(deltaT:Number):void
@@ -63,7 +64,7 @@ package Classes
 			gravAccelX += gravAccelContribution*distX/dist;
 			gravAccelY += gravAccelContribution*distY/dist;
 		}
-	
+		
 		public function updatePlayerInput(deltaT:Number):void
 		{
 			if (inputModel.getMoveForward() == true)
@@ -134,11 +135,12 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
-				weaponModel.fireWeapon(1,this);
+					weaponModel.fireWeapon(1);
+				
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
-				weaponModel.fireWeapon(2,this);
+					weaponModel.fireWeapon(2);
 			}
 			
 		}
