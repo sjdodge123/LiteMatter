@@ -47,11 +47,14 @@ package Classes
 		{
 			updatePlayerInput(deltaT);
 			updateRotation(deltaT);
-			hit = checkHit();
 			calculateGravity();
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
-			checkScreenBounds();  
+			checkScreenBounds();
+			if(checkHitStatic())
+			{
+				explode();
+			}
 		}
 		override public function calcGravAccel(staticObj:IStaticMethods):void
 		{
@@ -131,17 +134,17 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
-				var projectileOne:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel());
-				projectileOne.velX = (200*dirY)+this.velX;;
-				projectileOne.velY = (-200*dirX)+this.velY;;
+				var projectileOne:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y-35, staticArray,new AsteriodCollisionModel());
+				projectileOne.velX = (350*dirY)+this.velX;;
+				projectileOne.velY = (-350*dirX)+this.velY;;
 				projectileOne.rotRate =-100;
 				
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
-				var projectileTwo:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y, staticArray,new AsteriodCollisionModel());
-				projectileTwo.velX = -200*dirY+this.velX;
-				projectileTwo.velY = (200*dirX)+this.velY;
+				var projectileTwo:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y+35, staticArray,new AsteriodCollisionModel());
+				projectileTwo.velX = -350*dirY+this.velX;
+				projectileTwo.velY = (350*dirX)+this.velY;
 				projectileTwo.rotRate = 100;
 			}
 			

@@ -29,11 +29,7 @@ package Classes
 		private var collisionModel:ICollisionModel;
 		private var collisionPoint:Point;
 		public var staticArray:Array;
-		public var hit:Boolean;
 		private var objHitBox:GameObject;
-		
-		
-		
 		
 		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel)
 		{	
@@ -50,16 +46,19 @@ package Classes
 		}
 		public function update(deltaT:Number):void
 		{
-			hit = checkHit();
 			calculateGravity();
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
 			updateRotation(deltaT);
 			checkScreenBounds();
-			
+			if(checkHitStatic())
+			{
+				explode();
+			}
+			checkHitDyn(gameBoard.objectArray);
 		}
 		
-		public function checkHit():Boolean
+		public function checkHitStatic():Boolean
 		{
 			for(var i:int=0;i<staticArray.length;i++)
 			{
@@ -68,6 +67,18 @@ package Classes
 				return true
 				}
 			}		
+			return false;
+		}
+		public function checkHitDyn(objectArray:Array):Boolean
+		{
+			for(var i:int=0;i<objectArray.length;i++)
+			{
+				if(objectArray[i] != this && collisionModel.checkHit(objectArray[i]))
+				{
+					objectArray[i].explode();
+					return true;
+				}
+			}
 			return false;
 		}
 		public function calculateGravity():void
@@ -79,22 +90,12 @@ package Classes
 				{
 					calcGravAccel(staticArray[i]);
 				}
-				if(hit)
-				{
-//					bounce();
-					explode();
-				}
 			}
-		}
-		
-		private function bounce():void
-		{
-			
 		}
 		
 		public function explode():void
 		{	
-			var explosion:MovieClip= gameBoard.addClip("../Images/explosion.swf",-321,-185,collisionModel.getCollisionPoint().x,collisionModel.getCollisionPoint().y, .5, .5)
+			var explosion:MovieClip= gameBoard.addClip("../Images/explosion.swf",-321,-185,x,y, .5, .5)
 			gameBoard.addChild(explosion);
 			if (gameBoard.contains(this))
 			{
@@ -157,7 +158,7 @@ package Classes
 		
 		public function getHitArea():GameObject
 		{
-			return objHitBox();
+			return objHitBox;
 		}
 		
 	}
