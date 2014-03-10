@@ -1,5 +1,6 @@
 package Classes
 {
+	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
 	import Classes.GameBoard.GameBoardObjects;
@@ -7,7 +8,6 @@ package Classes
 	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
 	import Interfaces.IStaticMethods;
-	import flash.display.MovieClip;
 
 	public class DynamicObject extends GameObject implements IDynamicObjects
 	{
@@ -30,6 +30,7 @@ package Classes
 		private var collisionPoint:Point;
 		public var staticArray:Array;
 		public var hit:Boolean;
+		private var objHitBox:GameObject;
 		
 		
 		
@@ -45,7 +46,7 @@ package Classes
 		}
 		public function buildModel():void
 		{
-			collisionModel.buildModel(this);
+			objHitBox = collisionModel.buildModel(this);
 		}
 		public function update(deltaT:Number):void
 		{
@@ -152,6 +153,11 @@ package Classes
 		public function setCollisionPoint(collisionPoint:Point):void
 		{
 			this.collisionPoint = new Point(collisionPoint.x,collisionPoint.y);
+		}
+		
+		public function getHitArea():GameObject
+		{
+			return objHitBox();
 		}
 		
 	}

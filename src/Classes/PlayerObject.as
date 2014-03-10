@@ -28,6 +28,7 @@ package Classes
 		public var inputModel:IInputHandling;
 		public var collisionModel:ICollisionModel;
 		private var gameBoard:GameBoardObjects;
+		private var shipHitBox:GameObject;
 		
 		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel, gameBoard:GameBoardObjects)
 		{
@@ -39,7 +40,7 @@ package Classes
 		}
 		override public function buildModel():void
 		{
-			collisionModel.buildModel(this);
+			shipHitBox = collisionModel.buildModel(this);
 		}
 		
 		override public function update(deltaT:Number):void
@@ -59,17 +60,6 @@ package Classes
 			gravAccelX += gravAccelContribution*distX/dist;
 			gravAccelY += gravAccelContribution*distY/dist;
 		}
-		override public function checkHit():Boolean
-		{
-			for(var i:int=0;i<staticArray.length;i++)
-			{
-				if (collisionModel.checkHit(staticArray[i]))
-				{
-					return true
-				}
-			}		
-			return false;
-		}		
 	
 		public function updatePlayerInput(deltaT:Number):void
 		{
@@ -165,17 +155,16 @@ package Classes
 			gravAccelY = 0;
 
 		}
-		override public function updatePosition(deltaT:Number):void
-		{
-			this.x += velX*deltaT;
-			this.y += velY*deltaT;
-		}
 		override public function updateRotation(deltaT:Number):void
 		{
 			rotRate += rotAccel*deltaT;
 			rotationZ += rotRate*deltaT;
 			dirX=Math.cos((Math.PI*rotationZ)/180);
 			dirY=Math.sin((Math.PI*rotationZ)/180);
+		}
+		override public function getHitArea():GameObject
+		{
+			return shipHitBox;
 		}
 	
 	}
