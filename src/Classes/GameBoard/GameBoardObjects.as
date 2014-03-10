@@ -15,12 +15,12 @@ package Classes.GameBoard
 	import Interfaces.IInputHandling;
 	import Interfaces.IStaticPhysicsModel;
 	
-	import Models.AsteriodCollisionModel;
-	import Models.PlanetCollisionModel;
-	import Models.PlanetPhysicsModel;
-	import Models.Player1InputModel;
-	import Models.Player2InputModel;
-	import Models.ShipCollisionModel;
+	import Models.Collision.AsteriodCollisionModel;
+	import Models.Collision.PlanetCollisionModel;
+	import Models.Physics.PlanetPhysicsModel;
+	import Models.Input.Player1InputModel;
+	import Models.Input.Player2InputModel;
+	import Models.Collision.ShipCollisionModel;
 	
 
 	public class GameBoardObjects extends GameObject 

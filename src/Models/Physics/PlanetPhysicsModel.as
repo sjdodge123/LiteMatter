@@ -1,4 +1,4 @@
-package Models
+package Models.Physics
 {
 	import Interfaces.IStaticPhysicsModel;
 

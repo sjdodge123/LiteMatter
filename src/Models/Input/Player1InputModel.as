@@ -1,10 +1,11 @@
-package Models
+package Models.Input
 {
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	
 	import Interfaces.IInputHandling;
 
-	public class Player2InputModel implements IInputHandling
+	public class Player1InputModel implements IInputHandling
 	{
 		private var moveForward:Boolean = false;
 		private var moveReverse:Boolean = false;
@@ -13,105 +14,105 @@ package Models
 		private var fireWeaponOne:Boolean = false;
 		private var fireWeaponTwo:Boolean = false;
 		
-		public function Player2InputModel() 
+		public function Player1InputModel() 
 		{
 		}
+		
 		public function keyPressed(event:KeyboardEvent):void
 		{	
 			switch(event.keyCode)
 			{
-				case Keyboard.I:
+				case Keyboard.W:
 				{
 					moveForward = true;
 					break;
 				}
-				case Keyboard.K:
+				case Keyboard.S:
 				{
 					moveReverse = true;
 					break;
 				}
-				case Keyboard.J:
+				case Keyboard.A:
 				{
 					moveLeft = true;
 					break;
 				}
-				case Keyboard.L:
+				case Keyboard.D:
 				{
 					moveRight = true;
 					break;
 				}
-				case Keyboard.U:
+				case Keyboard.Q:
 				{
 					fireWeaponOne = true;
 					break;
 				}
-				case Keyboard.O:
+				case Keyboard.E:
 				{
 					fireWeaponTwo = true;
 					break;
 				}
 			}
 		}
-		public function keyReleased(event:KeyboardEvent):void
-		{
-			switch(event.keyCode)
-				
-			{	
-				case Keyboard.I:
+		  public function keyReleased(event:KeyboardEvent):void
+		  {
+			  switch(event.keyCode)	
+			  {	
+				case Keyboard.W:
 				{
 					moveForward = false;
 					break;
 				}
-				case Keyboard.K:
+				case Keyboard.S:
 				{
 					moveReverse = false;
 					break;
 				}
-				case Keyboard.J:
+				case Keyboard.A:
 				{
 					moveLeft = false;
 					break;
 				}
-				case Keyboard.L:
+				case Keyboard.D:
 				{
 					moveRight = false;
 					break;
 				}
-				case Keyboard.U:
+				case Keyboard.Q:
 				{
 					fireWeaponOne = false;
 					break;
 				}
-				case Keyboard.O:
+				case Keyboard.E:
 				{
 					fireWeaponTwo = false;
 					break;
 				}
-			}	
-		}
-		public function getMoveForward():Boolean
-		{
-			return moveForward;
-		}
-		public function getMoveReverse():Boolean
-		{
-			return moveReverse;
-		}
-		public function getMoveLeft():Boolean
-		{
-			return moveLeft;
-		}
-		public function getMoveRight():Boolean
-		{
-			return moveRight;
-		}
-		public function getFireWeaponOne():Boolean
-		{
-			return fireWeaponOne;
-		}
-		public function getFireWeaponTwo():Boolean
-		{
-			return fireWeaponTwo;
-		}
+			  }			
+		  }
+		  public function getMoveForward():Boolean
+		  {
+			  return moveForward;
+		  }
+		  public function getMoveReverse():Boolean
+		  {
+			  return moveReverse;
+		  }
+		  public function getMoveLeft():Boolean
+		  {
+			  return moveLeft;
+		  }
+		  public function getMoveRight():Boolean
+		  {
+			  return moveRight;
+		  }
+		  public function getFireWeaponOne():Boolean
+		  {
+			  return fireWeaponOne;
+		  }
+		  public function getFireWeaponTwo():Boolean
+		  {
+			  return fireWeaponTwo;
+		  }
 	}
 }

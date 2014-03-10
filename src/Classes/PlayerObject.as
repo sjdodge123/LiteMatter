@@ -8,7 +8,7 @@ package Classes
 	import Interfaces.IPlayerMethods;
 	import Interfaces.IStaticMethods;
 	
-	import Models.AsteriodCollisionModel;
+	import Models.Collision.AsteriodCollisionModel;
 
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
@@ -137,8 +137,7 @@ package Classes
 				var projectileOne:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y-35, staticArray,new AsteriodCollisionModel());
 				projectileOne.velX = (350*dirY)+this.velX;;
 				projectileOne.velY = (-350*dirX)+this.velY;;
-				projectileOne.rotRate =-100;
-				
+				projectileOne.rotRate =-100;	
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
