@@ -41,7 +41,7 @@ package Models.Weapons
 		{
 				if(weaponNum == 1 && oneCanShoot)
 				{
-					var projectileOne:DynamicObject = gameBoard.addDynamic("./Images/asteroid.png",-10,-10,playerObject.getX(),playerObject.getY()-35, playerObject.getStaticArray(),new AsteriodCollisionModel());
+					var projectileOne:DynamicObject = gameBoard.addDynamic("./Images/asteroid.png",-10,-10,playerObject.getX(),playerObject.getY(), playerObject.getStaticArray(),new AsteriodCollisionModel());
 					projectileOne.velX = (350*playerObject.getDirY())+playerObject.getVelX();
 					projectileOne.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
 					projectileOne.rotRate = -100;
@@ -51,7 +51,7 @@ package Models.Weapons
 				}
 				else if(weaponNum == 2 && twoCanShoot)
 				{
-					var projectileTwo:DynamicObject = gameBoard.addDynamic("./Images/asteroid.png",-10,-10,playerObject.getX(),playerObject.getY()+35, playerObject.getStaticArray(),new AsteriodCollisionModel());
+					var projectileTwo:DynamicObject = gameBoard.addDynamic("./Images/asteroid.png",-10,-10,playerObject.getX(),playerObject.getY(), playerObject.getStaticArray(),new AsteriodCollisionModel());
 					projectileTwo.velX = (-350*playerObject.getDirY())+playerObject.getVelX();
 					projectileTwo.velY = (350*playerObject.getDirX())+playerObject.getVelY();
 					projectileTwo.rotRate = 100;

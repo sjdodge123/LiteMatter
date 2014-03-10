@@ -2,7 +2,9 @@ package Classes
 {
 	
 	import Classes.GameBoard.GameBoardObjects;
-	
+	import flash.utils.Timer;
+	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
 	import Interfaces.IPlayerMethods;
@@ -29,13 +31,23 @@ package Classes
 		private var shipHitBox:GameObject;
 		private var weaponModel:IWeaponModel;
 		
+		private var immuneDurationSeconds:Number = 0.01;
+		private var immuneStatus:Boolean = false;
+		private var immuneTimer:Timer;
+		
 		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects)
 		{
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
 			this.weaponModel = weaponModel;
 			this.collisionModel = collisionModel;
+			
+			immuneTimer = new Timer(immuneDurationSeconds * 1000, 1);
+			immuneTimer.addEventListener(TimerEvent.TIMER_COMPLETE, setImmunity);
+			immuneTimer.start();
+			
 			buildModel();
+		
 			super(staticArray,gameBoard,collisionModel);
 		}
 		override public function buildModel():void
@@ -135,11 +147,16 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
+					immuneTimer.reset();
+					immuneTimer.start();
+					immuneStatus = true;
 					weaponModel.fireWeapon(1);
-				
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
+					immuneTimer.reset();
+					immuneTimer.start();
+					immuneStatus = true;
 					weaponModel.fireWeapon(2);
 			}
 			
@@ -160,6 +177,17 @@ package Classes
 			dirX=Math.cos((Math.PI*rotationZ)/180);
 			dirY=Math.sin((Math.PI*rotationZ)/180);
 		}
+		
+		private function setImmunity(e:Event):void
+		{
+			immuneStatus = false;
+		}
+		
+		override public function getImmuneStatus():Boolean 
+		{
+			return immuneStatus;
+		}
+		
 		override public function getHitArea():GameObject
 		{
 			return shipHitBox;

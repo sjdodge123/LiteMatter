@@ -75,6 +75,7 @@ package Classes
 			{
 				if(objectArray[i] != this && collisionModel.checkHit(objectArray[i]))
 				{
+					if(objectArray[i].getImmuneStatus() == false)
 					objectArray[i].explode();
 					return true;
 				}
@@ -154,6 +155,11 @@ package Classes
 		public function setCollisionPoint(collisionPoint:Point):void
 		{
 			this.collisionPoint = new Point(collisionPoint.x,collisionPoint.y);
+		}
+		
+		public function getImmuneStatus():Boolean 
+		{
+			return false;
 		}
 		
 		override public function getHitArea():GameObject
