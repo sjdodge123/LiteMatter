@@ -51,8 +51,7 @@ package
 			
 //			mousePoint = new Point(stage.mouseX,stage.mouseY);
 			
-//			print("Astroid hit = " + gameBoard.asteroid.hit, text1);
-			print(gameBoard.index,text1);
+			print(gameBoard.ship.getDirX(),text1);
 		}
 		
 		public function print(o:Object, field:TextField):void

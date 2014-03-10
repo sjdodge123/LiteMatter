@@ -14,13 +14,15 @@ package Classes.GameBoard
 	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
 	import Interfaces.IStaticPhysicsModel;
+	import Interfaces.IWeaponModel;
 	
 	import Models.Collision.AsteriodCollisionModel;
 	import Models.Collision.PlanetCollisionModel;
-	import Models.Physics.PlanetPhysicsModel;
+	import Models.Collision.ShipCollisionModel;
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
-	import Models.Collision.ShipCollisionModel;
+	import Models.Physics.PlanetPhysicsModel;
+	import Models.Weapons.CannonModel;
 	
 
 	public class GameBoardObjects extends GameObject 
@@ -67,9 +69,8 @@ package Classes.GameBoard
 		}
 		private function addDynamicObjects():void
 		{
-			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(),new ShipCollisionModel());  
-			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(),new ShipCollisionModel());
-			ship2.rotationZ +=180;
+			ship = addPlayer("../Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(),new ShipCollisionModel(), new CannonModel(this));  
+			ship2 = addPlayer("../Images/space ship.png",-73/2,-43/2,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(),new ShipCollisionModel(), new CannonModel(this));
 			asteroid =  addDynamic("../Images/asteroid.png",-10,-10,100,100, staticArray,new AsteriodCollisionModel());
 			asteroid.velX = 250;
 		}
@@ -91,13 +92,13 @@ package Classes.GameBoard
 			}	
 		}
 		
-		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel):PlayerObject
+		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel):PlayerObject
 		{
 			var tempSprite: PlayerObject;
 			Sprite(tempSprite);
 			var imageLoad:GraphicLoader;
 			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
-			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel, this);
+			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,this);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
 			objectArray.push(tempSprite);                

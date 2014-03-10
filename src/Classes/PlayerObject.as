@@ -7,9 +7,7 @@ package Classes
 	import Interfaces.IInputHandling;
 	import Interfaces.IPlayerMethods;
 	import Interfaces.IStaticMethods;
-	
-	import Models.Collision.AsteriodCollisionModel;
-
+	import Interfaces.IWeaponModel;
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 	{		
@@ -22,18 +20,20 @@ package Classes
 		private var velocityMax:Number = 120;
 		private var velocityDirX:Number = 0;
 		private var velocityDirY:Number = 0;
-		private var dirX:Number = 1;
+		private var dirX:Number = 0;
 		private var dirY:Number = 0;
 		
 		public var inputModel:IInputHandling;
 		public var collisionModel:ICollisionModel;
 		private var gameBoard:GameBoardObjects;
 		private var shipHitBox:GameObject;
+		private var weaponModel:IWeaponModel;
 		
-		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel, gameBoard:GameBoardObjects)
+		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects)
 		{
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
+			this.weaponModel = weaponModel;
 			this.collisionModel = collisionModel;
 			buildModel();
 			super(staticArray,gameBoard,collisionModel);
@@ -45,7 +45,6 @@ package Classes
 		
 		override public function update(deltaT:Number):void
 		{
-			updatePlayerInput(deltaT);
 			updateRotation(deltaT);
 			calculateGravity();
 			updateVelocity(deltaT);
@@ -55,6 +54,7 @@ package Classes
 			{
 				explode();
 			}
+			updatePlayerInput(deltaT);
 		}
 		override public function calcGravAccel(staticObj:IStaticMethods):void
 		{
@@ -134,17 +134,11 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
-				var projectileOne:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y-35, staticArray,new AsteriodCollisionModel());
-				projectileOne.velX = (350*dirY)+this.velX;;
-				projectileOne.velY = (-350*dirX)+this.velY;;
-				projectileOne.rotRate =-100;	
+				weaponModel.fireWeapon(1,this);
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
-				var projectileTwo:DynamicObject = gameBoard.addDynamic("../Images/asteroid.png",-10,-10,x,y+35, staticArray,new AsteriodCollisionModel());
-				projectileTwo.velX = -350*dirY+this.velX;
-				projectileTwo.velY = (350*dirX)+this.velY;
-				projectileTwo.rotRate = 100;
+				weaponModel.fireWeapon(2,this);
 			}
 			
 		}
@@ -169,5 +163,39 @@ package Classes
 			return shipHitBox;
 		}
 	
+		public function getX():int
+		{
+			return this.x;
+		}
+		
+		public function getDirY():Number
+		{
+			return dirY;
+		}
+		
+		public function getDirX():Number
+		{
+			return dirX;
+		}
+		
+		public function getVelX():Number
+		{
+			return this.velX;
+		}
+		
+		public function getVelY():Number
+		{
+			return this.velY;
+		}
+		
+		public function getY():int
+		{
+			return this.y;
+		}
+		
+		public function getStaticArray():Array
+		{
+			return this.staticArray;
+		}
 	}
 }
