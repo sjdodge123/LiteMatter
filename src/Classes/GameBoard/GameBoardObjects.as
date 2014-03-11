@@ -47,6 +47,7 @@ package Classes.GameBoard
 		public var stageHeight:int;
 		public var index:int;
 		private var gameStage:Stage;
+		public var soundLoader:SoundLoader;
 		
 		public function GameBoardObjects(stageWidth:int, stageHeight:int,stage:Stage)
 		{
@@ -54,6 +55,7 @@ package Classes.GameBoard
 			this.stageHeight = stageHeight;
 			gameStage = stage;
 			collisionBuilder = new CollisionBuilder();
+			soundLoader =  new SoundLoader();
 			collisionEngine = new CollisionEngine();
 		}
 

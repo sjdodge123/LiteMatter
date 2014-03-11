@@ -2,6 +2,7 @@ package Classes
 {
 	import flash.display.MovieClip;
 	import flash.geom.Point;
+	import flash.media.Sound;
 	
 	import Classes.GameBoard.GameBoardObjects;
 	
@@ -31,12 +32,15 @@ package Classes
 		public var staticArray:Array;
 		private var objHitBox:GameObject;
 		
+		private var explodeSound:Sound;
+		
 		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel)
 		{	
 			this.staticArray = new Array();
 			this.gameBoard = gameBoard;
 			this.staticArray = staticArray;
 			this.collisionModel = collisionModel;
+			explodeSound = gameBoard.soundLoader.loadSound("../src/Sounds/explode.mp3");
 			buildModel();
 			
 		}
@@ -96,7 +100,8 @@ package Classes
 		
 		public function explode():void
 		{	
-			var explosion:MovieClip= gameBoard.addClip("./Images/explosion.swf",-321,-185,x,y, .5, .5)
+			var explosion:MovieClip = gameBoard.addClip("./Images/explosion.swf", -321, -185, x, y, .5, .5)
+			explodeSound.play();
 			gameBoard.addChild(explosion);
 			if (gameBoard.contains(this))
 			{
