@@ -1,5 +1,6 @@
 package Models.Input
 {
+	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	
@@ -13,12 +14,16 @@ package Models.Input
 		private var moveRight:Boolean = false;
 		private var fireWeaponOne:Boolean = false;
 		private var fireWeaponTwo:Boolean = false;
+		private var gameStage:Stage;
 		
-		public function Player1InputModel() 
+		public function Player1InputModel(gameStage:Stage) 
 		{
+			this.gameStage = gameStage;
+			gameStage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
+			gameStage.addEventListener(KeyboardEvent.KEY_UP, keyReleased);
 		}
 		
-		public function keyPressed(event:KeyboardEvent):void
+		private function keyPressed(event:KeyboardEvent):void
 		{	
 			switch(event.keyCode)
 			{
@@ -54,7 +59,7 @@ package Models.Input
 				}
 			}
 		}
-		  public function keyReleased(event:KeyboardEvent):void
+		  private function keyReleased(event:KeyboardEvent):void
 		  {
 			  switch(event.keyCode)	
 			  {	

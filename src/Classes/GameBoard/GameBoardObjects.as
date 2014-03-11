@@ -2,6 +2,7 @@ package Classes.GameBoard
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.geom.Point;
 	
 	import Classes.CollisionBuilder;
@@ -45,11 +46,13 @@ package Classes.GameBoard
 		public var stageWidth:int;
 		public var stageHeight:int;
 		public var index:int;
+		private var gameStage:Stage;
 		
-		public function GameBoardObjects(stageWidth:int, stageHeight:int)
+		public function GameBoardObjects(stageWidth:int, stageHeight:int,stage:Stage)
 		{
 			this.stageWidth = stageWidth;
 			this.stageHeight = stageHeight;
+			gameStage = stage;
 			collisionBuilder = new CollisionBuilder();
 			collisionEngine = new CollisionEngine();
 		}
@@ -66,8 +69,8 @@ package Classes.GameBoard
 		}
 		private function addDynamicObjects():void
 		{
-			ship = addPlayer("./Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(),new ShipCollisionModel(), new CannonModel(this));  
-			ship2 = addPlayer("./Images/space ship.png",-73/2,-43/2,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(),new ShipCollisionModel(), new CannonModel(this));
+			ship = addPlayer("./Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(gameStage),new ShipCollisionModel(), new CannonModel(this));  
+			ship2 = addPlayer("./Images/space ship.png",-73/2,-43/2,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(gameStage),new ShipCollisionModel(), new CannonModel(this));
 			asteroid =  addDynamic("./Images/asteroid.png",-10,-10,100,100, staticArray,new AsteriodCollisionModel());
 			asteroid.velX = 250;
 		}

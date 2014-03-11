@@ -4,8 +4,6 @@ package Interfaces
 
 	public interface IInputHandling
 	{
-		function keyPressed(event:KeyboardEvent):void;
-		function keyReleased(event:KeyboardEvent):void;
 		function getMoveForward():Boolean
 		function getMoveReverse():Boolean
 		function getMoveLeft():Boolean

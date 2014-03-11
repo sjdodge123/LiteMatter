@@ -2,7 +2,6 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	
@@ -10,7 +9,7 @@ package
 	import Classes.GameBoard.StopWatch;
 	
 	
-	[SWF(backgroundColor= "0xffffff", width="1200", height ="900")]
+	[SWF(backgroundColor= "0xffffff", width="1200", height ="900", frameRate='60')]
 	public class LiteMatter extends Sprite
 	{
 		private var text1:TextField = new TextField();
@@ -27,17 +26,13 @@ package
 		{
 			Initialize();
 			stage.addEventListener(Event.ENTER_FRAME, update);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, gameBoard.ship.inputModel.keyPressed);
-			stage.addEventListener(KeyboardEvent.KEY_UP, gameBoard.ship.inputModel.keyReleased);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, gameBoard.ship2.inputModel.keyPressed);
-			stage.addEventListener(KeyboardEvent.KEY_UP, gameBoard.ship2.inputModel.keyReleased);
 		}
 		 
 		private function Initialize():void
 		{
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
-			gameBoard = new GameBoardObjects(stageWidth,stageHeight);
+			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			gameBoard.initializeGameObjects();
 			addChild(gameBoard);
 			stopWatch = new StopWatch();
