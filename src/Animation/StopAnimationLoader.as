@@ -1,16 +1,16 @@
-package Classes.GameBoard
+package Animation
 {
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.display.MovieClip;
 	
-	public class AnimationLoader extends MovieClip
+	public class StopAnimationLoader extends MovieClip
 	{
 		private var url:URLRequest;
 		private var ldr:Loader;
 		
-		public function AnimationLoader(path:String, x:int, y:int)
+		public function StopAnimationLoader(path:String, x:int, y:int)
 		{
 			url = new URLRequest(path);
 			ldr = new Loader();

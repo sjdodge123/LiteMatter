@@ -1,5 +1,6 @@
 package Classes.GameBoard
 {
+	import Animation.ContinuousAnimationLoader;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -11,6 +12,10 @@ package Classes.GameBoard
 	import Classes.GameObject;
 	import Classes.PlayerObject;
 	import Classes.StaticObject;
+	
+	
+	import Animation.ShipAnimationObject;
+	import Animation.StopAnimationLoader;
 	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
@@ -71,8 +76,8 @@ package Classes.GameBoard
 		}
 		private function addDynamicObjects():void
 		{
-			ship = addPlayer("./Images/space ship.png",-73/2,-43/2,50,50,staticArray, new Player1InputModel(gameStage),new ShipCollisionModel(), new CannonModel(this));  
-			ship2 = addPlayer("./Images/space ship.png",-73/2,-43/2,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(gameStage),new ShipCollisionModel(), new CannonModel(this));
+			ship = addPlayer("./Images/shipThrust.swf",0,0,50,50,staticArray, new Player1InputModel(gameStage),new ShipCollisionModel(), new CannonModel(this));  
+			ship2 = addPlayer("./Images/shipThrust.swf",0,0,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(gameStage),new ShipCollisionModel(), new CannonModel(this));
 			asteroid =  addDynamic("./Images/asteroid.png",-10,-10,100,100, staticArray,new AsteriodCollisionModel());
 			asteroid.velX = 250;
 		}
@@ -98,8 +103,8 @@ package Classes.GameBoard
 		{
 			var tempSprite: PlayerObject;
 			Sprite(tempSprite);
-			var imageLoad:GraphicLoader;
-			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
+			var imageLoad:ShipAnimationObject;
+			imageLoad = new ShipAnimationObject(imageLocation,imageOffsetX, imageOffsetY, inputModel);
 			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,this);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
@@ -111,8 +116,8 @@ package Classes.GameBoard
 		public function addDynamic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number, staticArray:Array,collisionModel:ICollisionModel):DynamicObject
 		{
 			var tempSprite:DynamicObject;
-			var imageLoad:GraphicLoader;
-			imageLoad = new GraphicLoader(imageLocation,imageOffsetX, imageOffsetY);
+			var imageLoad:ContinuousAnimationLoader;
+			imageLoad = new ContinuousAnimationLoader(imageLocation,imageOffsetX, imageOffsetY);
 			tempSprite = new DynamicObject(staticArray, this, collisionModel);
 			tempSprite.x = objInitialX;
 			tempSprite.y = objInitialY;
@@ -135,8 +140,8 @@ package Classes.GameBoard
 		public function addClip(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number, scaleX:Number, scaleY:Number):MovieClip
 		{
 			var tempClip:MovieClip = new MovieClip();
-			var imageLoad:AnimationLoader;
-			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY);
+			var imageLoad:StopAnimationLoader;
+			imageLoad = new StopAnimationLoader(imageLocation,imageOffsetX, imageOffsetY);
 			tempClip.x = objInitialX;
 			tempClip.y = objInitialY;   
 			tempClip.scaleX = scaleX;

@@ -7,8 +7,10 @@ package Models.Weapons
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.media.Sound;
+	import flash.media.SoundChannel;
 	import flash.utils.getTimer;
 	import flash.utils.Timer;
+	import Models.Collision.CannonBallCollisionModel;
 	
 	import Interfaces.IWeaponModel;
 	
@@ -38,14 +40,14 @@ package Models.Weapons
 		public function buildModel(playerObject:PlayerObject):void
 		{
 			this.playerObject = playerObject;
-			fireSound = gameBoard.soundLoader.loadSound("../src/Sounds/cannonFire.mp3");
+			fireSound = gameBoard.soundLoader.loadSound("./Sounds/cannonFire.mp3");
 		}
 		
 		public function fireWeapon(weaponNum:int):void
 		{
 				if(weaponNum == 1 && oneCanShoot)
 				{
-					var projectileOne:DynamicObject = gameBoard.addDynamic("./Images/asteroid.png", -10, -10, playerObject.getX(), playerObject.getY(), playerObject.getStaticArray(), new AsteriodCollisionModel());
+					var projectileOne:DynamicObject = gameBoard.addDynamic("./Images/cannonball.swf", 0, 0, playerObject.getX(), playerObject.getY(), playerObject.getStaticArray(), new CannonBallCollisionModel());
 					fireSound.play();
 					projectileOne.velX = (350*playerObject.getDirY())+playerObject.getVelX();
 					projectileOne.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
@@ -56,7 +58,7 @@ package Models.Weapons
 				}
 				else if(weaponNum == 2 && twoCanShoot)
 				{
-					var projectileTwo:DynamicObject = gameBoard.addDynamic("./Images/asteroid.png", -10, -10, playerObject.getX(), playerObject.getY(), playerObject.getStaticArray(), new AsteriodCollisionModel());
+					var projectileTwo:DynamicObject = gameBoard.addDynamic("./Images/cannonball.swf", 0, 0, playerObject.getX(), playerObject.getY(), playerObject.getStaticArray(), new CannonBallCollisionModel());
 					fireSound.play();
 					projectileTwo.velX = (-350*playerObject.getDirY())+playerObject.getVelX();
 					projectileTwo.velY = (350*playerObject.getDirX())+playerObject.getVelY();

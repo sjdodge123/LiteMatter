@@ -40,7 +40,7 @@ package Classes
 			this.gameBoard = gameBoard;
 			this.staticArray = staticArray;
 			this.collisionModel = collisionModel;
-			explodeSound = gameBoard.soundLoader.loadSound("../src/Sounds/explode.mp3");
+			explodeSound = gameBoard.soundLoader.loadSound("./Sounds/explode.mp3");
 			buildModel();
 			
 		}
