@@ -73,7 +73,7 @@ package Classes
 		}
 		override public function calcGravAccel(staticObj:IStaticMethods):void
 		{
-			gravAccelContribution = (staticObj.getGravityConst()/10)/Math.pow(dist,2);
+			gravAccelContribution = (staticObj.getGravityConst()/6)/Math.pow(dist,2);
 			
 			gravAccelX += gravAccelContribution*distX/dist;
 			gravAccelY += gravAccelContribution*distY/dist;
@@ -176,8 +176,8 @@ package Classes
 			}
 			if (velocity > velocityMax)
 			{
-				velX += .3*velocityMax/velocity*thrustAccelX*deltaT + gravAccelX*deltaT - .005*velX;
-				velY += .3*velocityMax/velocity*thrustAccelY*deltaT + gravAccelY*deltaT - .005*velY;
+				velX += thrustAccelX*deltaT + gravAccelX*deltaT - .025*velX;
+				velY += thrustAccelY*deltaT + gravAccelY*deltaT - .025*velY;
 			}
 			velocity = Math.sqrt(Math.pow(velX, 2) + Math.pow(velY, 2));
 			velocityDirX = velX/velocity;

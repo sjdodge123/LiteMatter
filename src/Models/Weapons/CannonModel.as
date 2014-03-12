@@ -14,8 +14,6 @@ package Models.Weapons
 	
 	import Interfaces.IWeaponModel;
 	
-	import Models.Collision.AsteriodCollisionModel;
-
 	public class CannonModel implements IWeaponModel
 	{
 		private var weaponCoolDownSeconds:int = 3;
