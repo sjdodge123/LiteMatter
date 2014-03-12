@@ -1,15 +1,16 @@
 package Models.Weapons
 {
 	import Classes.DynamicObject;
-	import Classes.GameBoard.SoundLoader;
 	import Classes.PlayerObject;
 	import Classes.GameBoard.GameBoardObjects;
+	import Loaders.SoundLoader;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.utils.getTimer;
 	import flash.utils.Timer;
+	import Models.Animation.PlayAnimationModel;
 	import Models.Collision.CannonBallCollisionModel;
 	
 	import Interfaces.IWeaponModel;
@@ -45,7 +46,7 @@ package Models.Weapons
 		{
 				if(weaponNum == 1 && oneCanShoot)
 				{
-					var projectileOne:DynamicObject = gameBoard.addDynamic("./Images/cannonball.swf", 0, 0, playerObject.getX(), playerObject.getY(), playerObject.getStaticArray(), new CannonBallCollisionModel());
+					var projectileOne:DynamicObject = gameBoard.addDynamic("./Images/cannonball.swf", 0, 0, playerObject.getX(), playerObject.getY(), playerObject.getStaticArray(), new CannonBallCollisionModel(),new PlayAnimationModel());
 					fireSound.play();
 					projectileOne.velX = (350*playerObject.getDirY())+playerObject.getVelX();
 					projectileOne.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
@@ -56,7 +57,7 @@ package Models.Weapons
 				}
 				else if(weaponNum == 2 && twoCanShoot)
 				{
-					var projectileTwo:DynamicObject = gameBoard.addDynamic("./Images/cannonball.swf", 0, 0, playerObject.getX(), playerObject.getY(), playerObject.getStaticArray(), new CannonBallCollisionModel());
+					var projectileTwo:DynamicObject = gameBoard.addDynamic("./Images/cannonball.swf", 0, 0, playerObject.getX(), playerObject.getY(), playerObject.getStaticArray(), new CannonBallCollisionModel(),new PlayAnimationModel());
 					fireSound.play();
 					projectileTwo.velX = (-350*playerObject.getDirY())+playerObject.getVelX();
 					projectileTwo.velY = (350*playerObject.getDirX())+playerObject.getVelY();

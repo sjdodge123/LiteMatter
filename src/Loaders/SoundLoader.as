@@ -1,4 +1,4 @@
-package Classes.GameBoard 
+package Loaders 
 {
 	import flash.net.URLRequest;
 	import flash.media.Sound;

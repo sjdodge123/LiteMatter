@@ -1,4 +1,4 @@
-package Classes.GameBoard
+package Loaders
 {
 	import flash.display.Loader;
 	import flash.events.Event;

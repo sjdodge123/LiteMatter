@@ -4,11 +4,13 @@ package Classes
 	import flash.geom.Point;
 	import flash.media.Sound;
 	
+	
 	import Classes.GameBoard.GameBoardObjects;
 	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
 	import Interfaces.IStaticMethods;
+	import Models.Animation.StopAnimationModel;
 
 	public class DynamicObject extends GameObject implements IDynamicObjects
 	{
@@ -100,7 +102,7 @@ package Classes
 		
 		public function explode():void
 		{	
-			var explosion:MovieClip = gameBoard.addClip("./Images/explosion.swf", -321, -185, x, y, .5, .5)
+			var explosion:MovieClip = gameBoard.addClip("./Images/explosion.swf", -321, -185, x, y, .5, .5,new StopAnimationModel())
 			explodeSound.play();
 			gameBoard.addChild(explosion);
 			if (gameBoard.contains(this))
