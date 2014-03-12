@@ -14,7 +14,7 @@ package Classes
 	{
 		public var velX:Number = 0;
 		public var velY:Number = 0;
-		protected var velocity:Number = 0;
+		public var velocity:Number = 0;
 		public var rotRate:Number = 0;
 		public var rotAngle:Number = 0;
 		

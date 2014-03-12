@@ -1,10 +1,12 @@
 package Classes
 {
 	
-	import Classes.GameBoard.GameBoardObjects;
-	import flash.utils.Timer;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	
+	import Classes.GameBoard.GameBoardObjects;
+	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
 	import Interfaces.IPlayerMethods;
@@ -13,13 +15,13 @@ package Classes
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 	{		
-		private const thrustAccelConst:Number = 40;
+		private const thrustAccelConst:Number = 180;
 		public var thrustAccelX:Number = 0;
 		private var thrustAccelY:Number = 0;
 		private var rotAccel:Number = 0;
-		private var rotJerk:Number = 15;
+		private var rotAccelConst:Number = 200;
 		
-		private var velocityMax:Number = 120;
+		private var velocityMax:Number = 150;
 		private var velocityDirX:Number = 0;
 		private var velocityDirY:Number = 0;
 		private var dirX:Number = 0;
@@ -81,63 +83,67 @@ package Classes
 		{
 			if (inputModel.getMoveForward() == true)
 			{
-				thrustAccelX += thrustAccelConst*dirX;
-				thrustAccelY += thrustAccelConst*dirY;
+					thrustAccelX = thrustAccelConst*dirX;
+					thrustAccelY = thrustAccelConst*dirY;
 			}
+			
 			if (inputModel.getMoveReverse() == true)
 			{
-				thrustAccelX -= thrustAccelConst*dirX;
-				thrustAccelY -= thrustAccelConst*dirY;
-			}
+					thrustAccelX = -thrustAccelConst*dirX;
+					thrustAccelY = -thrustAccelConst*dirY;
+			}	
+			
 			if (inputModel.getMoveForward()== false && inputModel.getMoveReverse() == false)
 			{
-				if (velocity <= velocityMax)
-				{	
+//				if (velocity <= velocityMax)
+//				{	
 					thrustAccelX = 0;
 					thrustAccelY = 0;
-				}
-				if (velocity > velocityMax)
-				{
-					if (velX > 0 && velY > 0)			
-					{
-						thrustAccelX = -.5*velocity*Math.abs(velocityDirX);
-						thrustAccelY = -.5*velocity*Math.abs(velocityDirY);
-					}
-					if (velX > 0 && velY < 0)			
-					{
-						thrustAccelX = -.5*velocity*Math.abs(velocityDirX);
-						thrustAccelY = .5*velocity*Math.abs(velocityDirY);
-					}
-					if (velX < 0 && velY > 0)			
-					{
-						thrustAccelX = .5*velocity*Math.abs(velocityDirX);
-						thrustAccelY = -.5*velocity*Math.abs(velocityDirY);
-					}
-					if (velX < 0 && velY < 0)	
-					{
-						thrustAccelX = .5*velocity*Math.abs(velocityDirX);
-						thrustAccelY = .5*velocity*Math.abs(velocityDirY);
-					}
-				}	
+//				}
+//				if (velocity > velocityMax)
+//				{
+//					if (velX > 0 && velY > 0)			
+//					{
+//						thrustAccelX = -.5*velocity*Math.abs(velocityDirX);
+//						thrustAccelY = -.5*velocity*Math.abs(velocityDirY);
+//					}
+//					if (velX > 0 && velY < 0)			
+//					{
+//						thrustAccelX = -.5*velocity*Math.abs(velocityDirX);
+//						thrustAccelY =  .5*velocity*Math.abs(velocityDirY);
+//					}
+//					if (velX < 0 && velY > 0)			
+//					{
+//						thrustAccelX =  .5*velocity*Math.abs(velocityDirX);
+//						thrustAccelY = -.5*velocity*Math.abs(velocityDirY);
+//					}
+//					if (velX < 0 && velY < 0)	
+//					{
+//						thrustAccelX = .5*velocity*Math.abs(velocityDirX);
+//						thrustAccelY = .5*velocity*Math.abs(velocityDirY);
+//					}
+//				}	
 			}
 			if (inputModel.getMoveLeft() == true)
 			{
-				rotAccel -= rotJerk;
+				
+				rotAccel = -rotAccelConst;
 				
 			}
 			if (inputModel.getMoveRight() == true)
 			{
-				rotAccel += rotJerk;
+				
+				rotAccel = rotAccelConst;
 			}	
 			if (inputModel.getMoveLeft() == false && inputModel.getMoveRight() == false)
 			{
 				if (rotRate > 1)
 				{
-					rotAccel = -30;
+					rotAccel = -100;
 				}
 				if (rotRate < -1)
 				{
-					rotAccel =  30;
+					rotAccel =  100;
 				}
 				if (rotRate > -0.10 && rotRate < 0.10)
 				{	
@@ -163,9 +169,19 @@ package Classes
 		}
 		override public function updateVelocity(deltaT:Number):void
 		{
-			velX += thrustAccelX*deltaT + gravAccelX*deltaT;
-			velY += thrustAccelY*deltaT + gravAccelY*deltaT;
+			if (velocity < velocityMax)
+			{
+				velX += thrustAccelX*deltaT + gravAccelX*deltaT - .005*velX;
+				velY += thrustAccelY*deltaT + gravAccelY*deltaT - .005*velY;
+			}
+			if (velocity > velocityMax)
+			{
+				velX += .3*velocityMax/velocity*thrustAccelX*deltaT + gravAccelX*deltaT - .005*velX;
+				velY += .3*velocityMax/velocity*thrustAccelY*deltaT + gravAccelY*deltaT - .005*velY;
+			}
 			velocity = Math.sqrt(Math.pow(velX, 2) + Math.pow(velY, 2));
+			velocityDirX = velX/velocity;
+			velocityDirY = velY/velocity;
 			gravAccelX = 0;
 			gravAccelY = 0;
 

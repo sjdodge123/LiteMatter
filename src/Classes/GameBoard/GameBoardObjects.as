@@ -78,8 +78,8 @@ package Classes.GameBoard
 		{
 			ship = addPlayer("./Images/shipThrust.swf",0,0,50,50,staticArray, new Player1InputModel(gameStage),new ShipCollisionModel(), new CannonModel(this));  
 			ship2 = addPlayer("./Images/shipThrust.swf",0,0,stageWidth-50,stageHeight-50,staticArray, new Player2InputModel(gameStage),new ShipCollisionModel(), new CannonModel(this));
-			asteroid =  addDynamic("./Images/asteroid.png",-10,-10,100,100, staticArray,new AsteriodCollisionModel());
-			asteroid.velX = 250;
+//			asteroid =  addDynamic("./Images/asteroid.png",-10,-10,100,100, staticArray,new AsteriodCollisionModel());
+//			asteroid.velX = 250;
 		}
 		
 		public function removeObject(obj:GameObject):void
