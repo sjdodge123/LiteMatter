@@ -32,10 +32,8 @@ package Models.Animation
 			var startThrust:int = 2;
 			var thrustAccelEnd:int = 25;
 			var thrustLoopEnd:int = 48;
-			
 			var currentFrame:int = MovieClip(ldrCont).currentFrame;
 			var endFrame:int = MovieClip(ldrCont).totalFrames;
-			
 			
 			if (inputModel.getMoveForward() == true)
 			{	

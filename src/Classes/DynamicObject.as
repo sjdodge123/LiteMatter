@@ -33,17 +33,25 @@ package Classes
 		public var staticArray:Array;
 		private var objHitBox:GameObject;
 		
-		private var explodeSound:Sound;
+		protected var respawnX:int;
+		protected var respawnY:int;
+		protected var respawnCount:int = 10;
+		protected var respawnsEmpty:Boolean;
 		
-		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel)
+		protected var explodeSound:Sound;
+		
+		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel,initialX:int,initialY:int)
 		{	
 			this.staticArray = new Array();
 			this.gameBoard = gameBoard;
 			this.staticArray = staticArray;
 			this.collisionModel = collisionModel;
+			x = initialX;
+			y = initialY;
+			respawnX = initialX;
+			respawnY = initialY;
 			explodeSound = gameBoard.soundLoader.loadSound("./Sounds/explode.mp3");
 			buildModel();
-			
 		}
 		public function buildModel():void
 		{
@@ -157,6 +165,11 @@ package Classes
 			{
 				y = gameBoard.stageHeight + this.height/2;
 			}
+		}
+		
+		public function respawn():void
+		{
+			
 		}
 		public function setCollisionPoint(collisionPoint:Point):void
 		{

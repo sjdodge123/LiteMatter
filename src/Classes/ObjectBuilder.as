@@ -63,9 +63,7 @@ package Classes
 			Sprite(tempSprite);
 			var imageLoad:AnimationLoader;
 			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY,animationModel);
-			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,gameBoard);
-			tempSprite.x = objInitialX;
-			tempSprite.y = objInitialY;
+			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,gameBoard,objInitialX,objInitialY);
 			gameBoard.objectArray.push(tempSprite);                
 			gameBoard.addChild(tempSprite);
 			tempSprite.addChild(imageLoad);
@@ -76,9 +74,7 @@ package Classes
 			var tempSprite:DynamicObject;
 			var imageLoad:AnimationLoader;
 			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY,animationModel);
-			tempSprite = new DynamicObject(staticArray, gameBoard, collisionModel);
-			tempSprite.x = objInitialX;
-			tempSprite.y = objInitialY;
+			tempSprite = new DynamicObject(staticArray, gameBoard, collisionModel,objInitialX,objInitialY);
 			gameBoard.objectArray.push(tempSprite);                  
 			gameBoard.addChild(tempSprite);
 			tempSprite.addChild(imageLoad);

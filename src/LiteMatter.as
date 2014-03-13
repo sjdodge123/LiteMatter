@@ -13,6 +13,7 @@ package
 	public class LiteMatter extends Sprite
 	{
 		private var text1:TextField = new TextField();
+		private var text2:TextField = new TextField();
 		private var mousePoint:Point;
 		
 		private var stopWatch:StopWatch;
@@ -32,11 +33,13 @@ package
 		{
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
+			text2.x = stageWidth - 110;
 			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			gameBoard.initializeGameObjects();
 			addChild(gameBoard);
 			stopWatch = new StopWatch();
 			addChild(text1);
+			addChild(text2);
 		}
 		
 		public function update(e:Event):void
@@ -46,7 +49,8 @@ package
 			
 //			mousePoint = new Point(stage.mouseX,stage.mouseY);
 			
-			print(gameBoard.ship.velocity,text1);
+			print("Player 1 lives: " +gameBoard.ship.getRespawnCount(), text1);
+			print("Player 2 lives: " +gameBoard.ship2.getRespawnCount(),text2);
 		}
 		
 		public function print(o:Object, field:TextField):void

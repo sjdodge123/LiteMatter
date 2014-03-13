@@ -4,6 +4,7 @@ package Classes
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import flash.display.MovieClip;
 	
 	import Classes.GameBoard.GameBoardObjects;
 	
@@ -33,24 +34,29 @@ package Classes
 		private var shipHitBox:GameObject;
 		private var weaponModel:IWeaponModel;
 		
-		private var immuneDurationSeconds:Number = 0.01;
+		private var immuneDurationSeconds:Number = 5;
+		private var shootImmuneDurationSeconds:Number = .1;
 		private var immuneStatus:Boolean = false;
 		private var immuneTimer:Timer;
+		private var shotTimer:Timer;
 		
-		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects)
+		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,initialX:int,initialY:int)
 		{
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
 			this.weaponModel = weaponModel;
 			this.collisionModel = collisionModel;
-			
+			x = initialX;
+			y = initialY;
 			immuneTimer = new Timer(immuneDurationSeconds * 1000, 1);
+			shotTimer = new Timer(shootImmuneDurationSeconds * 1000, 1);
 			immuneTimer.addEventListener(TimerEvent.TIMER_COMPLETE, setImmunity);
+			shotTimer.addEventListener(TimerEvent.TIMER_COMPLETE, setImmunity);
+			shotTimer.start();
 			immuneTimer.start();
-			
 			buildModel();
 		
-			super(staticArray,gameBoard,collisionModel);
+			super(staticArray,gameBoard,collisionModel,initialX,initialY);
 		}
 		override public function buildModel():void
 		{
@@ -153,15 +159,15 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
-					immuneTimer.reset();
-					immuneTimer.start();
+					shotTimer.reset();
+					shotTimer.start();
 					immuneStatus = true;
 					weaponModel.fireWeapon(1);
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
-					immuneTimer.reset();
-					immuneTimer.start();
+					shotTimer.reset();
+					shotTimer.start();
 					immuneStatus = true;
 					weaponModel.fireWeapon(2);
 			}
@@ -193,6 +199,39 @@ package Classes
 			dirX=Math.cos((Math.PI*rotationZ)/180);
 			dirY=Math.sin((Math.PI*rotationZ)/180);
 		}
+		override public function respawn():void
+		{
+			respawnCount--;
+			x = respawnX;
+			y = respawnY;
+			gravAccelX = 0;
+			gravAccelY = 0;
+			thrustAccelX = 0;
+			thrustAccelY = 0;
+			rotAccel = 0;
+			velocityDirX = 0;
+			velocityDirY = 0;
+			velocity = 0;
+			velX = 0;
+			velY = 0;
+			immuneTimer.reset();
+			immuneTimer.start();
+			immuneStatus = true;
+		}
+		override public function explode():void
+		{	
+			var explosion:MovieClip = gameBoard.addExplosion(x, y);
+			explodeSound.play();
+			gameBoard.addChild(explosion);
+			if (gameBoard.contains(this) && respawnCount < 1)
+			{
+				gameBoard.removeObject(this);
+			}
+			else if (respawnCount >= 1) 
+			{
+				respawn();
+			}
+		}
 		
 		private function setImmunity(e:Event):void
 		{
@@ -222,6 +261,10 @@ package Classes
 		public function getDirX():Number
 		{
 			return dirX;
+		}
+		public function getRespawnCount():int 
+		{
+			return respawnCount;
 		}
 		
 		public function getVelX():Number

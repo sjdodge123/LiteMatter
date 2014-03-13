@@ -19,7 +19,7 @@ package Classes.GameBoard
 	{
 		public var objectArray:Array = new Array();
 		public var ship:PlayerObject;
-		private var ship2:PlayerObject;
+		public var ship2:PlayerObject;
 		private var planet:StaticObject;
 		
 		public var stageWidth:int;
