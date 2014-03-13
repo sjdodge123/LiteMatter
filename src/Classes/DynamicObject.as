@@ -102,7 +102,7 @@ package Classes
 		
 		public function explode():void
 		{	
-			var explosion:MovieClip = gameBoard.addClip("./Images/explosion.swf", -321, -185, x, y, .5, .5,new StopAnimationModel())
+			var explosion:MovieClip = gameBoard.addExplosion(x, y);
 			explodeSound.play();
 			gameBoard.addChild(explosion);
 			if (gameBoard.contains(this))
