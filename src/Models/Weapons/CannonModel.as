@@ -3,15 +3,10 @@ package Models.Weapons
 	import Classes.DynamicObject;
 	import Classes.PlayerObject;
 	import Classes.GameBoard.GameBoardObjects;
-	import Loaders.SoundLoader;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.media.Sound;
-	import flash.media.SoundChannel;
-	import flash.utils.getTimer;
 	import flash.utils.Timer;
-	import Models.Animation.PlayAnimationModel;
-	import Models.Collision.CannonBallCollisionModel;
 	
 	import Interfaces.IWeaponModel;
 	

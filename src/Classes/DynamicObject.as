@@ -10,7 +10,6 @@ package Classes
 	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
 	import Interfaces.IStaticMethods;
-	import Models.Animation.StopAnimationModel;
 
 	public class DynamicObject extends GameObject implements IDynamicObjects
 	{

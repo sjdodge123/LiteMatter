@@ -10,7 +10,6 @@ package Classes
 	import Interfaces.IWeaponModel;
 	import Interfaces.IAnimationModel;
 	
-	import Models.Collision.AsteriodCollisionModel;
 	import Models.Collision.PlanetCollisionModel;
 	import Models.Collision.ShipCollisionModel;
 	import Models.Collision.CannonBallCollisionModel
@@ -25,7 +24,6 @@ package Classes
 	
 	
 	import Loaders.GraphicLoader;
-	import Loaders.SoundLoader;
 	import Loaders.AnimationLoader;
 	/**
 	 * ...
