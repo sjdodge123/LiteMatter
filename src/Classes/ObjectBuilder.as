@@ -3,6 +3,7 @@ package Classes
 	import Classes.GameBoard.GameBoardObjects;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import Models.Collision.PirateShipCollisionModel;
 	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IInputHandling;
@@ -11,7 +12,7 @@ package Classes
 	import Interfaces.IAnimationModel;
 	
 	import Models.Collision.PlanetCollisionModel;
-	import Models.Collision.ShipCollisionModel;
+	import Models.Collision.TokenCollisionModel;
 	import Models.Collision.CannonBallCollisionModel
 	
 	import Models.Physics.PlanetPhysicsModel;
@@ -42,7 +43,11 @@ package Classes
 		
 		public function buildTokenShip(inputModel:IInputHandling,x:int,y:int):PlayerObject
 		{
-			return addPlayer("./Images/shipThrust.swf",0,0,x,y,staticArray,inputModel,new ShipCollisionModel(), new CannonModel(gameBoard), new TokenAnimationModel(inputModel));
+			return addPlayer("./Images/shipThrust.swf",0,0,x,y,staticArray,inputModel,new TokenCollisionModel(), new CannonModel(gameBoard), new TokenAnimationModel(inputModel));
+		}
+		public function buildPirateShip(inputModel:IInputHandling,x:int,y:int):PlayerObject
+		{
+			return addPlayer("./Images/PirateShip.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(), new CannonModel(gameBoard), new StopAnimationModel());
 		}
 		public function buildTokenPlanet(x:int,y:int):StaticObject 
 		{

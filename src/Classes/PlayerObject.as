@@ -55,7 +55,7 @@ package Classes
 			respawnY = initialY;
 			
 			immunityBarrier.graphics.beginFill(0x8FD8D8, .25);
-			immunityBarrier.graphics.drawCircle(respawnX -x , respawnY-y, 45);
+			immunityBarrier.graphics.drawCircle(respawnX-x , respawnY-y, 45);
 			immunityBarrier.graphics.endFill()
 
 			
@@ -92,7 +92,27 @@ package Classes
 				explode();
 			}
 			updatePlayerInput(deltaT);
+			checkHitDyn(gameBoard.objectArray);
 		}
+		
+		override public function checkHitDyn(objectArray:Array):Boolean
+		{
+			for(var i:int=0;i<objectArray.length;i++)
+			{
+				
+				if(objectArray[i] != this && objectArray[i] == DynamicObject && collisionModel.checkHit(objectArray[i]))
+				{
+					if (objectArray[i].getImmuneStatus() == false)
+					{
+						objectArray[i].explode();
+						explode();
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		
 		override public function calcGravAccel(staticObj:IStaticMethods):void
 		{
 			gravAccelContribution = (staticObj.getGravityConst()/6)/Math.pow(dist,2);

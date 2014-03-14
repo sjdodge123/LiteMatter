@@ -9,7 +9,7 @@ package Models.Collision
 	
 	import Interfaces.ICollisionModel;
 
-	public class ShipCollisionModel implements ICollisionModel
+	public class TokenCollisionModel implements ICollisionModel
 	{
 		public var objHitBox:GameObject;
 		
@@ -22,7 +22,7 @@ package Models.Collision
 		private var boxArray:Array;
 		private var collisionPoint:Point;
 		
-		public function ShipCollisionModel()
+		public function TokenCollisionModel()
 		{
 			collisionBuilder = new CollisionBuilder();
 			collisionEngine = new CollisionEngine();

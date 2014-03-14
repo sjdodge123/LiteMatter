@@ -48,7 +48,7 @@ package Classes.GameBoard
 		}
 		private function addDynamicObjects():void
 		{
-			ship = objectBuilder.buildTokenShip(new Player1InputModel(gameStage), 50, 50);
+			ship = objectBuilder.buildPirateShip(new Player1InputModel(gameStage), 50, 50);
 			ship2 =  objectBuilder.buildTokenShip(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50);
 		}
 		
