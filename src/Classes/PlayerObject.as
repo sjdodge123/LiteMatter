@@ -1,6 +1,7 @@
 package Classes
 {
 	
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -39,6 +40,8 @@ package Classes
 		private var immuneStatus:Boolean = false;
 		private var immuneTimer:Timer;
 		private var shotTimer:Timer;
+		private var immunityBarrier:Sprite = new Sprite();
+		public var immuneBorder:Sprite = new Sprite();
 		
 		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,initialX:int,initialY:int)
 		{
@@ -48,8 +51,21 @@ package Classes
 			this.collisionModel = collisionModel;
 			x = initialX;
 			y = initialY;
+			respawnX = initialX;
+			respawnY = initialY;
+			
+			immunityBarrier.graphics.beginFill(0x8FD8D8, .25);
+			immunityBarrier.graphics.drawCircle(respawnX -x , respawnY-y, 45);
+			immunityBarrier.graphics.endFill()
+
+			
+			immuneBorder.graphics.beginFill(0xFFA500, .25);
+			immuneBorder.graphics.drawCircle(respawnX -x , respawnY-y, 50);
+			immuneBorder.graphics.endFill()
+			
 			immuneTimer = new Timer(immuneDurationSeconds * 1000, 1);
 			shotTimer = new Timer(shootImmuneDurationSeconds * 1000, 1);
+			
 			immuneTimer.addEventListener(TimerEvent.TIMER_COMPLETE, setImmunity);
 			shotTimer.addEventListener(TimerEvent.TIMER_COMPLETE, setImmunity);
 			shotTimer.start();
@@ -101,34 +117,8 @@ package Classes
 			
 			if (inputModel.getMoveForward()== false && inputModel.getMoveReverse() == false)
 			{
-//				if (velocity <= velocityMax)
-//				{	
-					thrustAccelX = 0;
-					thrustAccelY = 0;
-//				}
-//				if (velocity > velocityMax)
-//				{
-//					if (velX > 0 && velY > 0)			
-//					{
-//						thrustAccelX = -.5*velocity*Math.abs(velocityDirX);
-//						thrustAccelY = -.5*velocity*Math.abs(velocityDirY);
-//					}
-//					if (velX > 0 && velY < 0)			
-//					{
-//						thrustAccelX = -.5*velocity*Math.abs(velocityDirX);
-//						thrustAccelY =  .5*velocity*Math.abs(velocityDirY);
-//					}
-//					if (velX < 0 && velY > 0)			
-//					{
-//						thrustAccelX =  .5*velocity*Math.abs(velocityDirX);
-//						thrustAccelY = -.5*velocity*Math.abs(velocityDirY);
-//					}
-//					if (velX < 0 && velY < 0)	
-//					{
-//						thrustAccelX = .5*velocity*Math.abs(velocityDirX);
-//						thrustAccelY = .5*velocity*Math.abs(velocityDirY);
-//					}
-//				}	
+				thrustAccelX = 0;
+				thrustAccelY = 0;
 			}
 			if (inputModel.getMoveLeft() == true)
 			{
@@ -214,9 +204,17 @@ package Classes
 			velocity = 0;
 			velX = 0;
 			velY = 0;
+			rotationZ = 0;
+			showImmunityBarrier();
 			immuneTimer.reset();
 			immuneTimer.start();
 			immuneStatus = true;
+		}
+		
+		public function showImmunityBarrier():void
+		{
+			addChild(immuneBorder);
+			addChild(immunityBarrier);
 		}
 		override public function explode():void
 		{	
@@ -236,6 +234,12 @@ package Classes
 		private function setImmunity(e:Event):void
 		{
 			immuneStatus = false;
+			
+			if (this.contains(immuneBorder) && this.contains(immunityBarrier))
+			{
+				removeChild(immunityBarrier);
+				removeChild(immuneBorder);
+			}
 		}
 		
 		override public function getImmuneStatus():Boolean 

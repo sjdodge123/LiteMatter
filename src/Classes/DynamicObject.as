@@ -88,9 +88,12 @@ package Classes
 			{
 				if(objectArray[i] != this && collisionModel.checkHit(objectArray[i]))
 				{
-					if(objectArray[i].getImmuneStatus() == false)
-					objectArray[i].explode();
-					return true;
+					if (objectArray[i].getImmuneStatus() == false)
+					{
+						objectArray[i].explode();
+						explode();
+						return true;
+					}
 				}
 			}
 			return false;
