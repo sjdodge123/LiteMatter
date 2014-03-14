@@ -41,7 +41,7 @@ package Models.Weapons
 		{
 				if(weaponNum == 1 && oneCanShoot)
 				{
-					var projectileOne:DynamicObject = gameBoard.addCannonBall(playerObject.getX(), playerObject.getY());
+					var projectileOne:DynamicObject = gameBoard.addCannonBall(playerObject.x, playerObject.y);
 					fireSound.play();
 					projectileOne.velX = (350*playerObject.getDirY())+playerObject.getVelX();
 					projectileOne.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
@@ -52,7 +52,7 @@ package Models.Weapons
 				}
 				else if(weaponNum == 2 && twoCanShoot)
 				{
-					var projectileTwo:DynamicObject = gameBoard.addCannonBall(playerObject.getX(), playerObject.getY());
+					var projectileTwo:DynamicObject = gameBoard.addCannonBall(playerObject.x, playerObject.y);
 					fireSound.play();
 					projectileTwo.velX = (-350*playerObject.getDirY())+playerObject.getVelX();
 					projectileTwo.velY = (350*playerObject.getDirX())+playerObject.getVelY();

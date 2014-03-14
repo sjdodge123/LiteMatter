@@ -30,14 +30,8 @@ package Classes
 		private var gameBoard:GameBoardObjects;
 		private var collisionModel:ICollisionModel;
 		private var collisionPoint:Point;
-		public var staticArray:Array;
 		private var objHitBox:GameObject;
-		
-		protected var respawnX:int;
-		protected var respawnY:int;
-		protected var respawnCount:int = 10;
-		protected var respawnsEmpty:Boolean;
-		
+		protected var staticArray:Array;
 		protected var explodeSound:Sound;
 		
 		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel,initialX:int,initialY:int)
@@ -48,8 +42,6 @@ package Classes
 			this.collisionModel = collisionModel;
 			x = initialX;
 			y = initialY;
-			respawnX = initialX;
-			respawnY = initialY;
 			explodeSound = gameBoard.soundLoader.loadSound("./Sounds/explode.mp3");
 			buildModel();
 		}
@@ -187,6 +179,10 @@ package Classes
 		override public function getHitArea():GameObject
 		{
 			return objHitBox;
+		}
+		public function isPlayer():Boolean
+		{
+			return false;
 		}
 		
 	}

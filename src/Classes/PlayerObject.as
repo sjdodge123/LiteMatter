@@ -1,15 +1,16 @@
 package Classes
 {
 	
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	import flash.display.MovieClip;
 	
 	import Classes.GameBoard.GameBoardObjects;
 	
 	import Interfaces.ICollisionModel;
+	import Interfaces.IImmunityModel;
 	import Interfaces.IInputHandling;
 	import Interfaces.IPlayerMethods;
 	import Interfaces.IStaticMethods;
@@ -17,11 +18,15 @@ package Classes
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 	{		
+		
+		private var respawnCount:int = 10;
+		
 		private const thrustAccelConst:Number = 180;
 		public var thrustAccelX:Number = 0;
 		private var thrustAccelY:Number = 0;
 		private var rotAccel:Number = 0;
 		private var rotAccelConst:Number = 200;
+	
 		
 		private var velocityMax:Number = 150;
 		private var velocityDirX:Number = 0;
@@ -31,53 +36,34 @@ package Classes
 		
 		public var inputModel:IInputHandling;
 		public var collisionModel:ICollisionModel;
+		private var immuneModel:IImmunityModel;
 		private var gameBoard:GameBoardObjects;
 		private var shipHitBox:GameObject;
 		private var weaponModel:IWeaponModel;
 		
-		private var immuneDurationSeconds:Number = 5;
-		private var shootImmuneDurationSeconds:Number = .1;
-		private var immuneStatus:Boolean = false;
-		private var immuneTimer:Timer;
-		private var shotTimer:Timer;
-		private var immunityBarrier:Sprite = new Sprite();
-		public var immuneBorder:Sprite = new Sprite();
+		private var respawnX:int;
+		private var respawnY:int;
+		private var respawnsEmpty:Boolean;
 		
-		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,initialX:int,initialY:int)
+		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int)
 		{
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
 			this.weaponModel = weaponModel;
 			this.collisionModel = collisionModel;
+			this.immuneModel = immuneModel;
 			x = initialX;
 			y = initialY;
 			respawnX = initialX;
 			respawnY = initialY;
-			
-			immunityBarrier.graphics.beginFill(0x8FD8D8, .25);
-			immunityBarrier.graphics.drawCircle(respawnX-x , respawnY-y, 45);
-			immunityBarrier.graphics.endFill()
-
-			
-			immuneBorder.graphics.beginFill(0xFFA500, .25);
-			immuneBorder.graphics.drawCircle(respawnX -x , respawnY-y, 50);
-			immuneBorder.graphics.endFill()
-			
-			immuneTimer = new Timer(immuneDurationSeconds * 1000, 1);
-			shotTimer = new Timer(shootImmuneDurationSeconds * 1000, 1);
-			
-			immuneTimer.addEventListener(TimerEvent.TIMER_COMPLETE, setImmunity);
-			shotTimer.addEventListener(TimerEvent.TIMER_COMPLETE, setImmunity);
-			shotTimer.start();
-			immuneTimer.start();
 			buildModel();
-		
 			super(staticArray,gameBoard,collisionModel,initialX,initialY);
 		}
 		override public function buildModel():void
 		{
 			shipHitBox = collisionModel.buildModel(this);
 			weaponModel.buildModel(this);
+			immuneModel.buildModel(this);
 		}
 		
 		override public function update(deltaT:Number):void
@@ -99,10 +85,9 @@ package Classes
 		{
 			for(var i:int=0;i<objectArray.length;i++)
 			{
-				
-				if(objectArray[i] != this && objectArray[i] == DynamicObject && collisionModel.checkHit(objectArray[i]))
+				if(objectArray[i] != this && objectArray[i].isPlayer() && collisionModel.checkHit(objectArray[i]))
 				{
-					if (objectArray[i].getImmuneStatus() == false)
+					if (objectArray[i].getImmuneStatus() == false && !immuneModel.getImmuneStatus())
 					{
 						objectArray[i].explode();
 						explode();
@@ -169,16 +154,12 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
-					shotTimer.reset();
-					shotTimer.start();
-					immuneStatus = true;
+					immuneModel.resetShotTimer();
 					weaponModel.fireWeapon(1);
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
-					shotTimer.reset();
-					shotTimer.start();
-					immuneStatus = true;
+					immuneModel.resetShotTimer();
 					weaponModel.fireWeapon(2);
 			}
 			
@@ -225,17 +206,9 @@ package Classes
 			velX = 0;
 			velY = 0;
 			rotationZ = 0;
-			showImmunityBarrier();
-			immuneTimer.reset();
-			immuneTimer.start();
-			immuneStatus = true;
+			immuneModel.resetImmuneTimer();
 		}
 		
-		public function showImmunityBarrier():void
-		{
-			addChild(immuneBorder);
-			addChild(immunityBarrier);
-		}
 		override public function explode():void
 		{	
 			var explosion:MovieClip = gameBoard.addExplosion(x, y);
@@ -251,37 +224,20 @@ package Classes
 			}
 		}
 		
-		private function setImmunity(e:Event):void
-		{
-			immuneStatus = false;
-			
-			if (this.contains(immuneBorder) && this.contains(immunityBarrier))
-			{
-				removeChild(immunityBarrier);
-				removeChild(immuneBorder);
-			}
-		}
-		
 		override public function getImmuneStatus():Boolean 
 		{
-			return immuneStatus;
+			return immuneModel.getImmuneStatus();
 		}
 		
 		override public function getHitArea():GameObject
 		{
 			return shipHitBox;
 		}
-	
-		public function getX():int
-		{
-			return this.x;
-		}
-		
+			
 		public function getDirY():Number
 		{
 			return dirY;
 		}
-		
 		public function getDirX():Number
 		{
 			return dirX;
@@ -290,7 +246,6 @@ package Classes
 		{
 			return respawnCount;
 		}
-		
 		public function getVelX():Number
 		{
 			return this.velX;
@@ -301,14 +256,9 @@ package Classes
 			return this.velY;
 		}
 		
-		public function getY():int
+		override public function isPlayer():Boolean
 		{
-			return this.y;
-		}
-		
-		public function getStaticArray():Array
-		{
-			return this.staticArray;
+			return true;
 		}
 	}
 }
