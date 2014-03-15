@@ -5,14 +5,15 @@ package Classes.GameBoard
 	
 	import Classes.DynamicObject;
 	import Classes.GameObject;
+	import Classes.ObjectBuilder;
 	import Classes.PlayerObject;
 	import Classes.StaticObject;
-	import Classes.ObjectBuilder;
-
+	
 	import Loaders.SoundLoader;
 	
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
+	import Models.Weapons.CannonModel;
 	
 
 	public class GameBoardObjects extends GameObject 
@@ -48,7 +49,7 @@ package Classes.GameBoard
 		}
 		private function addDynamicObjects():void
 		{
-			ship = objectBuilder.buildPirateShip(new Player1InputModel(gameStage), 50, 50);
+			ship = objectBuilder.buildPiratePlayer(new Player1InputModel(gameStage), 50, 50);
 			ship2 =  objectBuilder.buildTokenShip(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50);
 		}
 		

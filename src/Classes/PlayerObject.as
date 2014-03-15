@@ -1,12 +1,7 @@
 package Classes
 {
 	
-	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
-	
+	import flash.display.MovieClip;	
 	import Classes.GameBoard.GameBoardObjects;
 	
 	import Interfaces.ICollisionModel;
@@ -155,12 +150,12 @@ package Classes
 			if(inputModel.getFireWeaponOne()==true)
 			{
 					immuneModel.resetShotTimer();
-					weaponModel.fireWeapon(1);
+//					weaponModel.fireWeapon(1);
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
 					immuneModel.resetShotTimer();
-					weaponModel.fireWeapon(2);
+//					weaponModel.fireWeapon(2);
 			}
 			
 		}
@@ -200,6 +195,7 @@ package Classes
 			thrustAccelX = 0;
 			thrustAccelY = 0;
 			rotAccel = 0;
+			rotRate = 0;
 			velocityDirX = 0;
 			velocityDirY = 0;
 			velocity = 0;

@@ -16,15 +16,19 @@ package Classes
 	import Loaders.GraphicLoader;
 	
 	import Models.Animation.PlayAnimationModel;
+	import Models.Animation.PortCannonsAnimationModel;
+	import Models.Animation.PortThrustAnimationModel;
+	import Models.Animation.StarCannonsAnimationModel;
+	import Models.Animation.StarThrustAnimationModel;
 	import Models.Animation.StopAnimationModel;
 	import Models.Animation.TokenAnimationModel;
+	import Models.Basic.ImmunityModel;
 	import Models.Collision.CannonBallCollisionModel;
 	import Models.Collision.PirateShipCollisionModel;
 	import Models.Collision.PlanetCollisionModel;
 	import Models.Collision.TokenCollisionModel;
 	import Models.Physics.PlanetPhysicsModel;
 	import Models.Weapons.CannonModel;
-	import Models.Basic.ImmunityModel;
 
 	/**
 	 * ...
@@ -62,6 +66,12 @@ package Classes
 			return addDynamic("./Images/cannonball.swf", 0, 0, x, y, staticArray, new CannonBallCollisionModel(),new PlayAnimationModel());
 		}
 		
+		
+		public function buildPiratePlayer(inputModel:IInputHandling,x:int,y:int):PlayerObject
+		{
+			return addPiratePlayer("./Images/ShipBody.swf","./Images/ShipPortThrust.swf","./Images/ShipStarThrust.swf","./Images/ShipPortCannons.swf","./Images/ShipStarCannons.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(), new CannonModel(gameBoard), new StopAnimationModel(), new PortThrustAnimationModel(inputModel), new StarThrustAnimationModel(inputModel), new ImmunityModel());
+
+		}
 		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,animationModel:IAnimationModel,respawnModel:IImmunityModel):PlayerObject
 		{
 			var tempSprite: PlayerObject;
@@ -72,6 +82,35 @@ package Classes
 			gameBoard.objectArray.push(tempSprite);                
 			gameBoard.addChild(tempSprite);
 			tempSprite.addChild(imageLoad);
+			return tempSprite;
+		}
+		private function addPiratePlayer(imageLocationMain:String,imageLocationPortThrust:String,imageLocationStarThrust:String,imageLocationPortCannons:String,imageLocationStarCannons:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,aniModelBody:IAnimationModel,aniModelPortThrust:IAnimationModel,aniModelStarThrust:IAnimationModel,respawnModel:IImmunityModel):PlayerObject
+		{
+			var tempSprite: PlayerObject;
+			Sprite(tempSprite);
+			var imageLoadBody:AnimationLoader;
+			var imageLoadPortThrust:AnimationLoader;
+			var imageLoadStarThrust:AnimationLoader;
+			var imageLoadPortCannons:AnimationLoader;
+			var imageLoadStarCannons:AnimationLoader;
+	
+			imageLoadBody = new AnimationLoader(imageLocationMain,imageOffsetX, imageOffsetY,aniModelBody);
+			imageLoadPortThrust = new AnimationLoader(imageLocationPortThrust,imageOffsetX, imageOffsetY,aniModelPortThrust);
+			imageLoadStarThrust = new AnimationLoader(imageLocationStarThrust,imageOffsetX, imageOffsetY,aniModelStarThrust);
+			imageLoadPortCannons = new AnimationLoader(imageLocationPortCannons,imageOffsetX, imageOffsetY,new PortCannonsAnimationModel(inputModel,weaponModel));
+			imageLoadStarCannons = new AnimationLoader(imageLocationStarCannons,imageOffsetX, imageOffsetY,new StarCannonsAnimationModel(inputModel,weaponModel));
+
+			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,gameBoard,respawnModel,objInitialX,objInitialY);
+			gameBoard.objectArray.push(tempSprite);                
+			gameBoard.addChild(tempSprite);
+			
+			
+			tempSprite.addChild(imageLoadPortThrust);
+			tempSprite.addChild(imageLoadStarThrust);
+			tempSprite.addChild(imageLoadPortCannons);
+			tempSprite.addChild(imageLoadStarCannons);
+			tempSprite.addChild(imageLoadBody);
+			
 			return tempSprite;
 		}
 		private function addDynamic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number, staticArray:Array,collisionModel:ICollisionModel,animationModel:IAnimationModel):DynamicObject

@@ -1,12 +1,13 @@
 package Models.Weapons
 {
-	import Classes.DynamicObject;
-	import Classes.PlayerObject;
-	import Classes.GameBoard.GameBoardObjects;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.media.Sound;
 	import flash.utils.Timer;
+	
+	import Classes.DynamicObject;
+	import Classes.PlayerObject;
+	import Classes.GameBoard.GameBoardObjects;
 	
 	import Interfaces.IWeaponModel;
 	
@@ -71,6 +72,13 @@ package Models.Weapons
 		{
 			twoCanShoot = true;
 		}
-		
+		public function getOneReadyToShoot():Boolean
+		{
+			return oneCanShoot;
+		}
+		public function getTwoReadyToShoot():Boolean
+		{
+			return twoCanShoot;
+		}
 	}
 }
