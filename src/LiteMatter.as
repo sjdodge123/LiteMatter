@@ -44,13 +44,26 @@ package
 		
 		public function update(e:Event):void
 		{
+			if ((gameBoard.ship.getRespawnCount() != 0)&&(gameBoard.ship2.getRespawnCount() != 0)) 
+			{
+				
 			deltaT = stopWatch.calcTime();
 			gameBoard.updateGameBoard(deltaT);
 			
 //			mousePoint = new Point(stage.mouseX,stage.mouseY);
 			
-			print("Player 1 lives: " +gameBoard.ship.getRespawnCount(), text1);
-			print("Player 2 lives: " +gameBoard.ship2.getRespawnCount(),text2);
+			print("Player 1 lives: " +gameBoard.ship.getRespawnCount()+ "\n" + "HP: " + gameBoard.ship.getHP(), text1);
+			print("Player 2 lives: " +gameBoard.ship2.getRespawnCount() + "\n" + "HP: " + gameBoard.ship2.getHP(),text2);
+			}
+			if (gameBoard.ship.getRespawnCount() == 0) 
+			{
+				print("Player 2 wins!!!!", text2);
+			}
+			if (gameBoard.ship2.getRespawnCount() == 0) 
+			{
+				print("Player 1 wins!!!!", text1);
+			}
+			
 		}
 		
 		public function print(o:Object, field:TextField):void

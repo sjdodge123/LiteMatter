@@ -3,8 +3,6 @@ package Classes
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.media.Sound;
-	
-	
 	import Classes.GameBoard.GameBoardObjects;
 	
 	import Interfaces.ICollisionModel;
@@ -71,7 +69,7 @@ package Classes
 				{
 				return true
 				}
-			}		
+			}
 			return false;
 		}
 		public function checkHitDyn(objectArray:Array):Boolean
@@ -82,7 +80,18 @@ package Classes
 				{
 					if (objectArray[i].getImmuneStatus() == false)
 					{
-						objectArray[i].explode();
+						if (objectArray[i].isPlayer()) 
+						{
+							var currentHP:int = objectArray[i].takeAwayHP(1);
+							if (currentHP == 0) 
+							{
+								objectArray[i].explode();
+							}	
+						}
+						else 
+						{
+							objectArray[i].explode();
+						}
 						explode();
 						return true;
 					}
@@ -104,7 +113,7 @@ package Classes
 		
 		public function explode():void
 		{	
-			var explosion:MovieClip = gameBoard.addExplosion(x, y);
+			var explosion:MovieClip = gameBoard.addExplosion(x, y,.15,.15);
 			explodeSound.play();
 			gameBoard.addChild(explosion);
 			if (gameBoard.contains(this))

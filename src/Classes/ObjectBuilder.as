@@ -57,20 +57,17 @@ package Classes
 		{
 			return addStatic("./Images/Moon.png",-83.5,-83.5,x,y, new PlanetCollisionModel(),new PlanetPhysicsModel());  
 		}
-		public function buildExplosion(x:int,y:int):MovieClip 
+		public function buildExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip 
 		{
-			return addClip("./Images/explosion.swf", -321, -185, x, y, .5, .5, new StopAnimationModel());
+			return addClip("./Images/explosion.swf", -321, -185, x, y, scaleX, scaleY, new StopAnimationModel());
 		}
 		public function buildTokenCannonBall(x:int, y:int):DynamicObject
 		{
 			return addDynamic("./Images/cannonball.swf", 0, 0, x, y, staticArray, new CannonBallCollisionModel(),new PlayAnimationModel());
 		}
-		
-		
 		public function buildPiratePlayer(inputModel:IInputHandling,x:int,y:int):PlayerObject
 		{
 			return addPiratePlayer("./Images/ShipBody.swf","./Images/ShipPortThrust.swf","./Images/ShipStarThrust.swf","./Images/ShipPortCannons.swf","./Images/ShipStarCannons.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(), new CannonModel(gameBoard), new StopAnimationModel(), new PortThrustAnimationModel(inputModel), new StarThrustAnimationModel(inputModel), new ImmunityModel());
-
 		}
 		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,animationModel:IAnimationModel,respawnModel:IImmunityModel):PlayerObject
 		{

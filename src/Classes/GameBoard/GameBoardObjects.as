@@ -54,9 +54,9 @@ package Classes.GameBoard
 			ship2.rotationZ = 180;
 		}
 		
-		public function addExplosion(x:int,y:int):MovieClip
+		public function addExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip
 		{
-			return objectBuilder.buildExplosion(x, y);
+			return objectBuilder.buildExplosion(x, y,scaleX,scaleY);
 		}
 		public function addCannonBall(x:int,y:int):DynamicObject
 		{

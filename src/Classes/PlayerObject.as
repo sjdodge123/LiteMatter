@@ -3,6 +3,7 @@ package Classes
 	
 	import flash.display.MovieClip;	
 	import Classes.GameBoard.GameBoardObjects;
+	import flash.geom.Point;
 	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IImmunityModel;
@@ -14,7 +15,8 @@ package Classes
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 	{		
 		
-		private var respawnCount:int = 10;
+		private var respawnCount:int = 5;
+		private var HP:int = 4;
 		
 		private const thrustAccelConst:Number = 180;
 		public var thrustAccelX:Number = 0;
@@ -39,6 +41,8 @@ package Classes
 		private var respawnX:int;
 		private var respawnY:int;
 		private var respawnsEmpty:Boolean;
+		private var bulletArray:Array;
+		private var portCannonOnePoint:Point;
 		
 		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int)
 		{
@@ -47,6 +51,7 @@ package Classes
 			this.weaponModel = weaponModel;
 			this.collisionModel = collisionModel;
 			this.immuneModel = immuneModel;
+			bulletArray = new Array();
 			x = initialX;
 			y = initialY;
 			respawnX = initialX;
@@ -150,12 +155,12 @@ package Classes
 			if(inputModel.getFireWeaponOne()==true)
 			{
 					immuneModel.resetShotTimer();
-//					weaponModel.fireWeapon(1);
+					//bulletArray.push(weaponModel.fireWeapon(1));
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
 					immuneModel.resetShotTimer();
-//					weaponModel.fireWeapon(2);
+					//bulletArray.push(weaponModel.fireWeapon(2));
 			}
 			
 		}
@@ -187,7 +192,6 @@ package Classes
 		}
 		override public function respawn():void
 		{
-			respawnCount--;
 			x = respawnX;
 			y = respawnY;
 			gravAccelX = 0;
@@ -201,20 +205,22 @@ package Classes
 			velocity = 0;
 			velX = 0;
 			velY = 0;
+			HP = 4;
 			rotationZ = 0;
 			immuneModel.resetImmuneTimer();
 		}
 		
 		override public function explode():void
 		{	
-			var explosion:MovieClip = gameBoard.addExplosion(x, y);
+			var explosion:MovieClip = gameBoard.addExplosion(x, y,.5,.5);
 			explodeSound.play();
 			gameBoard.addChild(explosion);
+			respawnCount--;
 			if (gameBoard.contains(this) && respawnCount < 1)
 			{
 				gameBoard.removeObject(this);
 			}
-			else if (respawnCount >= 1) 
+			else if (respawnCount >= 0)
 			{
 				respawn();
 			}
@@ -224,7 +230,19 @@ package Classes
 		{
 			return immuneModel.getImmuneStatus();
 		}
-		
+		public function takeAwayHP(i:int):int
+		{
+			this.HP -= i;
+			return HP;
+		}
+		public function getHP():int 
+		{
+			return HP;
+		}
+		public function getCollisionPoint():Point 
+		{
+			return collisionModel.getCollisionPoint();
+		}
 		override public function getHitArea():GameObject
 		{
 			return shipHitBox;

@@ -2,6 +2,7 @@ package Models.Weapons
 {
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.utils.Timer;
 	
@@ -14,13 +15,15 @@ package Models.Weapons
 	public class CannonModel implements IWeaponModel
 	{
 		private var weaponCoolDownSeconds:int = 3;
-		private var gameBoard:Object;
+		private var gameBoard:GameBoardObjects;
 		private var playerObject:PlayerObject;
 		private var weaponOneTimer:Timer;
 		private var weaponTwoTimer:Timer;
 		private var oneCanShoot:Boolean = true;
 		private var twoCanShoot:Boolean = true;
 		private var fireSound:Sound;
+		private var playerPoint:Point;
+		private var convertedPoint:Point;
 		public function CannonModel(gameBoard:GameBoardObjects)
 		{
 			this.gameBoard = gameBoard;
@@ -38,29 +41,47 @@ package Models.Weapons
 			fireSound = gameBoard.soundLoader.loadSound("./Sounds/cannonFire.mp3");
 		}
 		
-		public function fireWeapon(weaponNum:int):void
+		public function fireWeapon(weaponNum:int):DynamicObject
 		{
 				if(weaponNum == 1 && oneCanShoot)
 				{
-					var projectileOne:DynamicObject = gameBoard.addCannonBall(playerObject.x, playerObject.y);
-					fireSound.play();
+					playerPoint = new Point(-8, -17.5);
+					convertedPoint = playerObject.localToGlobal(playerPoint);
+					var projectileOne:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
 					projectileOne.velX = (350*playerObject.getDirY())+playerObject.getVelX();
 					projectileOne.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
-					projectileOne.rotRate = -100;
+					playerPoint = new Point(9, -17.5);
+					convertedPoint = playerObject.localToGlobal(playerPoint);
+					var projectileOne2:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
+					projectileOne2.velX = (350*playerObject.getDirY())+playerObject.getVelX();
+					projectileOne2.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
+					fireSound.play();
 					oneCanShoot = false;
 					weaponOneTimer.reset();
 					weaponOneTimer.start();
+					return projectileOne;
 				}
 				else if(weaponNum == 2 && twoCanShoot)
 				{
-					var projectileTwo:DynamicObject = gameBoard.addCannonBall(playerObject.x, playerObject.y);
-					fireSound.play();
+					playerPoint = new Point(-8, 17.5);
+					convertedPoint = playerObject.localToGlobal(playerPoint);
+					var projectileTwo:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
 					projectileTwo.velX = (-350*playerObject.getDirY())+playerObject.getVelX();
 					projectileTwo.velY = (350*playerObject.getDirX())+playerObject.getVelY();
-					projectileTwo.rotRate = 100;
+					playerPoint = new Point(9, 17.5);
+					convertedPoint = playerObject.localToGlobal(playerPoint);
+					var projectileTwo2:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
+					projectileTwo2.velX = (-350*playerObject.getDirY())+playerObject.getVelX();
+					projectileTwo2.velY = (350 * playerObject.getDirX()) + playerObject.getVelY();
+					fireSound.play();
 					twoCanShoot = false;
 					weaponTwoTimer.reset();
 					weaponTwoTimer.start();
+					return projectileTwo;
+				}
+				else 
+				{
+					return null;
 				}
 		}
 		
