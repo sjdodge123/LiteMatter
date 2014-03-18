@@ -19,17 +19,12 @@ package Models.Basic
 
 		private var playerObject:PlayerObject;
 		private var immuneTimer:Timer;
-		private var shotTimer:Timer;
 		private var immuneStatus:Boolean = false;
 		
 		public function ImmunityModel()
 		{
 			immuneTimer = new Timer(respawnImmuneDurationSeconds * 1000, 1);
-			shotTimer = new Timer(shootImmuneDurationSeconds * 1000, 1);
-			
 			immuneTimer.addEventListener(TimerEvent.TIMER_COMPLETE, setImmunity);
-			shotTimer.addEventListener(TimerEvent.TIMER_COMPLETE, setImmunity);
-			shotTimer.start();
 			immuneTimer.start();
 			
 		}
@@ -47,12 +42,6 @@ package Models.Basic
 			immuneBorder.graphics.endFill();
 		}
 		
-		public function resetShotTimer():void
-		{
-			shotTimer.reset();
-			shotTimer.start();
-			immuneStatus = true;
-		}
 		public function resetImmuneTimer():void
 		{
 			immuneTimer.reset();

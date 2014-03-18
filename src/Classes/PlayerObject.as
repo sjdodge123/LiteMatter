@@ -154,12 +154,10 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
-					immuneModel.resetShotTimer();
 					//bulletArray.push(weaponModel.fireWeapon(1));
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
-					immuneModel.resetShotTimer();
 					//bulletArray.push(weaponModel.fireWeapon(2));
 			}
 			

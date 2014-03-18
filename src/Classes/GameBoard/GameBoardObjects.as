@@ -22,7 +22,6 @@ package Classes.GameBoard
 		public var ship:PlayerObject;
 		public var ship2:PlayerObject;
 		private var planet:StaticObject;
-		
 		public var stageWidth:int;
 		public var stageHeight:int;
 		private var gameStage:Stage;
@@ -53,7 +52,6 @@ package Classes.GameBoard
 			ship2 =  objectBuilder.buildPiratePlayer(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50);
 			ship2.rotationZ = 180;
 		}
-		
 		public function addExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip
 		{
 			return objectBuilder.buildExplosion(x, y,scaleX,scaleY);

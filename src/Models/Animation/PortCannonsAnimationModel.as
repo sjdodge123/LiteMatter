@@ -19,13 +19,11 @@ package Models.Animation
 			this.inputModel = inputModel;
 			this.weaponModel = weaponModel;
 		}
-		
 		public function buildModel(ldrCont:DisplayObject):void
 		{
 			this.ldrCont = ldrCont;
 			MovieClip(ldrCont).gotoAndStop(1);
 		}
-		
 		public function update(event:Event):void
 		{
 			var currentFrame:int = MovieClip(ldrCont).currentFrame;
