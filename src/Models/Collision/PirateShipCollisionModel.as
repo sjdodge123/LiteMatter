@@ -21,6 +21,7 @@ package Models.Collision
 		private var noseHitBox:GameObject;
 		private var bowHitBox:GameObject;
 		private var aftHitBox:GameObject;
+		private var poopHitBox:GameObject;
 		private var mastHitBox:GameObject;
 		
 		public function PirateShipCollisionModel() 
@@ -36,13 +37,15 @@ package Models.Collision
 			bodyHitBox = collisionBuilder.createHitBox(objHitBox, -17, -11, 55, 23, 0);
 			noseHitBox = collisionBuilder.createHitBox(objHitBox, 39, -5, 6, 11, 0);
 			bowHitBox = collisionBuilder.createHitBox(objHitBox, 45, -1, 11, 3, 0);
-			aftHitBox = collisionBuilder.createHitBox(objHitBox, -25, -7.5, 8, 15, 0);
-			mastHitBox = collisionBuilder.createHitBox(objHitBox, 9.5, -18, 3, 37, 0);
+			aftHitBox = collisionBuilder.createHitBox(objHitBox, -45, -7.5, 8, 15, 0);
+			poopHitBox = collisionBuilder.createHitBox(objHitBox, -37, -16, 15, 32, 0);
+			mastHitBox = collisionBuilder.createHitBox(objHitBox, 0, -22, 3, 44, 0);
 			
 			boxArray.push(bodyHitBox);
 			boxArray.push(noseHitBox);
 			boxArray.push(bowHitBox);
 			boxArray.push(aftHitBox);
+			boxArray.push(poopHitBox);
 			boxArray.push(mastHitBox);
 			return objHitBox;
 		}

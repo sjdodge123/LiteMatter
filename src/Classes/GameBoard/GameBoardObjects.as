@@ -50,7 +50,8 @@ package Classes.GameBoard
 		private function addDynamicObjects():void
 		{
 			ship = objectBuilder.buildPiratePlayer(new Player1InputModel(gameStage), 50, 50);
-			ship2 =  objectBuilder.buildTokenShip(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50);
+			ship2 =  objectBuilder.buildPiratePlayer(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50);
+			ship2.rotationZ = 180;
 		}
 		
 		public function addExplosion(x:int,y:int):MovieClip

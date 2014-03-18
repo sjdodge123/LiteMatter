@@ -44,7 +44,7 @@ package Models.Basic
 			
 			immuneBorder.graphics.beginFill(0xFFA500, .25);
 			immuneBorder.graphics.drawCircle(0,0, 55);
-			immuneBorder.graphics.endFill()
+			immuneBorder.graphics.endFill();
 		}
 		
 		public function resetShotTimer():void
