@@ -1,18 +1,22 @@
 package Models.Weapons
 {
+	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.utils.Timer;
-	
+	import Events.EFireCannon;
 	import Classes.DynamicObject;
 	import Classes.PlayerObject;
 	import Classes.GameBoard.GameBoardObjects;
+	import Interfaces.IAnimationPart;
+	import Events.EFireCannon;
 	
 	import Interfaces.IWeaponModel;
 	
-	public class CannonModel implements IWeaponModel
+	public class CannonModel extends Sprite implements IWeaponModel
 	{
 		private var weaponCoolDownSeconds:int = 3;
 		private var gameBoard:GameBoardObjects;
@@ -24,7 +28,7 @@ package Models.Weapons
 		private var fireSound:Sound;
 		private var playerPoint:Point;
 		private var convertedPoint:Point;
-		public function CannonModel(gameBoard:GameBoardObjects)
+		public function CannonModel (gameBoard:GameBoardObjects)
 		{
 			this.gameBoard = gameBoard;
 			weaponOneTimer = new Timer(weaponCoolDownSeconds * 1000, 1);
@@ -38,13 +42,15 @@ package Models.Weapons
 		public function buildModel(playerObject:PlayerObject):void
 		{
 			this.playerObject = playerObject;
+			playerObject.addEventListener(EFireCannon.FIRE_ONE, fireWeaponOne);
+			playerObject.addEventListener(EFireCannon.FIRE_TWO, fireWeaponTwo);
 			fireSound = gameBoard.soundLoader.loadSound("./Sounds/cannonFire.mp3");
 		}
-		
-		public function fireWeapon(weaponNum:int):DynamicObject
+		private function fireWeaponOne(event:EFireCannon):void 
 		{
-				if(weaponNum == 1 && oneCanShoot)
+			if(oneCanShoot)
 				{
+					dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, null));
 					playerPoint = new Point(-8, -17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileOne:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
@@ -59,10 +65,14 @@ package Models.Weapons
 					oneCanShoot = false;
 					weaponOneTimer.reset();
 					weaponOneTimer.start();
-					return projectileOne;
+					
 				}
-				else if(weaponNum == 2 && twoCanShoot)
+		}
+		private function fireWeaponTwo(event:EFireCannon):void 
+		{
+			if(twoCanShoot)
 				{
+					dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
 					playerPoint = new Point(-8, 17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileTwo:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
@@ -77,11 +87,6 @@ package Models.Weapons
 					twoCanShoot = false;
 					weaponTwoTimer.reset();
 					weaponTwoTimer.start();
-					return projectileTwo;
-				}
-				else 
-				{
-					return null;
 				}
 		}
 		

@@ -1,8 +1,10 @@
 package Classes
 {
 	
+	import Events.EFireCannon;
 	import flash.display.MovieClip;	
 	import Classes.GameBoard.GameBoardObjects;
+	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	
 	import Interfaces.ICollisionModel;
@@ -154,10 +156,12 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
+				dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE,null));
 					//bulletArray.push(weaponModel.fireWeapon(1));
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
+				dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO,null));
 					//bulletArray.push(weaponModel.fireWeapon(2));
 			}
 			

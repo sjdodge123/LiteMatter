@@ -2,6 +2,7 @@ package Classes
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import Interfaces.IAnimationPart;
 	
 	import Classes.GameBoard.GameBoardObjects;
 	
@@ -13,12 +14,13 @@ package Classes
 	import Interfaces.IWeaponModel;
 	
 	import Loaders.AnimationLoader;
+	import Loaders.AnimationPartLoader;
 	import Loaders.GraphicLoader;
 	
 	import Models.Animation.PlayAnimationModel;
-	import Models.Animation.PortCannonsAnimationModel;
+	import Models.Animation.PortCannonsAnimationPart;
 	import Models.Animation.PortThrustAnimationModel;
-	import Models.Animation.StarCannonsAnimationModel;
+	import Models.Animation.StarCannonsAnimationPart;
 	import Models.Animation.StarThrustAnimationModel;
 	import Models.Animation.StopAnimationModel;
 	import Models.Animation.TokenAnimationModel;
@@ -47,11 +49,11 @@ package Classes
 		
 		public function buildTokenShip(inputModel:IInputHandling,x:int,y:int):PlayerObject
 		{
-			return addPlayer("./Images/shipThrust.swf",0,0,x,y,staticArray,inputModel,new TokenCollisionModel(), new CannonModel(gameBoard), new TokenAnimationModel(inputModel),new ImmunityModel());
+			return addPlayer("./Images/shipThrust.swf",0,0,x,y,staticArray,inputModel,new TokenCollisionModel(),new CannonModel(gameBoard), new TokenAnimationModel(inputModel),new ImmunityModel());
 		}
 		public function buildPirateShip(inputModel:IInputHandling,x:int,y:int):PlayerObject
 		{
-			return addPlayer("./Images/PirateShip.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(), new CannonModel(gameBoard), new StopAnimationModel(), new ImmunityModel());
+			return addPlayer("./Images/PirateShip.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(),new CannonModel(gameBoard) , new StopAnimationModel(), new ImmunityModel());
 		}
 		public function buildTokenPlanet(x:int,y:int):StaticObject 
 		{
@@ -75,7 +77,7 @@ package Classes
 			Sprite(tempSprite);
 			var imageLoad:AnimationLoader;
 			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY,animationModel);
-			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,gameBoard,respawnModel,objInitialX,objInitialY);
+			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel, weaponModel,gameBoard,respawnModel,objInitialX,objInitialY);
 			gameBoard.objectArray.push(tempSprite);                
 			gameBoard.addChild(tempSprite);
 			tempSprite.addChild(imageLoad);
@@ -88,14 +90,17 @@ package Classes
 			var imageLoadBody:AnimationLoader;
 			var imageLoadPortThrust:AnimationLoader;
 			var imageLoadStarThrust:AnimationLoader;
-			var imageLoadPortCannons:AnimationLoader;
-			var imageLoadStarCannons:AnimationLoader;
-	
+			var imageLoadPortCannons:AnimationPartLoader;
+			var imageLoadStarCannons:AnimationPartLoader;
+			
+			var portCannonsPart:IAnimationPart = new PortCannonsAnimationPart(weaponModel);
+			var starCannonsPart:IAnimationPart = new StarCannonsAnimationPart(weaponModel);
+			
 			imageLoadBody = new AnimationLoader(imageLocationMain,imageOffsetX, imageOffsetY,aniModelBody);
 			imageLoadPortThrust = new AnimationLoader(imageLocationPortThrust,imageOffsetX, imageOffsetY,aniModelPortThrust);
 			imageLoadStarThrust = new AnimationLoader(imageLocationStarThrust,imageOffsetX, imageOffsetY,aniModelStarThrust);
-			imageLoadPortCannons = new AnimationLoader(imageLocationPortCannons,imageOffsetX, imageOffsetY,new PortCannonsAnimationModel(inputModel,weaponModel));
-			imageLoadStarCannons = new AnimationLoader(imageLocationStarCannons,imageOffsetX, imageOffsetY,new StarCannonsAnimationModel(inputModel,weaponModel));
+			imageLoadPortCannons = new AnimationPartLoader(imageLocationPortCannons,imageOffsetX, imageOffsetY,portCannonsPart);
+			imageLoadStarCannons = new AnimationPartLoader(imageLocationStarCannons,imageOffsetX, imageOffsetY,starCannonsPart);
 
 			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,gameBoard,respawnModel,objInitialX,objInitialY);
 			gameBoard.objectArray.push(tempSprite);                
