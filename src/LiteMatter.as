@@ -9,7 +9,7 @@ package
 	import Classes.GameBoard.StopWatch;
 	
 	
-	[SWF(backgroundColor= "0xffffff", width="1200", height ="900", frameRate='30')]
+	[SWF(backgroundColor= "0x000000", width="1200", height ="900", frameRate='30')]
 	public class LiteMatter extends Sprite
 	{
 		private var text1:TextField = new TextField();

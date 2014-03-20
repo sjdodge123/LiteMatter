@@ -20,7 +20,7 @@ package Models.Animation
 		public function buildModel(ldrCont:DisplayObject):void
 		{
 			this.ldrCont = ldrCont;
-			MovieClip(ldrCont).gotoAndStop(1);
+			MovieClip(ldrCont).gotoAndStop(203);
 		}
 		
 		public function update(event:Event):void
@@ -29,77 +29,85 @@ package Models.Animation
 			
 			if (inputModel.getMoveForward() == true && inputModel.getMoveLeft() == false && inputModel.getMoveRight() == false) //straight forward
 			{	
-				if (currentFrame == 1)
+				if (currentFrame >= 203 && currentFrame <= 251)
 				{
 					MovieClip(ldrCont).gotoAndPlay(1);
 				}
-				if(currentFrame == 108)
+				if(currentFrame == 101)
 				{
-					MovieClip(ldrCont).gotoAndPlay(28);
+					MovieClip(ldrCont).gotoAndPlay(21);
 				}
-				if (108 < currentFrame && currentFrame < 216)
+				if (102 <= currentFrame && currentFrame <= 203)
 				{
-					MovieClip(ldrCont).gotoAndPlay(currentFrame-108);
+					MovieClip(ldrCont).gotoAndPlay(currentFrame-101);
 				}
 			}
 			
 			if (inputModel.getMoveForward() == false && inputModel.getMoveLeft() == false && inputModel.getMoveRight() == false) //stop
 			{
 				
-				MovieClip(ldrCont).gotoAndStop(1);
+				MovieClip(ldrCont).gotoAndPlay(203);
+				if (currentFrame == 251)
+				{
+					MovieClip(ldrCont).gotoAndPlay(203);
+				}
 			}
 			
 			if (inputModel.getMoveForward() == true && inputModel.getMoveLeft() == true && inputModel.getMoveRight() == false) //forward and port
 			{	
-				if (currentFrame == 1)
+				if (currentFrame >= 203 && currentFrame <= 251)
 				{
-					MovieClip(ldrCont).gotoAndPlay(109); //turninitializethrust
+					MovieClip(ldrCont).gotoAndPlay(102); //turninitializethrust
 				}
-				if (1 < currentFrame && currentFrame < 108)
+				if (1 <= currentFrame && currentFrame <= 101)
 				{
-					MovieClip(ldrCont).gotoAndPlay(108+currentFrame);
+					MovieClip(ldrCont).gotoAndPlay(101+currentFrame);
 				}
-				if (currentFrame == 216)
+				if (currentFrame == 202)
 				{
-					MovieClip(ldrCont).gotoAndPlay(136);  //turnthrustloop
+					MovieClip(ldrCont).gotoAndPlay(122);  //turnthrustloop
 				}
 			}
 			
 			if (inputModel.getMoveForward() == true && inputModel.getMoveLeft() == false && inputModel.getMoveRight() == true) //forward and star
 			{	
-				if (currentFrame == 1)
+				if (currentFrame >= 203 && currentFrame <= 251)
 				{
 					MovieClip(ldrCont).gotoAndPlay(1);
 				}
-				if(currentFrame == 108)
+				if(currentFrame == 101)
 				{
-					MovieClip(ldrCont).gotoAndPlay(28);
+					MovieClip(ldrCont).gotoAndPlay(21);
 				}
-				if (108 < currentFrame && currentFrame < 216)
+				if (102 <= currentFrame && currentFrame <= 202)
 				{
-					MovieClip(ldrCont).gotoAndPlay(currentFrame-108);
+					MovieClip(ldrCont).gotoAndPlay(currentFrame-101);
 				}
 			}
 			
 			if (inputModel.getMoveForward() == false && inputModel.getMoveLeft() == true && inputModel.getMoveRight() == false) //port
 			{	
-				if (currentFrame == 1)
+				if (currentFrame >= 203 && currentFrame <= 251)
 				{
-					MovieClip(ldrCont).gotoAndPlay(109); //turninitializethrust
+					MovieClip(ldrCont).gotoAndPlay(102); //turninitializethrust
 				}
-				if (1 < currentFrame && currentFrame < 108)
+				if (1 <= currentFrame && currentFrame <= 101)
 				{
-					MovieClip(ldrCont).gotoAndPlay(108+currentFrame);
+					MovieClip(ldrCont).gotoAndPlay(101+currentFrame);
 				}
-				if (currentFrame == 216)
+				if (currentFrame == 202)
 				{
-					MovieClip(ldrCont).gotoAndPlay(136);  //turnthrustloop
+					MovieClip(ldrCont).gotoAndPlay(122);  //turnthrustloop
 				}
 			}
 			
 			if (inputModel.getMoveForward() == false && inputModel.getMoveLeft() == false && inputModel.getMoveRight() == true) //star
 			{	
-				MovieClip(ldrCont).gotoAndStop(1);
+				MovieClip(ldrCont).gotoAndPlay(203);
+				if (currentFrame == 251)
+				{
+					MovieClip(ldrCont).gotoAndPlay(203);
+				}
 			}
 			
 		}
