@@ -2,6 +2,7 @@ package Classes.GameBoard
 {
 	import flash.display.MovieClip;
 	import flash.display.Stage;
+	import Models.Input.BasicAIModel;
 	
 	import Classes.DynamicObject;
 	import Classes.GameObject;
@@ -27,6 +28,7 @@ package Classes.GameBoard
 		private var gameStage:Stage;
 		private var objectBuilder:ObjectBuilder;
 		public var soundLoader:SoundLoader;
+		private var defaultAI:BasicAIModel;
 		
 		public function GameBoardObjects(stageWidth:int, stageHeight:int,stage:Stage)
 		{
@@ -48,8 +50,13 @@ package Classes.GameBoard
 		}
 		private function addDynamicObjects():void
 		{
+			defaultAI = new BasicAIModel(gameStage, this, objectBuilder.staticArray);
+			
 			ship = objectBuilder.buildPiratePlayer(new Player1InputModel(gameStage), 50, 50);
-			ship2 =  objectBuilder.buildPiratePlayer(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50);
+			
+			ship2 =  objectBuilder.buildPiratePlayer(defaultAI, stageWidth - 50, stageHeight - 50);
+			
+			defaultAI.buildModel(ship2);
 			ship2.rotationZ = 180;
 		}
 		public function addExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip

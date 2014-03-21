@@ -43,8 +43,7 @@ package Classes
 		private var respawnX:int;
 		private var respawnY:int;
 		private var respawnsEmpty:Boolean;
-		private var bulletArray:Array;
-		private var portCannonOnePoint:Point;
+		private var location:Point;
 		
 		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int)
 		{
@@ -53,11 +52,11 @@ package Classes
 			this.weaponModel = weaponModel;
 			this.collisionModel = collisionModel;
 			this.immuneModel = immuneModel;
-			bulletArray = new Array();
 			x = initialX;
 			y = initialY;
 			respawnX = initialX;
 			respawnY = initialY;
+			location = new Point(x, y);
 			buildModel();
 			super(staticArray,gameBoard,collisionModel,initialX,initialY);
 		}
@@ -80,6 +79,8 @@ package Classes
 				explode();
 			}
 			updatePlayerInput(deltaT);
+			location.x = x;
+			location.y = y;
 			checkHitDyn(gameBoard.objectArray);
 		}
 		
@@ -265,6 +266,10 @@ package Classes
 		public function getVelX():Number
 		{
 			return this.velX;
+		}
+		public function getLocation():Point 
+		{
+			return location;
 		}
 		
 		public function getVelY():Number

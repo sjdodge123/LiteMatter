@@ -34,6 +34,8 @@ package
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
 			text2.x = stageWidth - 110;
+			text2.textColor = 0xFFFFFF;
+			text1.textColor = 0xFFFFFF;
 			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			gameBoard.initializeGameObjects();
 			addChild(gameBoard);

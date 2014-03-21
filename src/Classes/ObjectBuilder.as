@@ -39,7 +39,7 @@ package Classes
 	public class ObjectBuilder 
 	{
 		private var gameBoard:GameBoardObjects;
-		private var staticArray:Array = new Array();
+		public var staticArray:Array = new Array();
 		
 		public function ObjectBuilder(gameBoard:GameBoardObjects) 
 		{
