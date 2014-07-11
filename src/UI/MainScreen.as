@@ -7,12 +7,31 @@ package UI
 	public class MainScreen extends Sprite
 	{
 		private var startPanel:StartScreen;
+		private var endPanel:EndScreen;
 		public function MainScreen() 
 		{
 			startPanel = new StartScreen();
 			startPanel.addEventListener(GameState.SINGLE_PLAYER, singleGame);
 			startPanel.addEventListener(GameState.MULTI_PLAYER, multiGame);
 			addChild(startPanel);
+		}
+		
+		public function displayEndScreen(winPlayerNum:int):void 
+		{
+			endPanel = new EndScreen(winPlayerNum);
+			endPanel.addEventListener(GameState.SINGLE_PLAYER, singleGame);
+			endPanel.addEventListener(GameState.MULTI_PLAYER, multiGame);
+			addChild(endPanel);
+		}
+		
+		public function clearMainScreen():void 
+		{
+			trace(this.numChildren);
+			for (var i:int = 0; i < this.numChildren; i++) 
+			{
+				removeChildAt(i);
+			}
+			trace(this.numChildren);
 		}
 		
 		public function singleGame(event:GameState):void 

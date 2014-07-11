@@ -80,6 +80,14 @@ package Classes.GameBoard
 			removeChild(obj);
 		}
 		
+		public function clearGameBoard():void 
+		{
+			for(var i:int=0;i<objectArray.length;i++) 
+			{
+				removeObject(objectArray[i]);
+			}	
+		}
+		
 		public function updateGameBoard(deltaT:Number):void 
 		{
 			//mousePoint = new Point(mouseX,mouseY);

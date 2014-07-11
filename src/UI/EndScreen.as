@@ -6,7 +6,7 @@ package UI
 	import flash.display.Sprite;
 	import Events.GameState;
 	
-	public class StartScreen extends Sprite
+	public class EndScreen extends Sprite
 	{
 		private var welcomeBox:MessageBox;
 		private var mainLabel:LabelBox;
@@ -14,18 +14,20 @@ package UI
 		private var multiPlayerLabel:LabelBox;
 		private var singlePlayerButton:ButtonBox;
 		private var multiPlayerButton:ButtonBox;
-		public function StartScreen() 
+		private var playAgainLabel:LabelBox;
+		public function EndScreen(endPlayerNum:int) 
 		{
 			welcomeBox = new MessageBox();
-			mainLabel = new LabelBox("Please Choose:", 600, 210, 250);
+			mainLabel = new LabelBox("Player " + endPlayerNum + " wins!", 600, 210, 300);
+			playAgainLabel = new LabelBox("Play again?",  600, 250, 300);
 			singlePlayerLabel = new LabelBox("Single Player:", 500, 300, 250);
 			multiPlayerLabel = new LabelBox("Local multiplayer:", 500, 400, 250);
 			singlePlayerButton = new ButtonBox(750, 300, 200,GameState.SINGLE_PLAYER);
 			multiPlayerButton = new ButtonBox(750, 400, 200,GameState.MULTI_PLAYER);
-			
-			
+
 			addChild(welcomeBox);
 			addChild(mainLabel);
+			addChild(playAgainLabel);
 			addChild(singlePlayerLabel);
 			addChild(multiPlayerLabel);
 			addChild(singlePlayerButton);
@@ -45,7 +47,6 @@ package UI
 			dispatchEvent(new GameState(GameState.MULTI_PLAYER, null));
 			multiPlayerButton.removeEventListener(GameState.MULTI_PLAYER, multiGame);
 		}
-		
 		
 	}
 

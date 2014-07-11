@@ -40,6 +40,7 @@ package
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
 			addChild(mainScreen);
+			stage.focus = mainScreen;
 		}
 		
 		public function singlePlayerGame(event:GameState):void 
@@ -47,14 +48,14 @@ package
 			InitializeGameBoard();
 			gameBoard.addPlayer2AI();
 			gameStarted = true;
-			removeChild(mainScreen);
+			cleanMainScreen();
 		}
 		public function multiPlayerGame(event:GameState):void 
 		{
 			InitializeGameBoard();
 			gameBoard.addPlayer2HU();
 			gameStarted = true;
-			removeChild(mainScreen);
+			cleanMainScreen();
 		}
 		
 		private function InitializeGameBoard():void 
@@ -68,7 +69,15 @@ package
 			stopWatch = new StopWatch();
 			addChild(text1);
 			addChild(text2);
+			stage.stageFocusRect = false;
+			stage.focus = gameBoard;
 			stage.addEventListener(Event.ENTER_FRAME, update);
+		}
+		
+		private function cleanMainScreen():void 
+		{
+			mainScreen.clearMainScreen();
+			removeChild(mainScreen);
 		}
 		
 		
@@ -91,13 +100,29 @@ package
 			
 			if (gameBoard.ship.getRespawnCount() == 0) 
 			{
-				print("Player 2 wins!!!!", text2);
+				endGameScreen(2);		
 			}
 			if (gameBoard.ship2.getRespawnCount() == 0) 
 			{
-				print("Player 1 wins!!!!", text1);
+				endGameScreen(1);
 			}
 			
+		}
+		
+		public function endGameScreen(playerNum:int):void
+		{
+			print("Player " + playerNum  +" wins!!!!", text2);
+			stage.stageFocusRect = true;
+			stage.focus = mainScreen;
+			disposeGameBoard();
+			gameStarted = false;
+			mainScreen.displayEndScreen(playerNum);
+			addChild(mainScreen);
+		}
+		
+		public function disposeGameBoard():void
+		{
+			gameBoard.clearGameBoard();
 		}
 		
 		public function print(o:Object, field:TextField):void
