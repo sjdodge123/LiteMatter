@@ -39,6 +39,7 @@ package
 			mainScreen = new MainScreen();
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
+			stage.stageFocusRect = false;
 			addChild(mainScreen);
 			stage.focus = mainScreen;
 		}
@@ -69,7 +70,6 @@ package
 			stopWatch = new StopWatch();
 			addChild(text1);
 			addChild(text2);
-			stage.stageFocusRect = false;
 			stage.focus = gameBoard;
 			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
@@ -112,11 +112,10 @@ package
 		public function endGameScreen(playerNum:int):void
 		{
 			print("Player " + playerNum  +" wins!!!!", text2);
-			stage.stageFocusRect = true;
-			stage.focus = mainScreen;
 			disposeGameBoard();
 			gameStarted = false;
 			mainScreen.displayEndScreen(playerNum);
+			stage.focus = mainScreen;
 			addChild(mainScreen);
 		}
 		
