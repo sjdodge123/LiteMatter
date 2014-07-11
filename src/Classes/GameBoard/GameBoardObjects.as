@@ -51,13 +51,7 @@ package Classes.GameBoard
 		private function addDynamicObjects():void
 		{
 			defaultAI = new BasicAIModel(gameStage, this, objectBuilder.staticArray);
-			
-			ship = objectBuilder.buildPiratePlayer(new Player1InputModel(gameStage), 50, 50);
-			
-			ship2 =  objectBuilder.buildPiratePlayer(defaultAI, stageWidth - 50, stageHeight - 50);
-			
-			defaultAI.buildModel(ship2);
-			ship2.rotationZ = 180;
+			ship = objectBuilder.buildPiratePlayer(new Player1InputModel(gameStage), 50, 50);	
 		}
 		public function addExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip
 		{
@@ -66,6 +60,18 @@ package Classes.GameBoard
 		public function addCannonBall(x:int,y:int):DynamicObject
 		{
 			return objectBuilder.buildTokenCannonBall(x, y);
+		}
+		
+		public function addPlayer2AI():void 
+		{
+			ship2 =  objectBuilder.buildPiratePlayer(defaultAI, stageWidth - 50, stageHeight - 50);
+			defaultAI.buildModel(ship2);
+			ship2.rotationZ = 180;
+		}
+		public function addPlayer2HU():void 
+		{
+			ship2 =  objectBuilder.buildPiratePlayer(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50);
+			ship2.rotationZ = 180;
 		}
 		
 		public function removeObject(obj:GameObject):void

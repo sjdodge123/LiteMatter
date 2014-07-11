@@ -57,7 +57,7 @@ package Classes
 		}
 		public function buildTokenPlanet(x:int,y:int):StaticObject 
 		{
-			return addStatic("./Images/Moon.png",-83.5,-83.5,x,y, new PlanetCollisionModel(),new PlanetPhysicsModel());  
+			return addStatic("./Images/moon.swf",0,0,x,y, new PlanetCollisionModel(),new PlanetPhysicsModel());  
 		}
 		public function buildExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip 
 		{

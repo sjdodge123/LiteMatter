@@ -2,6 +2,7 @@ package Models.Input
 {
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
+	import flash.ui.GameInputDevice;
 	import flash.ui.Keyboard;
 	
 	import Interfaces.IInputHandling;
@@ -15,7 +16,7 @@ package Models.Input
 		private var fireWeaponOne:Boolean = false;
 		private var fireWeaponTwo:Boolean = false;
 		private var gameStage:Stage;
-		
+
 		public function Player1InputModel(gameStage:Stage) 
 		{
 			this.gameStage = gameStage;

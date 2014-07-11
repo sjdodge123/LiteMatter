@@ -1,13 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script> 
+var imageLoader; 
+    function showSWF(urlString, elementID){ 
+        var displayContainer = document.getElementById(elementID); 
+        imageLoader = createSWFObject(urlString,650,650); 
+        displayContainer.appendChild(imageLoader); 
+    } 
+ 
+    function createSWFObject(urlString, width, height){ 
+    
+        var SWFObject = document.createElement("object"); 
+            SWFObject.setAttribute("type","application/x-shockwave-flash"); 
+            SWFObject.setAttribute("width","100%"); 
+            SWFObject.setAttribute("height","100%"); 
+             
+        var movieParam = document.createElement("param"); 
+            movieParam.setAttribute("name","movie"); 
+            movieParam.setAttribute("value",urlString); 
+            SWFObject.appendChild(movieParam); 
+             
+        var flashVars = document.createElement("param"); 
+            flashVars.setAttribute("name","FlashVars");    
+    
+        //Load the asset inside the SWF content. 
+            flashVars.setAttribute("value","imgPath=air.jpg");    
+            SWFObject.appendChild(flashVars); 
+    
+        return SWFObject; 
+    } 
+    function loadImage() 
+    { 
+      showSWF("C:\Users\Jake\Desktop\Space Pirates\7.10.14\bin-debug\Images\moon.png", "imageSpot"); 
+      
+    }
+</script>
 <style>
 html, body { height:100%; background-color: #ffffff;}
 </style>
 <meta charset="UTF-8" />
 </head>
-
-<body>
-<embed width="1200" height="900" src="LiteMatter.swf">
+<body onload="javascript:loadImage()">
+<object id="container" type="application/x-shockwave-flash" width="100%" height="100%"> 
+    <param name="movie" value="LiteMatter.swf"></param> 
+    <param name="wmode" value="opaque"></param> 
+</object>
+<object id="imageSpot"></object>
 </body>
 </html>
