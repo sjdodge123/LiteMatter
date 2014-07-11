@@ -50,6 +50,7 @@ package
 			gameBoard.addPlayer2AI();
 			gameStarted = true;
 			cleanMainScreen();
+			stage.focus = gameBoard;
 		}
 		public function multiPlayerGame(event:GameState):void 
 		{
@@ -57,6 +58,7 @@ package
 			gameBoard.addPlayer2HU();
 			gameStarted = true;
 			cleanMainScreen();
+			stage.focus = gameBoard;
 		}
 		
 		private function InitializeGameBoard():void 
@@ -70,7 +72,6 @@ package
 			stopWatch = new StopWatch();
 			addChild(text1);
 			addChild(text2);
-			stage.focus = gameBoard;
 			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
 		
@@ -100,7 +101,7 @@ package
 			
 			if (gameBoard.ship.getRespawnCount() == 0) 
 			{
-				endGameScreen(2);		
+				endGameScreen(2);
 			}
 			if (gameBoard.ship2.getRespawnCount() == 0) 
 			{
@@ -111,12 +112,13 @@ package
 		
 		public function endGameScreen(playerNum:int):void
 		{
+			stage.removeEventListener(Event.ENTER_FRAME, update);
 			print("Player " + playerNum  +" wins!!!!", text2);
 			disposeGameBoard();
 			gameStarted = false;
 			mainScreen.displayEndScreen(playerNum);
-			stage.focus = mainScreen;
 			addChild(mainScreen);
+			stage.focus = mainScreen;
 		}
 		
 		public function disposeGameBoard():void
