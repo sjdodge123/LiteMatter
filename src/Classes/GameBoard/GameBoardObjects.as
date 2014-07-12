@@ -26,6 +26,7 @@ package Classes.GameBoard
 		public var stageWidth:int;
 		public var stageHeight:int;
 		private var gameStage:Stage;
+		private var backGround:MovieClip;
 		private var objectBuilder:ObjectBuilder;
 		public var soundLoader:SoundLoader;
 		private var defaultAI:BasicAIModel;
@@ -46,6 +47,7 @@ package Classes.GameBoard
 		}
 		private function addStaticObjects():void
 		{
+			backGround = objectBuilder.buildBackGroundImage();
 			planet = objectBuilder.buildTokenPlanet(stageWidth / 2, stageHeight / 2);
 		}
 		private function addDynamicObjects():void
@@ -78,15 +80,9 @@ package Classes.GameBoard
 		{
 			objectArray.splice(objectArray.lastIndexOf(obj),1);
 			removeChild(obj);
+			obj = null;
 		}
 		
-		public function clearGameBoard():void 
-		{
-			for(var i:int=0;i<objectArray.length;i++) 
-			{
-				removeChild(objectArray[i]);
-			}
-		}
 		
 		public function updateGameBoard(deltaT:Number):void 
 		{

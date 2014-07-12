@@ -71,6 +71,12 @@ package Classes
 		{
 			return addPiratePlayer("./Images/ShipBody.swf","./Images/ShipPortThrust.swf","./Images/ShipStarThrust.swf","./Images/ShipPortCannons.swf","./Images/ShipStarCannons.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(), new CannonModel(gameBoard), new StopAnimationModel(), new PortThrustAnimationModel(inputModel), new StarThrustAnimationModel(inputModel), new ImmunityModel());
 		}
+		
+		public function buildBackGroundImage():MovieClip 
+		{
+			return addClip("./Images/Background.swf", 0, 0, 0, 0, 1, 1, new StopAnimationModel());
+		}
+
 		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,animationModel:IAnimationModel,respawnModel:IImmunityModel):PlayerObject
 		{
 			var tempSprite: PlayerObject;

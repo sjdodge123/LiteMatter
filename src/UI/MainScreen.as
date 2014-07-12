@@ -26,12 +26,10 @@ package UI
 		
 		public function clearMainScreen():void 
 		{
-			trace(this.numChildren);
 			for (var i:int = 0; i < this.numChildren; i++) 
 			{
 				removeChildAt(i);
 			}
-			trace(this.numChildren);
 		}
 		
 		public function singleGame(event:GameState):void 
