@@ -39,6 +39,7 @@ package
 			mainScreen = new MainScreen();
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
+			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			stage.stageFocusRect = false;
 			addChild(mainScreen);
 			stage.focus = mainScreen;
@@ -54,6 +55,7 @@ package
 		}
 		public function multiPlayerGame(event:GameState):void 
 		{
+			
 			InitializeGameBoard();
 			gameBoard.addPlayer2HU();
 			gameStarted = true;
@@ -66,7 +68,6 @@ package
 			text2.x = stageWidth - 110;
 			text2.textColor = 0xFFFFFF;
 			text1.textColor = 0xFFFFFF;
-			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			gameBoard.initializeGameObjects();
 			addChild(gameBoard);
 			stopWatch = new StopWatch();
@@ -84,10 +85,6 @@ package
 		
 		public function update(e:Event):void
 		{
-
-			if ((gameBoard.ship.getRespawnCount() != 0)&&(gameBoard.ship2.getRespawnCount() != 0) && gameStarted) 
-			{
-				
 			deltaT = stopWatch.calcTime();
 			gameBoard.updateGameBoard(deltaT);
 			
@@ -95,8 +92,6 @@ package
 			
 			print("Player 1 lives: " +gameBoard.ship.getRespawnCount()+ "\n" + "HP: " + gameBoard.ship.getHP(), text1);
 			print("Player 2 lives: " +gameBoard.ship2.getRespawnCount() + "\n" + "HP: " + gameBoard.ship2.getHP(),text2);
-			}
-			
 			
 			
 			if (gameBoard.ship.getRespawnCount() == 0) 
