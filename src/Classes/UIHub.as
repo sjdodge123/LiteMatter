@@ -16,12 +16,12 @@ package Classes
 		private var mainScreen:MainScreen;
 		private var game:LiteMatter;
 		private var stopWatch:StopWatch;
-		
 		public var keyBoard:KeyboardMonitor;
 		
 		public function UIHub(gameStage:Stage,game:LiteMatter) 
 		{
 			mainScreen = new MainScreen();
+
 			game.popUpMenu(mainScreen);
 			keyBoard = new KeyboardMonitor(gameStage);
 			this.game = game;
@@ -38,7 +38,9 @@ package Classes
 				gamePaused = true;
 				gameRunning = false;
 				mainScreen.displayPauseScreen();
-				game.popUpMenu(mainScreen);	
+				game.popUpMenu(mainScreen);
+				
+				
 			}
 			else 
 			{
@@ -75,10 +77,6 @@ package Classes
 			game.popDownMenu(mainScreen);
 		}
 		
-		public function clearScreen():void 
-		{
-			mainScreen.clearMainScreen();
-		}
 		
 		public function endGameScreen(playerNum:int):void
 		{

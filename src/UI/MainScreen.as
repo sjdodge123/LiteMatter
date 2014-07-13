@@ -1,5 +1,6 @@
 package UI 
 {
+	import Classes.Config.Reader;
 	import flash.display.Sprite;
 	import Events.GameState;
 	
@@ -9,9 +10,12 @@ package UI
 		private var startPanel:StartScreen;
 		private var endPanel:EndScreen;
 		private var pausePanel:PauseScreen;
+		private var reader:Reader;
 		public function MainScreen() 
 		{
 			displayStartScreen();
+			reader = new Reader();
+			reader.readFile("version.txt"); 
 		}
 		
 		public function displayStartScreen():void
@@ -33,7 +37,7 @@ package UI
 		
 		public function displayPauseScreen():void 
 		{
-			pausePanel = new PauseScreen();
+			pausePanel = new PauseScreen(reader.text);
 			addChild(pausePanel);
 		}
 		

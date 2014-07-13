@@ -115,7 +115,7 @@ package
 		public function popDownMenu(mainScreen:MainScreen):void
 		{
 			removeChild(mainScreen);
-			uiHub.clearScreen();
+			mainScreen.clearMainScreen();
 			stage.focus = gameBoard;
 		}
 			
