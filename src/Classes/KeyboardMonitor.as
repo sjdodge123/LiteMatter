@@ -23,6 +23,11 @@ package Classes
 					dispatchEvent(new GameState(GameState.PAUSE_GAME, null));
 					break;
 				}
+				case Keyboard.R:
+				{
+					dispatchEvent(new GameState(GameState.RESET, null));
+					break;
+				}
 			}
 			
 		}
