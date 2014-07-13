@@ -35,12 +35,12 @@ package
 		 
 		private function Initialize():void
 		{
-			
+			stage.stageFocusRect = false;
 			uiHub = new UIHub(stage,this);		
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
 			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
-			stage.stageFocusRect = false;
+			
 		}
 		
 		public function InitializeGameBoard():void 
@@ -96,7 +96,7 @@ package
 			
 		}
 		
-		public function resumeGame():void 
+		public function resetWatch():void 
 		{
 			stopWatch.reset();
 		}
@@ -115,6 +115,7 @@ package
 		public function popDownMenu(mainScreen:MainScreen):void
 		{
 			removeChild(mainScreen);
+			uiHub.clearScreen();
 			stage.focus = gameBoard;
 		}
 			

@@ -12,6 +12,7 @@ package Classes
 	public class UIHub 
 	{
 		private var gameRunning:Boolean = false;
+		private var gamePaused:Boolean = false;
 		private var mainScreen:MainScreen;
 		private var game:LiteMatter;
 		private var stopWatch:StopWatch;
@@ -25,6 +26,7 @@ package Classes
 			keyBoard = new KeyboardMonitor(gameStage);
 			this.game = game;
 			keyBoard.addEventListener(GameState.PAUSE_GAME, pauseGame);
+			keyBoard.addEventListener(GameState.RESET, resetGame);
 			mainScreen.addEventListener(GameState.SINGLE_PLAYER, singlePlayerGame);
 			mainScreen.addEventListener(GameState.MULTI_PLAYER, multiPlayerGame);
 		}
@@ -33,37 +35,49 @@ package Classes
 		{
 			if (gameRunning) 
 			{
+				gamePaused = true;
 				gameRunning = false;
 				mainScreen.displayPauseScreen();
-				game.popUpMenu(mainScreen);
-				
+				game.popUpMenu(mainScreen);	
 			}
 			else 
 			{
-				game.resumeGame();
+				gamePaused = false;
+				game.resetWatch();
 				game.popDownMenu(mainScreen);
-				mainScreen.clearMainScreen();
 				gameRunning = true;
 			}
 		}
 		
-		public function singlePlayerGame(event:GameState):void 
+		private function resetGame(event:GameState):void 
+		{
+			if (gamePaused) 
+			{
+				game.popDownMenu(mainScreen);
+				game.emptyGameBoard();
+				game.resetWatch();
+				mainScreen.displayStartScreen();
+				game.popUpMenu(mainScreen);
+			}
+		}
+		
+		
+		private function singlePlayerGame(event:GameState):void 
 		{
 			game.startGame(1);
 			gameRunning = true;
-			cleanMainScreen();	
+			game.popDownMenu(mainScreen);	
 		}
-		public function multiPlayerGame(event:GameState):void 
+		private function multiPlayerGame(event:GameState):void 
 		{
 			game.startGame(2);
 			gameRunning = true;
-			cleanMainScreen();
+			game.popDownMenu(mainScreen);
 		}
 		
-		private function cleanMainScreen():void 
+		public function clearScreen():void 
 		{
 			mainScreen.clearMainScreen();
-			game.popDownMenu(mainScreen);
 		}
 		
 		public function endGameScreen(playerNum:int):void

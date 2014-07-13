@@ -11,6 +11,11 @@ package UI
 		private var pausePanel:PauseScreen;
 		public function MainScreen() 
 		{
+			displayStartScreen();
+		}
+		
+		public function displayStartScreen():void
+		{
 			startPanel = new StartScreen();
 			startPanel.addEventListener(GameState.SINGLE_PLAYER, singleGame);
 			startPanel.addEventListener(GameState.MULTI_PLAYER, multiGame);
@@ -24,6 +29,8 @@ package UI
 			endPanel.addEventListener(GameState.MULTI_PLAYER, multiGame);
 			addChild(endPanel);
 		}
+		
+		
 		public function displayPauseScreen():void 
 		{
 			pausePanel = new PauseScreen();
