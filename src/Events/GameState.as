@@ -9,6 +9,7 @@ package Events
 		public static const STOP:String = "stopGame";
 		public static const PAUSE_GAME:String = "pauseGame";
 		public static const RESET:String = "resetGame";
+		public static const FULL_SCREEN:String = "fullScreen";
 		public var params:Object
 		public function GameState(type:String,params:Object,bubbles:Boolean = false,cancelable:Boolean = false) 
 		{

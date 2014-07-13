@@ -15,17 +15,19 @@ package Classes
 		private var gamePaused:Boolean = false;
 		private var mainScreen:MainScreen;
 		private var game:LiteMatter;
+		private var gameStage:Stage;
 		private var stopWatch:StopWatch;
 		public var keyBoard:KeyboardMonitor;
 		
 		public function UIHub(gameStage:Stage,game:LiteMatter) 
 		{
 			mainScreen = new MainScreen();
-
 			game.popUpMenu(mainScreen);
+			this.gameStage = gameStage;
 			keyBoard = new KeyboardMonitor(gameStage);
 			this.game = game;
 			keyBoard.addEventListener(GameState.PAUSE_GAME, pauseGame);
+			keyBoard.addEventListener(GameState.FULL_SCREEN, displayFullScreen);
 			keyBoard.addEventListener(GameState.RESET, resetGame);
 			mainScreen.addEventListener(GameState.SINGLE_PLAYER, singlePlayerGame);
 			mainScreen.addEventListener(GameState.MULTI_PLAYER, multiPlayerGame);
@@ -39,8 +41,6 @@ package Classes
 				gameRunning = false;
 				mainScreen.displayPauseScreen();
 				game.popUpMenu(mainScreen);
-				
-				
 			}
 			else 
 			{
@@ -61,6 +61,11 @@ package Classes
 				mainScreen.displayStartScreen();
 				game.popUpMenu(mainScreen);
 			}
+		}
+		
+		private function displayFullScreen(event:GameState):void 
+		{
+			game.displayFullScreen();
 		}
 		
 		

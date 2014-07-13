@@ -10,6 +10,7 @@ package
 	import Classes.GameBoard.GameBoardObjects;
 	import Classes.GameBoard.StopWatch;
 	import Events.GameState;
+	import flash.display.StageDisplayState;
 	
 	
 	[SWF(backgroundColor= "0x000000", width="1200", height ="900", frameRate='30')]
@@ -94,6 +95,18 @@ package
 				gameBoard.addPlayer2HU();
 			}
 			
+		}
+		
+		public function displayFullScreen():void 
+		{
+			if (stage.displayState != StageDisplayState.FULL_SCREEN_INTERACTIVE) 
+			{
+				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			}
+			else
+			{
+				stage.displayState = StageDisplayState.NORMAL;
+			}
 		}
 		
 		public function resetWatch():void 
