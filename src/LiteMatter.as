@@ -1,5 +1,6 @@
 package
 {
+	import Classes.KeyboardMonitor;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -26,6 +27,7 @@ package
 		private var stageHeight:int;
 		private var gameBoard:GameBoardObjects; 
 		private var mainScreen:MainScreen;
+		private var keyBoard:KeyboardMonitor;
 		
 		public function LiteMatter()
 		{
@@ -37,6 +39,8 @@ package
 		private function Initialize():void
 		{
 			mainScreen = new MainScreen();
+			keyBoard = new KeyboardMonitor(stage);
+			keyBoard.addEventListener(GameState.PAUSE_GAME, pauseGame);
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
 			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
@@ -61,6 +65,22 @@ package
 			cleanMainScreen();
 			stage.focus = gameBoard;
 		}
+		private function pauseGame(event:GameState):void
+		{
+			if (gameStarted) 
+			{
+				gameStarted = false;
+				addChild(mainScreen);
+				mainScreen.displayPauseScreen();
+			}
+			else 
+			{
+				stopWatch.reset();
+				removeChild(mainScreen);
+				mainScreen.clearMainScreen();
+				gameStarted = true;
+			}
+		}
 		
 		private function InitializeGameBoard():void 
 		{
@@ -84,6 +104,8 @@ package
 		
 		public function update(e:Event):void
 		{
+			if (gameStarted)
+			{
 			deltaT = stopWatch.calcTime();
 			gameBoard.updateGameBoard(deltaT);
 			
@@ -91,7 +113,7 @@ package
 			
 			print("Player 1 lives: " +gameBoard.ship.getRespawnCount()+ "\n" + "HP: " + gameBoard.ship.getHP(), text1);
 			print("Player 2 lives: " +gameBoard.ship2.getRespawnCount() + "\n" + "HP: " + gameBoard.ship2.getHP(),text2);
-			
+			}
 			
 			if (gameBoard.ship.getRespawnCount() == 0) 
 			{

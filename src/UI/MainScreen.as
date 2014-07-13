@@ -8,6 +8,7 @@ package UI
 	{
 		private var startPanel:StartScreen;
 		private var endPanel:EndScreen;
+		private var pausePanel:PauseScreen;
 		public function MainScreen() 
 		{
 			startPanel = new StartScreen();
@@ -22,6 +23,11 @@ package UI
 			endPanel.addEventListener(GameState.SINGLE_PLAYER, singleGame);
 			endPanel.addEventListener(GameState.MULTI_PLAYER, multiGame);
 			addChild(endPanel);
+		}
+		public function displayPauseScreen():void 
+		{
+			pausePanel = new PauseScreen();
+			addChild(pausePanel);
 		}
 		
 		public function clearMainScreen():void 

@@ -19,5 +19,9 @@ package Classes.GameBoard
 			previousTime=newTime;
 			return dt;
 		}
+		public function reset():void 
+		{
+			previousTime = getTimer();
+		}
 	}
 }

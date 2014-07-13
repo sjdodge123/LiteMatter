@@ -7,6 +7,7 @@ package Events
 		public static const SINGLE_PLAYER:String = "singlePlayer";
 		public static const MULTI_PLAYER:String = "multiPlayer";
 		public static const STOP:String = "stopGame";
+		public static const PAUSE_GAME:String = "pauseGame";
 		public static const RESET:String = "resetGame";
 		public var params:Object
 		public function GameState(type:String,params:Object,bubbles:Boolean = false,cancelable:Boolean = false) 

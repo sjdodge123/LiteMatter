@@ -7,20 +7,21 @@ package UI.Components
 	
 	public class LabelBox extends Sprite
 	{
-		public function LabelBox(message:String,x:int, y:int,width:int) 
+		public var text:TextField;
+		public function LabelBox(message:String,x:int, y:int,width:int,size:int) 
 		{
 			var myFormat:TextFormat = new TextFormat();
-			myFormat.size = 30;
+			myFormat.size = size;
 			myFormat.align = TextFormatAlign.CENTER;
 			
-			var textfield:TextField = new TextField();
-			textfield.defaultTextFormat = myFormat;
-			textfield.text = message;
-			textfield.width = width;
-			textfield.x = x - textfield.width/2;
-			textfield.y = y;
+			text = new TextField();
+			text.defaultTextFormat = myFormat;
+			text.text = message;
+			text.width = width;
+			text.x = x - text.width/2;
+			text.y = y;
 
-			addChild(textfield);	
+			addChild(text);	
 		}
 		
 	}
