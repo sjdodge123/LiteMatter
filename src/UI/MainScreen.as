@@ -3,6 +3,7 @@ package UI
 	import Classes.Config.Reader;
 	import flash.display.Sprite;
 	import Events.GameState;
+	import UI.ScoreBoard.ScoreBoard;
 	
 	
 	public class MainScreen extends Sprite
@@ -26,9 +27,9 @@ package UI
 			addChild(startPanel);
 		}
 		
-		public function displayEndScreen(winPlayerNum:int):void 
+		public function displayEndScreen(winPlayerNum:int,scoreBoard:ScoreBoard):void 
 		{
-			endPanel = new EndScreen(winPlayerNum);
+			endPanel = new EndScreen(winPlayerNum,scoreBoard);
 			endPanel.addEventListener(GameState.SINGLE_PLAYER, singleGame);
 			endPanel.addEventListener(GameState.MULTI_PLAYER, multiGame);
 			addChild(endPanel);

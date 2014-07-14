@@ -5,6 +5,7 @@ package UI
 	import UI.Components.ButtonBox;
 	import flash.display.Sprite;
 	import Events.GameState;
+	import UI.ScoreBoard.ScoreBoard;
 	
 	public class EndScreen extends Sprite
 	{
@@ -15,19 +16,26 @@ package UI
 		private var singlePlayerButton:ButtonBox;
 		private var multiPlayerButton:ButtonBox;
 		private var playAgainLabel:LabelBox;
-		public function EndScreen(endPlayerNum:int) 
+		private var scoreScreen:ScoreScreen;
+		
+		public function EndScreen(endPlayerNum:int,scoreBoard:ScoreBoard) 
 		{
 			welcomeBox = new MessageBox();
-			mainLabel = new LabelBox("Player " + endPlayerNum + " wins!", 600, 210, 300,30);
-			playAgainLabel = new LabelBox("Play again?",  600, 250, 300,30);
-			singlePlayerLabel = new LabelBox("Single Player:", 500, 300, 250,30);
-			multiPlayerLabel = new LabelBox("Local multiplayer:", 500, 400, 250,30);
-			singlePlayerButton = new ButtonBox(750, 300, 200,GameState.SINGLE_PLAYER);
-			multiPlayerButton = new ButtonBox(750, 400, 200,GameState.MULTI_PLAYER);
+			
+			mainLabel = new LabelBox("Player " + endPlayerNum + " wins!", 600, 210, 300, 30);
+			mainLabel.text.textColor =  0xFF0000;
+			scoreScreen = new ScoreScreen(scoreBoard);
+			
+			playAgainLabel = new LabelBox("Play again?",  600, 550, 300,25);
+			singlePlayerLabel = new LabelBox("Single Player:", 500, 600, 250,30);
+			multiPlayerLabel = new LabelBox("Local multiplayer:", 500, 650, 250,30);
+			singlePlayerButton = new ButtonBox(750, 600, 200,GameState.SINGLE_PLAYER);
+			multiPlayerButton = new ButtonBox(750, 650, 200,GameState.MULTI_PLAYER);
 
 			addChild(welcomeBox);
 			addChild(mainLabel);
 			addChild(playAgainLabel);
+			addChild(scoreScreen);
 			addChild(singlePlayerLabel);
 			addChild(multiPlayerLabel);
 			addChild(singlePlayerButton);

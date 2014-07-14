@@ -6,7 +6,7 @@ package Classes
 	import Classes.GameBoard.GameBoardObjects;
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
-	
+	import UI.ScoreBoard.ScorePage;
 	import Interfaces.ICollisionModel;
 	import Interfaces.IImmunityModel;
 	import Interfaces.IInputHandling;
@@ -41,13 +41,14 @@ package Classes
 		private var gameBoard:GameBoardObjects;
 		private var shipHitBox:GameObject;
 		private var weaponModel:IWeaponModel;
+		private var scorePage:ScorePage;
 		
 		private var respawnX:int;
 		private var respawnY:int;
 		private var respawnsEmpty:Boolean;
 		private var location:Point;
 		
-		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int)
+		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int,scorePage:ScorePage)
 		{
 			shipCount += 1;
 			shipId = shipCount;
@@ -56,11 +57,13 @@ package Classes
 			this.weaponModel = weaponModel;
 			this.collisionModel = collisionModel;
 			this.immuneModel = immuneModel;
+			this.scorePage = scorePage;
 			x = initialX;
 			y = initialY;
 			respawnX = initialX;
 			respawnY = initialY;
 			location = new Point(x, y);
+			scorePage.setInitialLives(respawnCount);
 			buildModel();
 			super(staticArray,gameBoard,collisionModel,initialX,initialY);
 		}
@@ -101,6 +104,7 @@ package Classes
 						if (objectArray[i].getHP() <= 0) 
 						{
 							objectArray[i].explode();
+							
 						}
 						if (getHP() <= 0) 
 						{
@@ -250,6 +254,7 @@ package Classes
 			explodeSound.play();
 			gameBoard.addChild(explosion);
 			respawnCount--;
+			scorePage.removeLife();
 			if (gameBoard.contains(this) && respawnCount < 1)
 			{
 				gameBoard.removeObject(this);
@@ -314,7 +319,7 @@ package Classes
 		public function getShipId():int
 		{
 			return shipId;
-		}	
+		}
 		override public function isPlayer():Boolean
 		{
 			return true;

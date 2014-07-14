@@ -31,6 +31,7 @@ package Classes
 	import Models.Collision.TokenCollisionModel;
 	import Models.Physics.PlanetPhysicsModel;
 	import Models.Weapons.CannonModel;
+	import UI.ScoreBoard.ScorePage;
 
 	/**
 	 * ...
@@ -47,13 +48,13 @@ package Classes
 		}
 		
 		
-		public function buildTokenShip(inputModel:IInputHandling,x:int,y:int):PlayerObject
+		public function buildTokenShip(inputModel:IInputHandling,x:int,y:int,scorePage:ScorePage):PlayerObject
 		{
-			return addPlayer("./Images/shipThrust.swf",0,0,x,y,staticArray,inputModel,new TokenCollisionModel(),new CannonModel(gameBoard), new TokenAnimationModel(inputModel),new ImmunityModel());
+			return addPlayer("./Images/shipThrust.swf",0,0,x,y,staticArray,inputModel,new TokenCollisionModel(),new CannonModel(gameBoard), new TokenAnimationModel(inputModel),new ImmunityModel(),scorePage);
 		}
-		public function buildPirateShip(inputModel:IInputHandling,x:int,y:int):PlayerObject
+		public function buildPirateShip(inputModel:IInputHandling,x:int,y:int,scorePage:ScorePage):PlayerObject
 		{
-			return addPlayer("./Images/PirateShip.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(),new CannonModel(gameBoard) , new StopAnimationModel(), new ImmunityModel());
+			return addPlayer("./Images/PirateShip.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(),new CannonModel(gameBoard) , new StopAnimationModel(), new ImmunityModel(),scorePage);
 		}
 		public function buildTokenPlanet(x:int,y:int):StaticObject 
 		{
@@ -67,9 +68,9 @@ package Classes
 		{
 			return addDynamic("./Images/cannonball.swf", 0, 0, x, y, staticArray, new CannonBallCollisionModel(),new PlayAnimationModel());
 		}
-		public function buildPiratePlayer(inputModel:IInputHandling,x:int,y:int):PlayerObject
+		public function buildPiratePlayer(inputModel:IInputHandling,x:int,y:int,scorePage:ScorePage):PlayerObject
 		{
-			return addPiratePlayer("./Images/ShipBody.swf","./Images/ShipPortThrust.swf","./Images/ShipStarThrust.swf","./Images/ShipPortCannons.swf","./Images/ShipStarCannons.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(), new CannonModel(gameBoard), new StopAnimationModel(), new PortThrustAnimationModel(inputModel), new StarThrustAnimationModel(inputModel), new ImmunityModel());
+			return addPiratePlayer("./Images/ShipBody.swf","./Images/ShipPortThrust.swf","./Images/ShipStarThrust.swf","./Images/ShipPortCannons.swf","./Images/ShipStarCannons.swf",0,0,x,y,staticArray,inputModel,new PirateShipCollisionModel(), new CannonModel(gameBoard), new StopAnimationModel(), new PortThrustAnimationModel(inputModel), new StarThrustAnimationModel(inputModel), new ImmunityModel(),scorePage);
 		}
 		
 		public function buildBackGroundImage():MovieClip 
@@ -77,19 +78,19 @@ package Classes
 			return addClip("./Images/Background.swf", 0, 0, 0, 0, 1, 1, new StopAnimationModel());
 		}
 
-		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,animationModel:IAnimationModel,respawnModel:IImmunityModel):PlayerObject
+		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,animationModel:IAnimationModel,respawnModel:IImmunityModel,scorePage:ScorePage):PlayerObject
 		{
 			var tempSprite: PlayerObject;
 			Sprite(tempSprite);
 			var imageLoad:AnimationLoader;
 			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY,animationModel);
-			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel, weaponModel,gameBoard,respawnModel,objInitialX,objInitialY);
+			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel, weaponModel,gameBoard,respawnModel,objInitialX,objInitialY,scorePage);
 			gameBoard.objectArray.push(tempSprite);                
 			gameBoard.addChild(tempSprite);
 			tempSprite.addChild(imageLoad);
 			return tempSprite;
 		}
-		private function addPiratePlayer(imageLocationMain:String,imageLocationPortThrust:String,imageLocationStarThrust:String,imageLocationPortCannons:String,imageLocationStarCannons:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,aniModelBody:IAnimationModel,aniModelPortThrust:IAnimationModel,aniModelStarThrust:IAnimationModel,respawnModel:IImmunityModel):PlayerObject
+		private function addPiratePlayer(imageLocationMain:String,imageLocationPortThrust:String,imageLocationStarThrust:String,imageLocationPortCannons:String,imageLocationStarCannons:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,staticArray:Array,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,aniModelBody:IAnimationModel,aniModelPortThrust:IAnimationModel,aniModelStarThrust:IAnimationModel,respawnModel:IImmunityModel,scorePage:ScorePage):PlayerObject
 		{
 			var tempSprite: PlayerObject;
 			Sprite(tempSprite);
@@ -108,7 +109,7 @@ package Classes
 			imageLoadPortCannons = new AnimationPartLoader(imageLocationPortCannons,imageOffsetX, imageOffsetY,portCannonsPart);
 			imageLoadStarCannons = new AnimationPartLoader(imageLocationStarCannons,imageOffsetX, imageOffsetY,starCannonsPart);
 
-			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,gameBoard,respawnModel,objInitialX,objInitialY);
+			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,gameBoard,respawnModel,objInitialX,objInitialY,scorePage);
 			gameBoard.objectArray.push(tempSprite);                
 			gameBoard.addChild(tempSprite);
 			

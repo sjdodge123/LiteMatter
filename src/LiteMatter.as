@@ -41,7 +41,6 @@ package
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
 			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
-			
 		}
 		
 		public function InitializeGameBoard():void 
@@ -49,7 +48,7 @@ package
 			text2.x = stageWidth - 110;
 			text2.textColor = 0xFFFFFF;
 			text1.textColor = 0xFFFFFF;
-			gameBoard.initializeGameObjects();
+			gameBoard.initializeGameObjects(uiHub.getNextPage());
 			addChild(gameBoard);
 			stopWatch = new StopWatch();
 			addChild(text1);
@@ -87,12 +86,12 @@ package
 			//1 is AI
 			if (numPlayers == 1) 
 			{
-				gameBoard.addPlayer2AI();
+				gameBoard.addPlayer2AI(uiHub.getNextPage());
 			}
 			//2 is HU
 			if (numPlayers == 2) 
 			{
-				gameBoard.addPlayer2HU();
+				gameBoard.addPlayer2HU(uiHub.getNextPage());
 			}
 			
 		}
@@ -136,6 +135,7 @@ package
 		{
 			stage.removeEventListener(Event.ENTER_FRAME, update);
 			removeChild(gameBoard);
+			uiHub.clearAllPages();
 			gameBoard = null;
 			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 		}

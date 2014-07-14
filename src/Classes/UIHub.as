@@ -5,6 +5,8 @@ package Classes
 	import Events.GameState;
 	import flash.events.Event;
 	import UI.MainScreen;
+	import UI.ScoreBoard.ScoreBoard;
+	import UI.ScoreBoard.ScorePage;
 	/**
 	 * ...
 	 * @author ...
@@ -17,11 +19,13 @@ package Classes
 		private var game:LiteMatter;
 		private var gameStage:Stage;
 		private var stopWatch:StopWatch;
+		private var scoreBoard:ScoreBoard;
 		public var keyBoard:KeyboardMonitor;
 		
 		public function UIHub(gameStage:Stage,game:LiteMatter) 
 		{
 			mainScreen = new MainScreen();
+			scoreBoard = new ScoreBoard();
 			game.popUpMenu(mainScreen);
 			this.gameStage = gameStage;
 			keyBoard = new KeyboardMonitor(gameStage);
@@ -71,12 +75,16 @@ package Classes
 		
 		private function singlePlayerGame(event:GameState):void 
 		{
+			scoreBoard.addPlayer(1);
+			scoreBoard.addPlayer(2);
 			game.startGame(1);
 			gameRunning = true;
-			game.popDownMenu(mainScreen);	
+			game.popDownMenu(mainScreen);		
 		}
 		private function multiPlayerGame(event:GameState):void 
 		{
+			scoreBoard.addPlayer(1);
+			scoreBoard.addPlayer(2);
 			game.startGame(2);
 			gameRunning = true;
 			game.popDownMenu(mainScreen);
@@ -85,16 +93,25 @@ package Classes
 		
 		public function endGameScreen(playerNum:int):void
 		{
-			game.emptyGameBoard();
 			game.displayScore(playerNum);
+			mainScreen.displayEndScreen(playerNum,scoreBoard);
+			game.emptyGameBoard();
 			gameRunning = false;
-			mainScreen.displayEndScreen(playerNum);
 			game.popUpMenu(mainScreen);
+			
 		}
 		
 		public function getGameRunning():Boolean
 		{
 			return gameRunning;
+		}
+		public function getNextPage():ScorePage
+		{
+			return scoreBoard.getNextPage();
+		}
+		public function clearAllPages():void 
+		{
+			scoreBoard.removeAllPlayers();
 		}
 		
 	}

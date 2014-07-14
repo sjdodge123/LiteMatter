@@ -3,6 +3,7 @@ package Classes.GameBoard
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import Models.Input.BasicAIModel;
+	import UI.ScoreBoard.ScorePage;
 	
 	import Classes.DynamicObject;
 	import Classes.GameObject;
@@ -40,20 +41,20 @@ package Classes.GameBoard
 			soundLoader = new SoundLoader();
 		}
 
-		public function initializeGameObjects(): void
+		public function initializeGameObjects(scorePage:ScorePage): void
 		{
 			addStaticObjects();
-			addDynamicObjects();	
+			addDynamicObjects(scorePage);	
 		}
 		private function addStaticObjects():void
 		{
 			backGround = objectBuilder.buildBackGroundImage();
 			planet = objectBuilder.buildTokenPlanet(stageWidth / 2, stageHeight / 2);
 		}
-		private function addDynamicObjects():void
+		private function addDynamicObjects(scorePage:ScorePage):void
 		{
 			defaultAI = new BasicAIModel(gameStage, this, objectBuilder.staticArray);
-			ship = objectBuilder.buildPiratePlayer(new Player1InputModel(gameStage), 50, 50);	
+			ship = objectBuilder.buildPiratePlayer(new Player1InputModel(gameStage), 50, 50,scorePage);	
 		}
 		public function addExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip
 		{
@@ -64,15 +65,15 @@ package Classes.GameBoard
 			return objectBuilder.buildTokenCannonBall(x, y);
 		}
 		
-		public function addPlayer2AI():void 
+		public function addPlayer2AI(scorePage:ScorePage):void 
 		{
-			ship2 =  objectBuilder.buildPiratePlayer(defaultAI, stageWidth - 50, stageHeight - 50);
+			ship2 =  objectBuilder.buildPiratePlayer(defaultAI, stageWidth - 50, stageHeight - 50,scorePage);
 			defaultAI.buildModel(ship2);
 			ship2.rotationZ = 180;
 		}
-		public function addPlayer2HU():void 
+		public function addPlayer2HU(scorePage:ScorePage):void 
 		{
-			ship2 =  objectBuilder.buildPiratePlayer(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50);
+			ship2 =  objectBuilder.buildPiratePlayer(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50,scorePage);
 			ship2.rotationZ = 180;
 		}
 		
