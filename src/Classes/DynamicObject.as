@@ -82,8 +82,8 @@ package Classes
 					{
 						if (objectArray[i].isPlayer()) 
 						{
-							var currentHP:int = objectArray[i].takeAwayHP(1);
-							if (currentHP == 0) 
+							var currentHP:int = objectArray[i].takeAwayHP(25);
+							if (currentHP <= 0) 
 							{
 								objectArray[i].explode();
 							}	

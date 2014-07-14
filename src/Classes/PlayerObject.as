@@ -16,9 +16,11 @@ package Classes
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 	{		
-		
+		private static var shipCount:int = 0;
+		private var shipId:int = 0;
 		private var respawnCount:int = 5;
-		private var HP:int = 4;
+		private var HP:int = 100;
+		private var respawnHP:int = HP;
 		
 		private const thrustAccelConst:Number = 180;
 		public var thrustAccelX:Number = 0;
@@ -47,6 +49,8 @@ package Classes
 		
 		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int)
 		{
+			shipCount += 1;
+			shipId = shipCount;
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
 			this.weaponModel = weaponModel;
@@ -91,14 +95,41 @@ package Classes
 				if(objectArray[i] != this && objectArray[i].isPlayer() && collisionModel.checkHit(objectArray[i]))
 				{
 					if (objectArray[i].getImmuneStatus() == false && !immuneModel.getImmuneStatus())
-					{
-						objectArray[i].explode();
-						explode();
+					{	
+						var damageToOtherShip:int = calcDamage(this, objectArray[i]);
+						objectArray[i].takeAwayHP(damageToOtherShip);
+						if (objectArray[i].getHP() <= 0) 
+						{
+							objectArray[i].explode();
+						}
+						if (getHP() <= 0) 
+						{
+							explode();
+						}
 						return true;
 					}
 				}
 			}
 			return false;
+		}
+		
+		private function calcDamage(ship1:PlayerObject, ship2:PlayerObject):int 
+		{
+			var damageDone:int;
+			
+			ship1.setImmuneStatus(true);
+			ship2.setImmuneStatus(true);
+			ship2.velX = ship1.getVelX() + ship2.getVelX() - (ship1.getVelX() * .25);
+			ship2.velY = ship1.getVelY() + ship2.getVelY() - (ship1.getVelY() * .25);
+			ship1.velX = ( -ship2.getVelX()*.25);
+			ship1.velY = ( -ship2.getVelY()*.25);
+			ship1.setImmuneStatus(false);
+			ship2.setImmuneStatus(false);
+			var ship1Mag:Number = Math.sqrt(Math.pow(ship1.getVelX(), 2) + Math.pow(ship1.getVelY(), 2));
+			var ship2Mag:Number = Math.sqrt(Math.pow(ship2.getVelX(), 2) + Math.pow(ship2.getVelY(), 2));
+			damageDone =((int(ship1Mag * .60)));
+			takeAwayHP((int(ship2Mag * .10)));
+			return damageDone;
 		}
 		
 		override public function calcGravAccel(staticObj:IStaticMethods):void
@@ -208,7 +239,7 @@ package Classes
 			velocity = 0;
 			velX = 0;
 			velY = 0;
-			HP = 4;
+			HP = respawnHP;
 			rotationZ = 0;
 			immuneModel.resetImmuneTimer();
 		}
@@ -232,6 +263,10 @@ package Classes
 		override public function getImmuneStatus():Boolean 
 		{
 			return immuneModel.getImmuneStatus();
+		}
+		public function setImmuneStatus(value:Boolean):void 
+		{
+			immuneModel.setImmuneStatus(value);
 		}
 		public function takeAwayHP(i:int):int
 		{
@@ -276,7 +311,10 @@ package Classes
 		{
 			return this.velY;
 		}
-		
+		public function getShipId():int
+		{
+			return shipId;
+		}	
 		override public function isPlayer():Boolean
 		{
 			return true;

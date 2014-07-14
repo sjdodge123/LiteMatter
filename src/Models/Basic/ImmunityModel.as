@@ -53,6 +53,10 @@ package Models.Basic
 		{
 			return immuneStatus;
 		}
+		public function setImmuneStatus(value:Boolean):void
+		{
+			immuneStatus = value;
+		}
 		
 		private function setImmunity(e:Event):void
 		{

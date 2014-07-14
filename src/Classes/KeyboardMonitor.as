@@ -28,6 +28,11 @@ package Classes
 					dispatchEvent(new GameState(GameState.RESET, null));
 					break;
 				}
+				case Keyboard.ALTERNATE + Keyboard.ENTER:
+				{
+					dispatchEvent(new GameState(GameState.FULL_SCREEN, null));
+					break;
+				}
 			}
 			
 		}

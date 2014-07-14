@@ -7,5 +7,6 @@ package Interfaces
 		function buildModel(playerObject:PlayerObject):void;
 		function resetImmuneTimer():void;
 		function getImmuneStatus():Boolean;
+		function setImmuneStatus(value:Boolean):void;
 	}
 }
