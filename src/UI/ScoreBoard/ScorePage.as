@@ -34,6 +34,10 @@ package UI.ScoreBoard
 		{
 			return kills;
 		}
+		public function shotFired():void 
+		{
+			shotsFired += 1;
+		}
 		
 		public function getLives():int 
 		{

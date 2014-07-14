@@ -1,5 +1,6 @@
 package Models.Weapons
 {
+	import Events.PageEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -51,6 +52,8 @@ package Models.Weapons
 			if(oneCanShoot)
 				{
 					dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, null));
+					dispatchEvent(new PageEvent(PageEvent.SHOT_FIRED, null));
+					playerObject.recordShot();
 					playerPoint = new Point(-8, -17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileOne:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
@@ -73,6 +76,8 @@ package Models.Weapons
 			if(twoCanShoot)
 				{
 					dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
+					dispatchEvent(new PageEvent(PageEvent.SHOT_FIRED, null));
+					playerObject.recordShot();
 					playerPoint = new Point(-8, 17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileTwo:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);

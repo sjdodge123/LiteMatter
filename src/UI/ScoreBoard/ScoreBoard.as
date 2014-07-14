@@ -1,4 +1,5 @@
 package UI.ScoreBoard {
+	import adobe.utils.CustomActions;
 	/**
 	 * ...
 	 * @author ...
@@ -53,6 +54,11 @@ package UI.ScoreBoard {
 		{
 			index = findIndex(playerNum);
 			return scoreBook[index].getLives();
+		}
+		public function getShotsFired(playerNum:int):int 
+		{
+			index = findIndex(playerNum);
+			return scoreBook[index].getShotsFired();
 		}
 		
 		private function findIndex(i:int):int 

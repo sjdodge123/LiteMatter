@@ -1,5 +1,5 @@
-package Classes.Config 
-{
+	package Classes.Config
+	{
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.net.URLLoader;

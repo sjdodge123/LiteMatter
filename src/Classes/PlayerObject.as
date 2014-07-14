@@ -21,7 +21,6 @@ package Classes
 		private var respawnCount:int = 5;
 		private var HP:int = 100;
 		private var respawnHP:int = HP;
-		
 		private const thrustAccelConst:Number = 180;
 		public var thrustAccelX:Number = 0;
 		private var thrustAccelY:Number = 0;
@@ -139,7 +138,6 @@ package Classes
 		override public function calcGravAccel(staticObj:IStaticMethods):void
 		{
 			gravAccelContribution = (staticObj.getGravityConst()/6)/Math.pow(dist,2);
-			
 			gravAccelX += gravAccelContribution*distX/dist;
 			gravAccelY += gravAccelContribution*distY/dist;
 		}
@@ -192,12 +190,12 @@ package Classes
 			}
 			if(inputModel.getFireWeaponOne()==true)
 			{
-				dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE,null));
+				dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, null));
 					//bulletArray.push(weaponModel.fireWeapon(1));
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
-				dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO,null));
+				dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
 					//bulletArray.push(weaponModel.fireWeapon(2));
 			}
 			
@@ -323,6 +321,10 @@ package Classes
 		override public function isPlayer():Boolean
 		{
 			return true;
+		}
+		public function recordShot():void 
+		{
+			scorePage.shotFired();
 		}
 	}
 }
