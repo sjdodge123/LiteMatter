@@ -34,7 +34,7 @@ package Classes
 		private var velocityDirY:Number = 0;
 		private var dirX:Number = 0;
 		private var dirY:Number = 0;
-		
+		public var initialRotation:int = 0;
 		public var inputModel:IInputHandling;
 		public var collisionModel:ICollisionModel;
 		private var immuneModel:IImmunityModel;
@@ -258,7 +258,7 @@ package Classes
 			velX = 0;
 			velY = 0;
 			HP = respawnHP;
-			rotationZ = 0;
+			rotationZ = initialRotation;
 			immuneModel.resetImmuneTimer();
 		}
 		

@@ -69,12 +69,14 @@ package Classes.GameBoard
 		{
 			ship2 =  objectBuilder.buildPiratePlayer(defaultAI, stageWidth - 50, stageHeight - 50,scorePage);
 			defaultAI.buildModel(ship2);
-			ship2.rotationZ = 180;
+			ship2.initialRotation = 180;
+			ship2.rotationZ= 180;
 		}
 		public function addPlayer2HU(scorePage:ScorePage):void 
 		{
 			ship2 =  objectBuilder.buildPiratePlayer(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50,scorePage);
-			ship2.rotationZ = 180;
+			ship2.initialRotation = 180;
+			ship2.rotationZ= 180;
 		}
 		
 		public function removeObject(obj:GameObject):void
