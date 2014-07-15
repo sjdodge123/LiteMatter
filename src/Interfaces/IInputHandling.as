@@ -10,5 +10,6 @@ package Interfaces
 		function getMoveRight():Boolean
 		function getFireWeaponOne():Boolean
 		function getFireWeaponTwo():Boolean
+		function getInputType():int
 	}
 }

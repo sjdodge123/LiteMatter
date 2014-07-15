@@ -9,7 +9,7 @@ package UI.ScoreBoard {
 		private static var scoreBook:Vector.<ScorePage>;
 		private static var index:int;
 		private static var iterator:int = 0;
-		public function ScoreBoard(numPlayers:int = 0 ) 
+		public function ScoreBoard(numPlayers:int = 0) 
 		{
 			scoreBook = new Vector.<ScorePage>();
 			for (var i:int = 0; i < numPlayers; i++) 
@@ -39,26 +39,41 @@ package UI.ScoreBoard {
 		}
 		public function removeAllPlayers():void 
 		{
-			for (var i:int = 0; i < scoreBook.length; i++) 
-			{
-				scoreBook.pop();
-			}
+			scoreBook = new Vector.<ScorePage>();
 			iterator = 0;
 		}
-		public function getKills(playerNum:int):int
+		public function openToPage(playerNum:int):void 
 		{
 			index = findIndex(playerNum);
+		}
+		
+		public function getKills():int
+		{
 			return scoreBook[index].getKills();
 		}
-		public function getLives(playerNum:int):int 
+		public function getLives():int 
 		{
-			index = findIndex(playerNum);
 			return scoreBook[index].getLives();
 		}
-		public function getShotsFired(playerNum:int):int 
+		public function getShotsFired():int 
 		{
-			index = findIndex(playerNum);
 			return scoreBook[index].getShotsFired();
+		}
+		public function getShotsHit():int 
+		{
+			return scoreBook[index].getShotsHit();
+		}
+		public function getAccuracy():Number 
+		{
+			return scoreBook[index].getAccuracy();
+		}
+		public function getSuicides():int 
+		{
+			return scoreBook[index].getSuicides();
+		}
+		public function getPlanetCrashes():int 
+		{
+			return scoreBook[index].getDeathsByPlanet();
 		}
 		
 		private function findIndex(i:int):int 
@@ -71,6 +86,10 @@ package UI.ScoreBoard {
 			iterator += 1;
 			return page;
 			
+		}
+		public function getPlayerName():String 
+		{
+			return scoreBook[index].getPlayerName();
 		}
 		
 		

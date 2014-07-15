@@ -13,6 +13,7 @@ package Classes
 	import Interfaces.IPlayerMethods;
 	import Interfaces.IStaticMethods;
 	import Interfaces.IWeaponModel;
+	import Models.Input.BasicAIModel;
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 	{		
@@ -26,7 +27,7 @@ package Classes
 		private var thrustAccelY:Number = 0;
 		private var rotAccel:Number = 0;
 		private var rotAccelConst:Number = 200;
-	
+		private var bulletArray:Array;
 		
 		private var velocityMax:Number = 150;
 		private var velocityDirX:Number = 0;
@@ -57,12 +58,17 @@ package Classes
 			this.collisionModel = collisionModel;
 			this.immuneModel = immuneModel;
 			this.scorePage = scorePage;
+			if (inputModel.getInputType() == 1) 
+			{
+				scorePage.setPlayerName("Easy Computer");
+			}
 			x = initialX;
 			y = initialY;
 			respawnX = initialX;
 			respawnY = initialY;
 			location = new Point(x, y);
 			scorePage.setInitialLives(respawnCount);
+			bulletArray = new Array();
 			buildModel();
 			super(staticArray,gameBoard,collisionModel,initialX,initialY);
 		}
@@ -90,6 +96,18 @@ package Classes
 			checkHitDyn(gameBoard.objectArray);
 		}
 		
+		override public function checkHitStatic():Boolean
+		{
+			for(var i:int=0;i<staticArray.length;i++)
+			{
+				if (collisionModel.checkHit(staticArray[i]))
+				{
+					this.scorePage.addDeathByPlanet();
+					return true
+				}
+			}
+			return false;
+		}
 		override public function checkHitDyn(objectArray:Array):Boolean
 		{
 			for(var i:int=0;i<objectArray.length;i++)
@@ -191,12 +209,10 @@ package Classes
 			if(inputModel.getFireWeaponOne()==true)
 			{
 				dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, null));
-					//bulletArray.push(weaponModel.fireWeapon(1));
 			}
 			if(inputModel.getFireWeaponTwo()==true)
 			{
 				dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
-					//bulletArray.push(weaponModel.fireWeapon(2));
 			}
 			
 		}
@@ -322,9 +338,31 @@ package Classes
 		{
 			return true;
 		}
-		public function recordShot():void 
+		public function recordShot(cannonBallOne:DynamicObject,cannonBallTwo:DynamicObject):void 
 		{
 			scorePage.shotFired();
+			cannonBallOne.setOwner(this);
+			cannonBallTwo.setOwner(this);
+			bulletArray.push(cannonBallOne, cannonBallTwo);
+			
+		}
+		public function recordHit(victim:PlayerObject):void 
+		{
+			if (victim != this) 
+			{
+				scorePage.addHit();
+			}
+		}
+		public function recordKill(victim:PlayerObject):void 
+		{
+			if (victim != this) 
+			{
+				scorePage.addKill();
+			}
+			else 
+			{
+				scorePage.addSuicide();
+			}
 		}
 	}
 }

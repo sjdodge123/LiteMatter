@@ -96,6 +96,10 @@ package Models.Input
 				}
 			  }			
 		  }
+		  public function getInputType():int
+		  {
+			return 0;
+	      }
 		  public function getMoveForward():Boolean
 		  {
 			  return moveForward;

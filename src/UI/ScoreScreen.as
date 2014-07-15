@@ -1,5 +1,6 @@
 package UI 
 {
+	import flash.display.Shape;
 	import flash.display.Sprite
 	import UI.Components.LabelBox;
 	import UI.Components.MessageBox;
@@ -10,16 +11,33 @@ package UI
 	{
 		private var scoreBoard:ScoreBoard;
 		private var scoreLabel:LabelBox;
+		private var scoreColumn:LabelBox;
 		public function ScoreScreen(scoreBoard:ScoreBoard) 
 		{
 			scoreLabel = new LabelBox("Scoreboard:", 600, 250, 350, 35);
 			addChild(scoreLabel);
+			
+			scoreColumn = new LabelBox("Lives Remaining: \n" + "Shots Fired:\n" + "Shots Hit:\n"+ "Accuracy:\n" +"Suicides by bullet:\n" + "Planet Crashes:\n" , 345, 315, 200, 20,"CENTER");
+			scoreColumn.changeHeight(400);
+			scoreColumn.noAutoCenter();
+			addChild(scoreColumn);
+			
 			for (var i:int = 0; i < scoreBoard.totalPlayers(); i++) 
-			{
-				var lives:LabelBox = new LabelBox("Player  " + (i + 1) + " remaining lives: " + scoreBoard.getLives(i), 600, 300+(i*22), 450, 22);
-				addChild(lives);
-				var shots:LabelBox = new LabelBox("Player  " + (i + 1) + " shots fired: " + scoreBoard.getShotsFired(i), 600, 370+(i*22), 450, 22);
-				addChild(shots);
+			{	
+				scoreBoard.openToPage(i);
+				var playerColumn:LabelBox = new LabelBox(scoreBoard.getPlayerName() + "\n" + scoreBoard.getLives() + "\n" + scoreBoard.getShotsFired() + "\n" + scoreBoard.getShotsHit() + "\n" +  scoreBoard.getAccuracy() + "%\n" + scoreBoard.getSuicides()+"\n"  + scoreBoard.getPlanetCrashes(), 475+(i*100), 290, 200, 20);
+				//var playerRow:LabelBox = new LabelBox("Player " + (i + 1) + ":            " + scoreBoard.getLives(i) +"         "+ scoreBoard.getShotsFired(i), 150, 310+(i*22), 750, 22);
+				if (i == 0) 
+				{
+					playerColumn.text.textColor = (0xFF0000);
+				}
+				if (i == 1) 
+				{
+					playerColumn.text.textColor = (0x0000FF);
+				}
+				playerColumn.noAutoCenter();
+				playerColumn.changeHeight(400);
+				addChild(playerColumn);
 			}
 			
 			

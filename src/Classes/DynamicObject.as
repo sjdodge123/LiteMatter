@@ -25,6 +25,8 @@ package Classes
 		protected var distY:Number = 0;
 		protected var dist:Number = 0;
 		
+		private var owner:PlayerObject;
+		
 		private var gameBoard:GameBoardObjects;
 		private var collisionModel:ICollisionModel;
 		private var collisionPoint:Point;
@@ -67,7 +69,7 @@ package Classes
 			{
 				if (collisionModel.checkHit(staticArray[i]))
 				{
-				return true
+					return true
 				}
 			}
 			return false;
@@ -82,9 +84,11 @@ package Classes
 					{
 						if (objectArray[i].isPlayer()) 
 						{
+							owner.recordHit(objectArray[i]);
 							var currentHP:int = objectArray[i].takeAwayHP(25);
 							if (currentHP <= 0) 
 							{
+								owner.recordKill(objectArray[i]);
 								objectArray[i].explode();
 							}	
 						}
@@ -192,6 +196,15 @@ package Classes
 		public function isPlayer():Boolean
 		{
 			return false;
+		}
+		public function setOwner(owner:PlayerObject):void 
+		{
+			this.owner = owner;
+		}
+		
+		public function getOwner(bullet:DynamicObject):PlayerObject
+		{
+			return owner;
 		}
 		
 	}

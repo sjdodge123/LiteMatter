@@ -8,6 +8,7 @@ package UI.ScoreBoard
 	public class ScorePage 
 	{
 		private var playerNum:int;
+		private var playerName:String;
 		private var kills:int;
 		private var livesRemain:int;
 		private var shotsFired:int;
@@ -15,9 +16,13 @@ package UI.ScoreBoard
 		private var damageDealt:int;
 		private var damageTaken:int;
 		private var initialLives:int;
+		private var deathByPlanet:int;
+		private var suicides:int;
+		private var accuracy:Number;
 		public function ScorePage(playerNum:int) 
 		{
 			this.playerNum = playerNum;
+			this.playerName = "Player " + playerNum;
 		}
 		
 		public function removeLife():void
@@ -25,9 +30,23 @@ package UI.ScoreBoard
 			livesRemain -= 1;
 		}
 		
+		public function addDeathByPlanet():void 
+		{
+			deathByPlanet += 1;
+		}
+		
+		public function addSuicide():void 
+		{
+			suicides += 1;
+		}
+		
 		public function addKill():void 
 		{
 			kills += 1;
+		}
+		public function addHit():void 
+		{
+			shotsHit += 1;
 		}
 		
 		public function getKills():int 
@@ -36,14 +55,13 @@ package UI.ScoreBoard
 		}
 		public function shotFired():void 
 		{
-			shotsFired += 1;
+			shotsFired += 2;
 		}
 		
 		public function getLives():int 
 		{
 			return livesRemain;
 		}
-		
 		public function getShotsFired():int 
 		{
 			return shotsFired;
@@ -64,10 +82,33 @@ package UI.ScoreBoard
 		{
 			return playerNum;
 		}
+		public function getDeathsByPlanet():int 
+		{
+			return deathByPlanet;
+		}
+		public function getSuicides():int 
+		{
+			return suicides;
+		}
+		public function getAccuracy():Number 
+		{
+			accuracy = (int((shotsHit /shotsFired)*100)/100)*100;
+			return accuracy;
+		}
+		public function getPlayerName():String 
+		{
+			return playerName;
+		}
 		public function setInitialLives(lives:int):void 
 		{
 			livesRemain = lives;
 		}
+		public function setPlayerName(name:String):void 
+		{
+			playerName = name;
+		}
+		
+		
 		
 		
 		

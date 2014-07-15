@@ -53,7 +53,6 @@ package Models.Weapons
 				{
 					dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, null));
 					dispatchEvent(new PageEvent(PageEvent.SHOT_FIRED, null));
-					playerObject.recordShot();
 					playerPoint = new Point(-8, -17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileOne:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
@@ -66,9 +65,9 @@ package Models.Weapons
 					projectileOne2.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
 					fireSound.play();
 					oneCanShoot = false;
+					playerObject.recordShot(projectileOne,projectileOne2);
 					weaponOneTimer.reset();
 					weaponOneTimer.start();
-					
 				}
 		}
 		private function fireWeaponTwo(event:EFireCannon):void 
@@ -77,7 +76,6 @@ package Models.Weapons
 				{
 					dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
 					dispatchEvent(new PageEvent(PageEvent.SHOT_FIRED, null));
-					playerObject.recordShot();
 					playerPoint = new Point(-8, 17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileTwo:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
@@ -90,6 +88,7 @@ package Models.Weapons
 					projectileTwo2.velY = (350 * playerObject.getDirX()) + playerObject.getVelY();
 					fireSound.play();
 					twoCanShoot = false;
+					playerObject.recordShot(projectileTwo,projectileTwo2);
 					weaponTwoTimer.reset();
 					weaponTwoTimer.start();
 				}

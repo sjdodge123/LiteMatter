@@ -135,6 +135,10 @@ package Models.Input
 				fireWeaponTwo = false;
 			}
 		}
+		public function getInputType():int
+		{
+			return 1;
+		}
 		
 		public function getMoveForward():Boolean
 		{
