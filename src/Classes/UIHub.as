@@ -30,9 +30,6 @@ package Classes
 			this.gameStage = gameStage;
 			keyBoard = new KeyboardMonitor(gameStage);
 			this.game = game;
-			keyBoard.addEventListener(GameState.PAUSE_GAME, pauseGame);
-			keyBoard.addEventListener(GameState.FULL_SCREEN, displayFullScreen);
-			keyBoard.addEventListener(GameState.RESET, resetGame);
 			mainScreen.addEventListener(GameState.SINGLE_PLAYER, singlePlayerGame);
 			mainScreen.addEventListener(GameState.MULTI_PLAYER, multiPlayerGame);
 		}
@@ -61,6 +58,7 @@ package Classes
 			{
 				game.popDownMenu(mainScreen);
 				game.emptyGameBoard();
+				removeKeyBoardListeners();
 				game.resetWatch();
 				mainScreen.displayStartScreen();
 				game.popUpMenu(mainScreen);
@@ -77,6 +75,7 @@ package Classes
 		{
 			scoreBoard.addPlayer(1);
 			scoreBoard.addPlayer(2);
+			addKeyBoardListeners();
 			game.startGame(1);
 			gameRunning = true;
 			game.popDownMenu(mainScreen);		
@@ -85,9 +84,23 @@ package Classes
 		{
 			scoreBoard.addPlayer(1);
 			scoreBoard.addPlayer(2);
+			addKeyBoardListeners();
 			game.startGame(2);
 			gameRunning = true;
 			game.popDownMenu(mainScreen);
+		}
+		
+		private function addKeyBoardListeners():void 
+		{
+			keyBoard.addEventListener(GameState.PAUSE_GAME, pauseGame);
+			keyBoard.addEventListener(GameState.FULL_SCREEN, displayFullScreen);
+			keyBoard.addEventListener(GameState.RESET, resetGame);
+		}
+		private function removeKeyBoardListeners():void 
+		{
+			keyBoard.removeEventListener(GameState.PAUSE_GAME, pauseGame);
+			keyBoard.removeEventListener(GameState.FULL_SCREEN, displayFullScreen);
+			keyBoard.removeEventListener(GameState.RESET, resetGame);
 		}
 		
 		
@@ -96,6 +109,7 @@ package Classes
 			game.displayScore(playerNum);
 			mainScreen.displayEndScreen(playerNum,scoreBoard);
 			game.emptyGameBoard();
+			removeKeyBoardListeners();
 			gameRunning = false;
 			game.popUpMenu(mainScreen);
 			
