@@ -33,6 +33,11 @@ package Classes
 					dispatchEvent(new GameState(GameState.FULL_SCREEN, null));
 					break;
 				}
+				case Keyboard.M:
+				{
+					dispatchEvent(new GameState(GameState.MUTE_GAME, null));
+					break;
+				}
 			}
 			
 		}

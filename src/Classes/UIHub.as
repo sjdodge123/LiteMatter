@@ -7,6 +7,8 @@ package Classes
 	import UI.MainScreen;
 	import UI.ScoreBoard.ScoreBoard;
 	import UI.ScoreBoard.ScorePage;
+	import flash.media.SoundMixer;
+	import flash.media.SoundTransform;
 	/**
 	 * ...
 	 * @author ...
@@ -20,6 +22,7 @@ package Classes
 		private var gameStage:Stage;
 		private var stopWatch:StopWatch;
 		private var scoreBoard:ScoreBoard;
+		private var gameMuted:Boolean = false;
 		public var keyBoard:KeyboardMonitor;
 		
 		public function UIHub(gameStage:Stage,game:LiteMatter) 
@@ -65,6 +68,21 @@ package Classes
 			}
 		}
 		
+		private function muteSound(event:GameState):void 
+		{
+			if (gamePaused&&!gameMuted) 
+			{
+				SoundMixer.soundTransform = new SoundTransform(0);
+				//TODO:Display Speaker off Graphic
+			}
+			if (gameMuted) 
+			{
+				SoundMixer.soundTransform = new SoundTransform(1);
+				//TODO:Display Speaker on Graphic
+			}
+			gameMuted = !gameMuted;
+		}
+		
 		private function displayFullScreen(event:GameState):void 
 		{
 			game.displayFullScreen();
@@ -95,12 +113,14 @@ package Classes
 			keyBoard.addEventListener(GameState.PAUSE_GAME, pauseGame);
 			keyBoard.addEventListener(GameState.FULL_SCREEN, displayFullScreen);
 			keyBoard.addEventListener(GameState.RESET, resetGame);
+			keyBoard.addEventListener(GameState.MUTE_GAME, muteSound);
 		}
 		private function removeKeyBoardListeners():void 
 		{
 			keyBoard.removeEventListener(GameState.PAUSE_GAME, pauseGame);
 			keyBoard.removeEventListener(GameState.FULL_SCREEN, displayFullScreen);
 			keyBoard.removeEventListener(GameState.RESET, resetGame);
+			keyBoard.removeEventListener(GameState.MUTE_GAME, muteSound);
 		}
 		
 		
