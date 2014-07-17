@@ -2,6 +2,8 @@ package Classes.GameBoard
 {
 	import flash.display.MovieClip;
 	import flash.display.Stage;
+	import Interfaces.IInputHandling;
+	import Interfaces.IObjectMethods;
 	import Models.Input.BasicAIModel;
 	import UI.ScoreBoard.ScorePage;
 	
@@ -31,6 +33,8 @@ package Classes.GameBoard
 		private var objectBuilder:ObjectBuilder;
 		public var soundLoader:SoundLoader;
 		private var defaultAI:BasicAIModel;
+		private var inputPlayer1:IInputHandling;
+		private var inputPlayer2:IInputHandling;
 		
 		public function GameBoardObjects(stageWidth:int, stageHeight:int,stage:Stage)
 		{
@@ -39,6 +43,7 @@ package Classes.GameBoard
 			gameStage = stage;
 			objectBuilder = new ObjectBuilder(this);
 			soundLoader = new SoundLoader();
+			inputPlayer2 = new Player2InputModel(gameStage);
 		}
 
 		public function initializeGameObjects(scorePage:ScorePage): void
@@ -54,7 +59,15 @@ package Classes.GameBoard
 		private function addDynamicObjects(scorePage:ScorePage):void
 		{
 			defaultAI = new BasicAIModel(gameStage, this, objectBuilder.staticArray);
-			ship = objectBuilder.buildPiratePlayer(new Player1InputModel(gameStage), 50, 50,scorePage);	
+			if (inputPlayer1 != null) 
+			{
+				ship = objectBuilder.buildPiratePlayer(inputPlayer1, 50, 50,scorePage);
+			}
+			else 
+			{
+				ship = objectBuilder.buildPiratePlayer(new Player1InputModel(gameStage), 50, 50,scorePage);
+			}
+				
 		}
 		public function addExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip
 		{
@@ -63,6 +76,17 @@ package Classes.GameBoard
 		public function addCannonBall(x:int,y:int):DynamicObject
 		{
 			return objectBuilder.buildTokenCannonBall(x, y);
+		}
+		public function changeInputType(playerNum:int,inputType:IInputHandling):void 
+		{
+			if (playerNum == 1) 
+			{
+				inputPlayer1 = inputType;
+			}
+			if (playerNum == 2) 
+			{
+				inputPlayer2 = inputType;
+			}
 		}
 		
 		public function addPlayer2AI(scorePage:ScorePage):void 
@@ -74,7 +98,7 @@ package Classes.GameBoard
 		}
 		public function addPlayer2HU(scorePage:ScorePage):void 
 		{
-			ship2 =  objectBuilder.buildPiratePlayer(new Player2InputModel(gameStage), stageWidth - 50, stageHeight - 50,scorePage);
+			ship2 =  objectBuilder.buildPiratePlayer(inputPlayer2, stageWidth - 50, stageHeight - 50,scorePage);
 			ship2.initialRotation = 180;
 			ship2.rotationZ= 180;
 		}

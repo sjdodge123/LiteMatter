@@ -1,17 +1,20 @@
 package
 {
 	import Classes.UIHub;
-	import Classes.KeyboardMonitor;
+	import Classes.IOMonitor;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.text.TextField;
+	import Models.Input.XboxControllerModel;
 	import UI.MainScreen;
 	import Classes.GameBoard.GameBoardObjects;
 	import Classes.GameBoard.StopWatch;
 	import Events.GameState;
 	import flash.display.StageDisplayState;
-	
+	import flash.ui.GameInput;
+	import flash.events.GameInputEvent;
+	import flash.ui.GameInputDevice;
 	
 	[SWF(backgroundColor= "0x000000", width="1200", height ="900", frameRate='30')]
 	public class LiteMatter extends Sprite
@@ -26,8 +29,11 @@ package
 		private var stageWidth:int;
 		private var stageHeight:int;
 		private var gameBoard:GameBoardObjects; 
-		private var keyBoard:KeyboardMonitor;
+		private var keyBoard:IOMonitor;
 		private var uiHub:UIHub;
+		private var device:GameInputDevice;
+		private var gameInput:GameInput;
+		private static var numDevices:int;
 		
 		public function LiteMatter()
 		{
@@ -40,7 +46,11 @@ package
 			uiHub = new UIHub(stage,this);		
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
-			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
+			gameBoard = new GameBoardObjects(stageWidth, stageHeight, stage);
+			gameInput = new GameInput();
+			gameInput.addEventListener(GameInputEvent.DEVICE_ADDED, controllerAdded);
+			gameInput.addEventListener(GameInputEvent.DEVICE_REMOVED, controllerRemoved);
+			gameInput.addEventListener(GameInputEvent.DEVICE_UNUSABLE, controllerUnusable);
 		}
 		
 		public function InitializeGameBoard():void 
@@ -55,6 +65,7 @@ package
 			addChild(text2);
 			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
+		
 		
 		public function update(e:Event):void
 		{
@@ -93,7 +104,6 @@ package
 			{
 				gameBoard.addPlayer2HU(uiHub.getNextPage());
 			}
-			
 		}
 		
 		public function displayFullScreen():void 
@@ -143,6 +153,23 @@ package
 		public function print(o:Object, field:TextField):void
 		{
 			field.text = o.toString();
+		}
+		private function controllerAdded(event:Event):void 
+		{
+			var xboxInput:XboxControllerModel = new XboxControllerModel(stage, GameInput.getDeviceAt(numDevices));
+			uiHub.controllerAdded(GameInput.getDeviceAt(numDevices));
+			numDevices += 1;
+			
+			gameBoard.changeInputType(numDevices, xboxInput);
+		}
+		private function controllerRemoved(event:Event):void 
+		{
+			trace(GameInput.numDevices);
+		}
+		
+		private function controllerUnusable(event:Event):void 
+		{
+			trace("Device connected is not supported.");
 		}
 	}
 }

@@ -4,6 +4,7 @@ package Classes
 	import Classes.GameBoard.StopWatch;
 	import Events.GameState;
 	import flash.events.Event;
+	import flash.ui.GameInputDevice;
 	import UI.MainScreen;
 	import UI.ScoreBoard.ScoreBoard;
 	import UI.ScoreBoard.ScorePage;
@@ -23,7 +24,7 @@ package Classes
 		private var stopWatch:StopWatch;
 		private var scoreBoard:ScoreBoard;
 		private var gameMuted:Boolean = false;
-		public var keyBoard:KeyboardMonitor;
+		public var ioMonitor:IOMonitor;
 		
 		public function UIHub(gameStage:Stage,game:LiteMatter) 
 		{
@@ -31,7 +32,7 @@ package Classes
 			scoreBoard = new ScoreBoard();
 			game.popUpMenu(mainScreen);
 			this.gameStage = gameStage;
-			keyBoard = new KeyboardMonitor(gameStage);
+			ioMonitor = new IOMonitor(gameStage);
 			this.game = game;
 			mainScreen.addEventListener(GameState.SINGLE_PLAYER, singlePlayerGame);
 			mainScreen.addEventListener(GameState.MULTI_PLAYER, multiPlayerGame);
@@ -110,17 +111,17 @@ package Classes
 		
 		private function addKeyBoardListeners():void 
 		{
-			keyBoard.addEventListener(GameState.PAUSE_GAME, pauseGame);
-			keyBoard.addEventListener(GameState.FULL_SCREEN, displayFullScreen);
-			keyBoard.addEventListener(GameState.RESET, resetGame);
-			keyBoard.addEventListener(GameState.MUTE_GAME, muteSound);
+			ioMonitor.addEventListener(GameState.PAUSE_GAME, pauseGame);
+			ioMonitor.addEventListener(GameState.FULL_SCREEN, displayFullScreen);
+			ioMonitor.addEventListener(GameState.RESET, resetGame);
+			ioMonitor.addEventListener(GameState.MUTE_GAME, muteSound);
 		}
 		private function removeKeyBoardListeners():void 
 		{
-			keyBoard.removeEventListener(GameState.PAUSE_GAME, pauseGame);
-			keyBoard.removeEventListener(GameState.FULL_SCREEN, displayFullScreen);
-			keyBoard.removeEventListener(GameState.RESET, resetGame);
-			keyBoard.removeEventListener(GameState.MUTE_GAME, muteSound);
+			ioMonitor.removeEventListener(GameState.PAUSE_GAME, pauseGame);
+			ioMonitor.removeEventListener(GameState.FULL_SCREEN, displayFullScreen);
+			ioMonitor.removeEventListener(GameState.RESET, resetGame);
+			ioMonitor.removeEventListener(GameState.MUTE_GAME, muteSound);
 		}
 		
 		
@@ -133,6 +134,11 @@ package Classes
 			gameRunning = false;
 			game.popUpMenu(mainScreen);
 			
+		}
+		
+		public function controllerAdded(device:GameInputDevice):void 
+		{
+			ioMonitor.controllerAdded(device);
 		}
 		
 		public function getGameRunning():Boolean

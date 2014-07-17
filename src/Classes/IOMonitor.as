@@ -3,15 +3,27 @@ package Classes
 	import Events.GameState;
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
+	import flash.ui.GameInputControl;
+	import flash.ui.GameInputDevice;
 	import flash.ui.Keyboard;
 	import flash.events.EventDispatcher;
 	import flash.events.Event;
 	
-	public class KeyboardMonitor extends GameObject
+	public class IOMonitor extends GameObject
 	{	
-		public function KeyboardMonitor(gameStage:Stage) 
+		private var device:GameInputDevice;
+		private var startButton:GameInputControl;
+		public function IOMonitor(gameStage:Stage) 
 		{
 			gameStage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
+		}
+		
+		public function controllerAdded(device:GameInputDevice):void 
+		{
+			this.device = device;
+			device.enabled = true;
+			startButton = device.getControlAt(13);
+			startButton.addEventListener(Event.CHANGE, startPressed);
 		}
 		
 		private function keyPressed(event:KeyboardEvent):void
@@ -41,6 +53,14 @@ package Classes
 			}
 			
 		}
+		private function startPressed(event:Event):void
+		{
+			if (startButton.value == 1) 
+			{
+				dispatchEvent(new GameState(GameState.PAUSE_GAME, null));
+			}
+		}
+		
 		
 	}
 
