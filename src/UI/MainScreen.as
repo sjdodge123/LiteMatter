@@ -3,6 +3,7 @@ package UI
 	import Classes.Config.Reader;
 	import flash.display.Sprite;
 	import Events.GameState;
+	import flash.ui.GameInputDevice;
 	import UI.ScoreBoard.ScoreBoard;
 	
 	
@@ -12,10 +13,13 @@ package UI
 		private var endPanel:EndScreen;
 		private var pausePanel:PauseScreen;
 		private var reader:Reader;
+		private var controller:Vector.<ControllerPopScreen>;
+		private var deviceID:int;
 		public function MainScreen() 
 		{
 			displayStartScreen();
 			reader = new Reader();
+			controller = new Vector.<ControllerPopScreen>;
 			reader.readFile("version.txt"); 
 		}
 		
@@ -44,10 +48,7 @@ package UI
 		
 		public function clearMainScreen():void 
 		{
-			for (var i:int = 0; i < this.numChildren; i++) 
-			{
-				removeChildAt(i);
-			}
+			removeChildren(0, this.numChildren-1);
 		}
 		
 		public function singleGame(event:GameState):void 
@@ -59,6 +60,26 @@ package UI
 		{
 			dispatchEvent(new GameState(GameState.MULTI_PLAYER, null));
 			startPanel.removeEventListener(GameState.MULTI_PLAYER, multiGame);
+		}
+		public function addControllerPopScreen(playNum:int,device:GameInputDevice):void 
+		{
+			var screen:ControllerPopScreen = new ControllerPopScreen(playNum);
+			var id:Number = Number(device.id.charAt(device.id.length-1));
+			controller.splice(id, 0, screen);
+			addChild(screen);
+		}
+		public function confirmControllerScreen(device:GameInputDevice):void 
+		{
+			var id:Number =  Number(device.id.charAt(device.id.length-1));
+			controller[id].confirmController();
+		}
+		public function displayControllerScreens():void 
+		{
+			for (var i:int = 0; i < controller.length; i++) 
+			{
+				controller[i].resetMenu();
+				addChild(controller[i]);
+			}
 		}
 		
 		

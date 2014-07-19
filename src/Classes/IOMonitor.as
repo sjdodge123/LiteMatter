@@ -11,19 +11,25 @@ package Classes
 	
 	public class IOMonitor extends GameObject
 	{	
-		private var device:GameInputDevice;
+		private var deviceList:Vector.<GameInputDevice>;
 		private var startButton:GameInputControl;
+		private var aButton:GameInputControl;
+		public var currentDevice:GameInputDevice
 		public function IOMonitor(gameStage:Stage) 
 		{
 			gameStage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
+			deviceList = new Vector.<GameInputDevice>;
+			
 		}
 		
 		public function controllerAdded(device:GameInputDevice):void 
 		{
-			this.device = device;
 			device.enabled = true;
 			startButton = device.getControlAt(13);
 			startButton.addEventListener(Event.CHANGE, startPressed);
+			aButton = device.getControlAt(4);
+			aButton.addEventListener(Event.CHANGE, aPressed);
+			deviceList.push(device);
 		}
 		
 		private function keyPressed(event:KeyboardEvent):void
@@ -55,10 +61,13 @@ package Classes
 		}
 		private function startPressed(event:Event):void
 		{
-			if (startButton.value == 1) 
-			{
-				dispatchEvent(new GameState(GameState.PAUSE_GAME, null));
-			}
+			currentDevice = event.target.device;
+			if (event.target.value == 1) { dispatchEvent(new GameState(GameState.PAUSE_GAME, currentDevice)); }
+			
+		}
+		private function aPressed(event:Event):void 
+		{
+			if (event.target.value == 1) { dispatchEvent(new GameState(GameState.START_GAME, null)); }
 		}
 		
 		

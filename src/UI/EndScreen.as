@@ -22,15 +22,15 @@ package UI
 		{
 			welcomeBox = new MessageBox();
 			
-			mainLabel = new LabelBox("Player " + endPlayerNum + " wins!", 600, 210, 300, 30);
+			mainLabel = new LabelBox("Player " + endPlayerNum + " wins!", 600, 170, 300, 30);
 			mainLabel.text.textColor =  0xFF0000;
 			scoreScreen = new ScoreScreen(scoreBoard);
 			
-			playAgainLabel = new LabelBox("Play again?",  600, 550, 300,25);
-			singlePlayerLabel = new LabelBox("Single Player:", 500, 600, 250,30);
-			multiPlayerLabel = new LabelBox("Local multiplayer:", 500, 650, 250,30);
-			singlePlayerButton = new ButtonBox(750, 600, 200,GameState.SINGLE_PLAYER);
-			multiPlayerButton = new ButtonBox(750, 650, 200,GameState.MULTI_PLAYER);
+			playAgainLabel = new LabelBox("Play again?",  600, 490, 300,25);
+			singlePlayerLabel = new LabelBox("Single Player:", 500, 520, 250,30);
+			multiPlayerLabel = new LabelBox("Local multiplayer:", 500, 590, 250,30);
+			singlePlayerButton = new ButtonBox(750, 520, 200,GameState.SINGLE_PLAYER);
+			multiPlayerButton = new ButtonBox(750, 590, 200,GameState.MULTI_PLAYER);
 
 			addChild(welcomeBox);
 			addChild(mainLabel);

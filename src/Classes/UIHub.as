@@ -4,6 +4,7 @@ package Classes
 	import Classes.GameBoard.StopWatch;
 	import Events.GameState;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.ui.GameInputDevice;
 	import UI.MainScreen;
 	import UI.ScoreBoard.ScoreBoard;
@@ -14,28 +15,33 @@ package Classes
 	 * ...
 	 * @author ...
 	 */
-	public class UIHub 
+	public class UIHub extends EventDispatcher
 	{
 		private var gameRunning:Boolean = false;
 		private var gamePaused:Boolean = false;
-		private var mainScreen:MainScreen;
+		private var onMenu:Boolean = true;
+		private var controllersInUse:Boolean = false;
+		public var mainScreen:MainScreen;
 		private var game:LiteMatter;
 		private var gameStage:Stage;
 		private var stopWatch:StopWatch;
 		private var scoreBoard:ScoreBoard;
 		private var gameMuted:Boolean = false;
 		public var ioMonitor:IOMonitor;
+		private var numControllers:int;
+		private var currentDevice:GameInputDevice;
 		
 		public function UIHub(gameStage:Stage,game:LiteMatter) 
 		{
 			mainScreen = new MainScreen();
 			scoreBoard = new ScoreBoard();
-			game.popUpMenu(mainScreen);
 			this.gameStage = gameStage;
 			ioMonitor = new IOMonitor(gameStage);
 			this.game = game;
+			addKeyBoardListeners();
 			mainScreen.addEventListener(GameState.SINGLE_PLAYER, singlePlayerGame);
 			mainScreen.addEventListener(GameState.MULTI_PLAYER, multiPlayerGame);
+			addEventListener(GameState.CONFIRM_CONTROLLER, controllerConfirmed);
 		}
 		
 		private function pauseGame(event:GameState):void
@@ -47,12 +53,17 @@ package Classes
 				mainScreen.displayPauseScreen();
 				game.popUpMenu(mainScreen);
 			}
-			else 
+			else if (gamePaused)
 			{
 				gamePaused = false;
 				game.resetWatch();
 				game.popDownMenu(mainScreen);
 				gameRunning = true;
+			}
+			if (onMenu  && (numControllers > 0)) 
+			{
+				currentDevice = event.target.currentDevice;
+				dispatchEvent(new GameState(GameState.CONFIRM_CONTROLLER, currentDevice));
 			}
 		}
 		
@@ -60,11 +71,17 @@ package Classes
 		{
 			if (gamePaused) 
 			{
+				gamePaused = false;
+				gameRunning = false;
+				onMenu = true;
+				controllersInUse = true;
+				addEventListener(GameState.CONFIRM_CONTROLLER, controllerConfirmed);
 				game.popDownMenu(mainScreen);
 				game.emptyGameBoard();
-				removeKeyBoardListeners();
+				removeGameListeners();
 				game.resetWatch();
 				mainScreen.displayStartScreen();
+				mainScreen.displayControllerScreens();
 				game.popUpMenu(mainScreen);
 			}
 		}
@@ -92,21 +109,50 @@ package Classes
 		
 		private function singlePlayerGame(event:GameState):void 
 		{
+			removeEventListener(GameState.CONFIRM_CONTROLLER, controllerConfirmed);
+			addGameListeners();
 			scoreBoard.addPlayer(1);
 			scoreBoard.addPlayer(2);
-			addKeyBoardListeners();
 			game.startGame(1);
 			gameRunning = true;
+			controllersInUse = false;
 			game.popDownMenu(mainScreen);		
 		}
 		private function multiPlayerGame(event:GameState):void 
 		{
+			removeEventListener(GameState.CONFIRM_CONTROLLER, controllerConfirmed);
+			addGameListeners();
 			scoreBoard.addPlayer(1);
 			scoreBoard.addPlayer(2);
-			addKeyBoardListeners();
 			game.startGame(2);
+			controllersInUse = false;
 			gameRunning = true;
 			game.popDownMenu(mainScreen);
+		}
+		private function startGamePressed(event:GameState):void 
+		{ 
+			if (controllersInUse)
+			{
+				removeEventListener(GameState.CONFIRM_CONTROLLER, controllerConfirmed);
+				ioMonitor.removeEventListener(GameState.START_GAME, startGamePressed);
+				addGameListeners();
+				if (numControllers > 1) 
+				{
+					scoreBoard.addPlayer(1);
+					scoreBoard.addPlayer(2);
+					game.startGame(2);
+					gameRunning = true;
+					game.popDownMenu(mainScreen);
+				}
+				else 
+				{
+					scoreBoard.addPlayer(1);
+					scoreBoard.addPlayer(2);
+					game.startGame(1);
+					gameRunning = true;
+					game.popDownMenu(mainScreen);
+				}
+			}
 		}
 		
 		private function addKeyBoardListeners():void 
@@ -115,10 +161,16 @@ package Classes
 			ioMonitor.addEventListener(GameState.FULL_SCREEN, displayFullScreen);
 			ioMonitor.addEventListener(GameState.RESET, resetGame);
 			ioMonitor.addEventListener(GameState.MUTE_GAME, muteSound);
+			ioMonitor.addEventListener(GameState.START_GAME, startGamePressed);
 		}
-		private function removeKeyBoardListeners():void 
+		private function addGameListeners():void 
 		{
-			ioMonitor.removeEventListener(GameState.PAUSE_GAME, pauseGame);
+			ioMonitor.addEventListener(GameState.FULL_SCREEN, displayFullScreen);
+			ioMonitor.addEventListener(GameState.RESET, resetGame);
+			ioMonitor.addEventListener(GameState.MUTE_GAME, muteSound);
+		}
+		private function removeGameListeners():void 
+		{
 			ioMonitor.removeEventListener(GameState.FULL_SCREEN, displayFullScreen);
 			ioMonitor.removeEventListener(GameState.RESET, resetGame);
 			ioMonitor.removeEventListener(GameState.MUTE_GAME, muteSound);
@@ -128,17 +180,38 @@ package Classes
 		public function endGameScreen(playerNum:int):void
 		{
 			game.displayScore(playerNum);
-			mainScreen.displayEndScreen(playerNum,scoreBoard);
+			removeGameListeners();
+			mainScreen.displayEndScreen(playerNum, scoreBoard);
 			game.emptyGameBoard();
-			removeKeyBoardListeners();
 			gameRunning = false;
+			gamePaused = false;
 			game.popUpMenu(mainScreen);
+			addEventListener(GameState.CONFIRM_CONTROLLER, controllerConfirmed);
+			mainScreen.displayControllerScreens();
 			
 		}
 		
 		public function controllerAdded(device:GameInputDevice):void 
 		{
+			numControllers += 1;
 			ioMonitor.controllerAdded(device);
+
+		}
+		public function addControllerPopUpScreen(playNum:int,device:GameInputDevice):void 
+		{
+			if (!gameRunning) 
+			{
+				mainScreen.addControllerPopScreen(playNum,device);
+			}
+		}
+		
+		private function controllerConfirmed(event:Event):void 
+		{
+			controllersInUse = true;
+			ioMonitor.addEventListener(GameState.START_GAME, startGamePressed);
+			mainScreen.confirmControllerScreen(event.target.currentDevice);
+			var id:Number = Number(event.target.currentDevice.id.charAt(event.target.currentDevice.id.length-1));
+			game.changeInputType(id);
 		}
 		
 		public function getGameRunning():Boolean
@@ -152,6 +225,10 @@ package Classes
 		public function clearAllPages():void 
 		{
 			scoreBoard.removeAllPlayers();
+		}
+		public function setOnMenu(value:Boolean):void 
+		{
+			onMenu = value;
 		}
 		
 	}

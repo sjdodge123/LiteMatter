@@ -43,7 +43,8 @@ package
 		private function Initialize():void
 		{
 			stage.stageFocusRect = false;
-			uiHub = new UIHub(stage,this);		
+			uiHub = new UIHub(stage, this);
+			popUpMenu(uiHub.mainScreen);
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
 			gameBoard = new GameBoardObjects(stageWidth, stageHeight, stage);
@@ -133,12 +134,17 @@ package
 		{
 			addChild(mainScreen);
 			stage.focus = mainScreen;
+			uiHub.setOnMenu(true);
 		}
 		public function popDownMenu(mainScreen:MainScreen):void
 		{
-			removeChild(mainScreen);
+			if (this.contains(mainScreen)) 
+			{
+				removeChild(mainScreen);
+			}
 			mainScreen.clearMainScreen();
 			stage.focus = gameBoard;
+			uiHub.setOnMenu(false);
 		}
 			
 		public function emptyGameBoard():void 
@@ -156,15 +162,20 @@ package
 		}
 		private function controllerAdded(event:Event):void 
 		{
-			var xboxInput:XboxControllerModel = new XboxControllerModel(stage, GameInput.getDeviceAt(numDevices));
 			uiHub.controllerAdded(GameInput.getDeviceAt(numDevices));
+			uiHub.addControllerPopUpScreen(numDevices,GameInput.getDeviceAt(numDevices));
 			numDevices += 1;
-			
-			gameBoard.changeInputType(numDevices, xboxInput);
 		}
 		private function controllerRemoved(event:Event):void 
 		{
 			trace(GameInput.numDevices);
+			numDevices -= 1;
+			//TODO Remove associated device from 
+		}
+		public function changeInputType(playerNum:Number):void
+		{
+			var xboxInput:XboxControllerModel = new XboxControllerModel(stage, GameInput.getDeviceAt(playerNum));
+			gameBoard.changeInputType(playerNum+1, xboxInput);
 		}
 		
 		private function controllerUnusable(event:Event):void 

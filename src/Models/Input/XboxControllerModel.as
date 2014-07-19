@@ -36,7 +36,7 @@ package Models.Input
 			leftThumb.addEventListener(Event.CHANGE, thumbMoved);
 			aButton = device.getControlAt(4);
 			aButton.addEventListener(Event.CHANGE, aPressed);
-			bButton = device.getControlAt(5);
+			bButton = device.getControlAt(6);
 			bButton.addEventListener(Event.CHANGE, bPressed);
 			leftTrig = device.getControlAt(10);
 			leftTrig.addEventListener(Event.CHANGE,leftTrigPressed);
