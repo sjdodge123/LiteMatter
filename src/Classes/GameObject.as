@@ -1,5 +1,4 @@
-package Classes
-{
+package Classes {
 
 	
 	import Interfaces.IObjectMethods;

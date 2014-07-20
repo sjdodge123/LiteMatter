@@ -11,10 +11,6 @@ package Models.Input
 	import Interfaces.IInputHandling;
 	import flash.geom.Point;
 	import flash.utils.Timer;
-	/**
-	 * ...
-	 * @author Jake
-	 */
 	public class BasicAIModel implements IInputHandling
 	{
 		private var moveForward:Boolean = false;

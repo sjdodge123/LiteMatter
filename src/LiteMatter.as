@@ -2,19 +2,20 @@ package
 {
 	import Classes.UIHub;
 	import Classes.IOMonitor;
+	import Classes.XboxController;
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import Models.Input.XboxControllerModel;
 	import UI.MainScreen;
+	import flash.events.Event;
 	import Classes.GameBoard.GameBoardObjects;
 	import Classes.GameBoard.StopWatch;
 	import Events.GameState;
 	import flash.display.StageDisplayState;
+	
 	import flash.ui.GameInput;
-	import flash.events.GameInputEvent;
-	import flash.ui.GameInputDevice;
+	
 	
 	[SWF(backgroundColor= "0x000000", width="1200", height ="900", frameRate='30')]
 	public class LiteMatter extends Sprite
@@ -22,7 +23,6 @@ package
 		private var text1:TextField = new TextField();
 		private var text2:TextField = new TextField();
 		private var mousePoint:Point;
-		
 		private var stopWatch:StopWatch;
 		private var deltaT:Number;
 		private var gameStarted:Boolean = false;
@@ -31,10 +31,9 @@ package
 		private var gameBoard:GameBoardObjects; 
 		private var keyBoard:IOMonitor;
 		private var uiHub:UIHub;
-		private var device:GameInputDevice;
+		private var xbc:XboxController;
 		private var gameInput:GameInput;
-		private static var numDevices:int;
-		
+	
 		public function LiteMatter()
 		{
 			Initialize();	
@@ -44,14 +43,12 @@ package
 		{
 			stage.stageFocusRect = false;
 			uiHub = new UIHub(stage, this);
+			xbc = new XboxController(uiHub);
 			popUpMenu(uiHub.mainScreen);
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
 			gameBoard = new GameBoardObjects(stageWidth, stageHeight, stage);
-			gameInput = new GameInput();
-			gameInput.addEventListener(GameInputEvent.DEVICE_ADDED, controllerAdded);
-			gameInput.addEventListener(GameInputEvent.DEVICE_REMOVED, controllerRemoved);
-			gameInput.addEventListener(GameInputEvent.DEVICE_UNUSABLE, controllerUnusable);
+			
 		}
 		
 		public function InitializeGameBoard():void 
@@ -118,7 +115,6 @@ package
 				stage.displayState = StageDisplayState.NORMAL;
 			}
 		}
-		
 		public function resetWatch():void 
 		{
 			stopWatch.reset();
@@ -128,8 +124,6 @@ package
 		{
 			print("Player " + playerNum  +" wins!!!!", text2);
 		}
-		
-		
 		public function popUpMenu(mainScreen:MainScreen):void 
 		{
 			addChild(mainScreen);
@@ -160,27 +154,12 @@ package
 		{
 			field.text = o.toString();
 		}
-		private function controllerAdded(event:Event):void 
-		{
-			uiHub.controllerAdded(GameInput.getDeviceAt(numDevices));
-			uiHub.addControllerPopUpScreen(numDevices,GameInput.getDeviceAt(numDevices));
-			numDevices += 1;
-		}
-		private function controllerRemoved(event:Event):void 
-		{
-			trace(GameInput.numDevices);
-			numDevices -= 1;
-			//TODO Remove associated device from 
-		}
 		public function changeInputType(playerNum:Number):void
 		{
 			var xboxInput:XboxControllerModel = new XboxControllerModel(stage, GameInput.getDeviceAt(playerNum));
 			gameBoard.changeInputType(playerNum+1, xboxInput);
 		}
+
 		
-		private function controllerUnusable(event:Event):void 
-		{
-			trace("Device connected is not supported.");
-		}
 	}
 }

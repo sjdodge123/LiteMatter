@@ -13,10 +13,10 @@ package UI
 		public function PauseScreen(version:String) 
 		{
 			var msg:MessageBox = new MessageBox();
-			pauseText = new LabelBox("PAUSED", 600, 350, 250, 60);
-			resetText = new LabelBox("Press R to reset", 600, 450, 250, 30);
-			muteText = new LabelBox("Press M to Mute/Unmute", 600, 550, 350, 30);
-			versionText = new LabelBox(version, 600, 650, 350, 15);
+			pauseText = new LabelBox("PAUSED", 600, 250, 250, 60);
+			resetText = new LabelBox("Press R/Back to reset", 600, 350, 300, 30);
+			muteText = new LabelBox("Press M to Mute/Unmute", 600, 450, 350, 30);
+			versionText = new LabelBox(version, 600, 550, 350, 15);
 			pauseText.text.textColor = 0xFF0000;
 			addChild(msg);
 			addChild(pauseText);

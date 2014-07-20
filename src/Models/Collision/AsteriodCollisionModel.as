@@ -4,7 +4,7 @@ package Models.Collision
 	
 	import Classes.CollisionBuilder;
 	import Classes.CollisionEngine;
-	import Classes.GameObject;
+	import Classes.GameBoard.GameObject;
 	
 	import Interfaces.ICollisionModel;
 

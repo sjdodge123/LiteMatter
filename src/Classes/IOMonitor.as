@@ -14,12 +14,12 @@ package Classes
 		private var deviceList:Vector.<GameInputDevice>;
 		private var startButton:GameInputControl;
 		private var aButton:GameInputControl;
+		private var backButton:GameInputControl;
 		public var currentDevice:GameInputDevice
 		public function IOMonitor(gameStage:Stage) 
 		{
 			gameStage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
 			deviceList = new Vector.<GameInputDevice>;
-			
 		}
 		
 		public function controllerAdded(device:GameInputDevice):void 
@@ -27,6 +27,8 @@ package Classes
 			device.enabled = true;
 			startButton = device.getControlAt(13);
 			startButton.addEventListener(Event.CHANGE, startPressed);
+			backButton = device.getControlAt(12);
+			backButton.addEventListener(Event.CHANGE, backPressed);
 			aButton = device.getControlAt(4);
 			aButton.addEventListener(Event.CHANGE, aPressed);
 			deviceList.push(device);
@@ -63,11 +65,14 @@ package Classes
 		{
 			currentDevice = event.target.device;
 			if (event.target.value == 1) { dispatchEvent(new GameState(GameState.PAUSE_GAME, currentDevice)); }
-			
 		}
 		private function aPressed(event:Event):void 
 		{
 			if (event.target.value == 1) { dispatchEvent(new GameState(GameState.START_GAME, null)); }
+		}
+		private function backPressed(event:Event):void 
+		{
+			if (event.target.value == 1) { dispatchEvent(new GameState(GameState.RESET, null)); }
 		}
 		
 		
