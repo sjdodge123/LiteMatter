@@ -119,6 +119,7 @@ package Classes
 			tempSprite.addChild(imageLoadPortCannons);
 			tempSprite.addChild(imageLoadStarCannons);
 			tempSprite.addChild(imageLoadBody);
+			tempSprite.addChild(tempSprite.getHealthBar());
 			
 			return tempSprite;
 		}

@@ -80,11 +80,11 @@ package
 			
 			if (gameBoard.ship.getRespawnCount() == 0) 
 			{
-				uiHub.endGameScreen(2);
+				uiHub.endGameScreen(gameBoard.ship2.getShipId());
 			}
 			else if (gameBoard.ship2.getRespawnCount() == 0) 
 			{
-				uiHub.endGameScreen(1);
+				uiHub.endGameScreen(gameBoard.ship.getShipId());
 			}
 			
 		}

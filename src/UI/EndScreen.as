@@ -21,9 +21,9 @@ package UI
 		public function EndScreen(endPlayerNum:int,scoreBoard:ScoreBoard) 
 		{
 			welcomeBox = new MessageBox();
-			
-			mainLabel = new LabelBox("Player " + endPlayerNum + " wins!", 600, 170, 300, 30);
-			mainLabel.text.textColor =  0xFF0000;
+			scoreBoard.openToPage(endPlayerNum);
+			mainLabel = new LabelBox(scoreBoard.getPlayerName() + " wins!", 600, 170, 300, 30);
+			mainLabel.text.textColor =  scoreBoard.getColor();;
 			scoreScreen = new ScoreScreen(scoreBoard);
 			
 			playAgainLabel = new LabelBox("Play again?",  600, 490, 300,25);

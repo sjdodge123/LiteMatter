@@ -15,7 +15,7 @@ package UI.Components
 		{
 			var button:Sprite = new Sprite();
 			this.gameState = gameState;
-			button.graphics.beginFill(0xFFCC00);
+			button.graphics.beginFill(0x0033CC);
 			button.graphics.drawRect(x-width/2, y, width/2, 30);
 			button.graphics.endFill();
 			button.graphics.lineStyle(2, 0x000000, 100);

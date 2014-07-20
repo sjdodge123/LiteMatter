@@ -18,7 +18,6 @@ package UI.ScoreBoard {
 			}
 		}
 		
-		
 		public function addKill(playerNum:int):void 
 		{
 			index = findIndex(playerNum);
@@ -74,6 +73,10 @@ package UI.ScoreBoard {
 		public function getPlanetCrashes():int 
 		{
 			return scoreBook[index].getDeathsByPlanet();
+		}
+		public function getColor():uint 
+		{
+			return scoreBook[index].getColor();
 		}
 		
 		private function findIndex(i:int):int 

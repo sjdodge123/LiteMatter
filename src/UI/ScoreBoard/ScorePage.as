@@ -18,21 +18,25 @@ package UI.ScoreBoard
 		private var initialLives:int;
 		private var deathByPlanet:int;
 		private var suicides:int;
-		private var accuracy:Number;
+		private var accuracy:int;
+		private var color:uint;
 		public function ScorePage(playerNum:int) 
 		{
-			this.playerNum = playerNum;
+			this.playerNum = playerNum-1;
 			this.playerName = "Player " + playerNum;
 		}
 		
 		public function removeLife():void
 		{
 			livesRemain -= 1;
-		}
-		
+		}		
 		public function addDeathByPlanet():void 
 		{
 			deathByPlanet += 1;
+		}
+		public function setColor(color:uint):void 
+		{
+			this.color = color;
 		}
 		
 		public function addSuicide():void 
@@ -90,9 +94,9 @@ package UI.ScoreBoard
 		{
 			return suicides;
 		}
-		public function getAccuracy():Number 
+		public function getAccuracy():int 
 		{
-			accuracy = (int((shotsHit /shotsFired)*100)/100)*100;
+			accuracy = int((int((shotsHit /shotsFired)*100)/100)*100);
 			return accuracy;
 		}
 		public function getPlayerName():String 
@@ -107,9 +111,10 @@ package UI.ScoreBoard
 		{
 			playerName = name;
 		}
-		
-		
-		
+		public function getColor():uint 
+		{
+			return color;
+		}
 		
 		
 		

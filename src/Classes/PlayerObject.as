@@ -14,11 +14,12 @@ package Classes
 	import Interfaces.IStaticMethods;
 	import Interfaces.IWeaponModel;
 	import Models.Input.BasicAIModel;
+	import Classes.HealthBar;
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 	{		
-		private static var shipCount:int = 0;
 		private var shipId:int = 0;
+		private var playerColor:uint;
 		private var respawnCount:int = 5;
 		private var HP:int = 100;
 		private var respawnHP:int = HP;
@@ -28,6 +29,7 @@ package Classes
 		private var rotAccel:Number = 0;
 		private var rotAccelConst:Number = 200;
 		private var bulletArray:Array;
+		private var healthBar:HealthBar;
 		
 		private var velocityMax:Number = 150;
 		private var velocityDirX:Number = 0;
@@ -43,6 +45,7 @@ package Classes
 		private var weaponModel:IWeaponModel;
 		private var scorePage:ScorePage;
 		
+		
 		private var respawnX:int;
 		private var respawnY:int;
 		private var respawnsEmpty:Boolean;
@@ -50,8 +53,7 @@ package Classes
 		
 		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int,scorePage:ScorePage)
 		{
-			shipCount += 1;
-			shipId = shipCount;
+			
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
 			this.weaponModel = weaponModel;
@@ -68,7 +70,18 @@ package Classes
 			respawnY = initialY;
 			location = new Point(x, y);
 			scorePage.setInitialLives(respawnCount);
+			shipId = scorePage.getPlayerNum();
 			bulletArray = new Array();
+			if (shipId == 0)
+			{
+				playerColor = 0xFF0000;	
+			}
+			if (shipId == 1) 
+			{
+				playerColor = 0x0000FF;
+			}
+			scorePage.setColor(playerColor);
+			healthBar = new HealthBar(respawnHP, playerColor);
 			buildModel();
 			super(staticArray,gameBoard,collisionModel,initialX,initialY);
 		}
@@ -137,18 +150,17 @@ package Classes
 		private function calcDamage(ship1:PlayerObject, ship2:PlayerObject):int 
 		{
 			var damageDone:int;
-			
 			ship1.setImmuneStatus(true);
 			ship2.setImmuneStatus(true);
 			ship2.velX = ship1.getVelX() + ship2.getVelX() - (ship1.getVelX() * .25);
 			ship2.velY = ship1.getVelY() + ship2.getVelY() - (ship1.getVelY() * .25);
-			ship1.velX = ( -ship2.getVelX()*.25);
-			ship1.velY = ( -ship2.getVelY()*.25);
+			ship1.velX = (( -ship2.getVelX()*.35)+50);
+			ship1.velY = (( -ship2.getVelY()*.35)+50);
 			ship1.setImmuneStatus(false);
 			ship2.setImmuneStatus(false);
 			var ship1Mag:Number = Math.sqrt(Math.pow(ship1.getVelX(), 2) + Math.pow(ship1.getVelY(), 2));
 			var ship2Mag:Number = Math.sqrt(Math.pow(ship2.getVelX(), 2) + Math.pow(ship2.getVelY(), 2));
-			damageDone =((int(ship1Mag * .60)));
+			damageDone =((int(ship1Mag * .20)));
 			takeAwayHP((int(ship2Mag * .10)));
 			return damageDone;
 		}
@@ -258,6 +270,7 @@ package Classes
 			velX = 0;
 			velY = 0;
 			HP = respawnHP;
+			healthBar.updateHealthBar(respawnHP);
 			rotationZ = initialRotation;
 			immuneModel.resetImmuneTimer();
 		}
@@ -290,7 +303,8 @@ package Classes
 		public function takeAwayHP(i:int):int
 		{
 			this.HP -= i;
-			return HP;
+			healthBar.updateHealthBar(this.HP);
+			return this.HP;
 		}
 		public function getHP():int 
 		{
@@ -363,6 +377,10 @@ package Classes
 			{
 				scorePage.addSuicide();
 			}
+		}
+		public function getHealthBar():HealthBar 
+		{
+			return healthBar;
 		}
 	}
 }

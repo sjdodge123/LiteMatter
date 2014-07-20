@@ -61,7 +61,7 @@ package Classes.GameBoard
 			defaultAI = new BasicAIModel(gameStage, this, objectBuilder.staticArray);
 			if (inputPlayer1 != null) 
 			{
-				ship = objectBuilder.buildPiratePlayer(inputPlayer1, 50, 50,scorePage);
+				ship = objectBuilder.buildPiratePlayer(inputPlayer1, 50, 50, scorePage);
 			}
 			else 
 			{
