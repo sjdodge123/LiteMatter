@@ -53,7 +53,7 @@ package Models.Input
 					moveRight = true;
 					break;
 				}
-				case  leftThumb.value == -1:
+				case  (leftThumb.value == -1):
 				{
 					moveLeft = true;
 					break;
@@ -64,7 +64,6 @@ package Models.Input
 					moveRight = false;
 					break;
 				}
-				
 			}
 		}
 		

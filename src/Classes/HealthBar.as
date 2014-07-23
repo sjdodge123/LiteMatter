@@ -20,15 +20,19 @@ package Classes
 		public function HealthBar(totalHP:int, color:uint) 
 		{
 			this.totalHP = totalHP * scaleValue;
+			HP = this.totalHP;
 			this.playerColor = color;
 			generateBar();
 			x = -30;
-			updateHealthBar(totalHP);
+			barFill = new Shape();
+			addChild(barFill);
+			updateFillBar(0);
 		}
 		
 		public function updateHealthBar(newHP:int) :void
 		{
 			this.HP = newHP * scaleValue;
+			removeChild(barFill);
 			barFill = new Shape()
 			difference = totalHP - this.HP;
 			updateFillBar(difference);
@@ -50,7 +54,7 @@ package Classes
 			barFill.graphics.drawRect(0, 0, HP, 10);
 			barFill.graphics.endFill();
 			barFill.graphics.beginFill(emptyFill, 1);
-			barFill.graphics.drawRect(0, 0, difference, 10);
+			barFill.graphics.drawRect(HP, 0, difference,10);
 			barFill.graphics.endFill();
 		}
 	}
