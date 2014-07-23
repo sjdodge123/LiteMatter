@@ -15,7 +15,6 @@ package UI.Components
 			myFormat = new TextFormat();
 			myFormat.size = size;
 			myFormat.align = TextFormatAlign[alignment];
-			
 			xPass = xValue;
 			text = new TextField();
 			text.defaultTextFormat = myFormat;

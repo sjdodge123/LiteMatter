@@ -6,13 +6,13 @@ package Classes
 	import Classes.UIHub;
 	import flash.events.Event;
 	import flash.events.GameInputEvent;
-	public class XboxController 
+	public class GamePadController 
 	{
 		private var gameInput:GameInput;
 		private var uiHub:UIHub;
 		private var device:GameInputDevice;
 		private var numDevices:int;
-		public function XboxController(uiHub:UIHub) 
+		public function GamePadController(uiHub:UIHub) 
 		{
 			this.uiHub = uiHub;
 			gameInput = new GameInput();

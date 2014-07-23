@@ -4,6 +4,7 @@ package UI
 	import flash.display.Sprite;
 	import Events.GameState;
 	import flash.ui.GameInputDevice;
+	import UI.Components.ArrowButton;
 	import UI.ScoreBoard.ScoreBoard;
 	
 	
@@ -72,11 +73,13 @@ package UI
 		{
 			var id:Number =  Number(device.id.charAt(device.id.length-1));
 			controller[id].confirmController();
+			startPanel.disableButtons();
 		}
 		public function unConfirmControllerScreen(device:GameInputDevice):void 
 		{
 			var id:Number =  Number(device.id.charAt(device.id.length-1));
 			controller[id].unConfirmController();
+			startPanel.enableButtons();
 		}
 		public function displayControllerScreens():void 
 		{

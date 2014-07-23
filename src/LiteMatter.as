@@ -3,7 +3,7 @@ package
 	import Classes.PlayerObject;
 	import Classes.UIHub;
 	import Classes.IOMonitor;
-	import Classes.XboxController;
+	import Classes.GamePadController;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.text.TextField;
@@ -35,7 +35,7 @@ package
 		private var gameBoard:GameBoardObjects; 
 		private var keyBoard:IOMonitor;
 		private var uiHub:UIHub;
-		private var xbc:XboxController;
+		private var xbc:GamePadController;
 		private var gameInput:GameInput;
 	
 		public function LiteMatter()
@@ -47,7 +47,7 @@ package
 		{
 			stage.stageFocusRect = false;
 			uiHub = new UIHub(stage, this);
-			xbc = new XboxController(uiHub);
+			xbc = new GamePadController(uiHub);
 			popUpMenu(uiHub.mainScreen);
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
