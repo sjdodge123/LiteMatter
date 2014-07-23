@@ -12,6 +12,7 @@ package Classes
 	import UI.ScoreBoard.ScorePage;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
+	import Models.Input.XboxControllerModel;
 	/**
 	 * ...
 	 * @author ...
@@ -107,7 +108,6 @@ package Classes
 		}
 		public function endGameScreen(playerNum:int):void
 		{
-			game.displayScore(playerNum);
 			removeGameListeners();
 			resetGameVariables();
 			mainScreen.displayEndScreen(playerNum, scoreBoard);
@@ -196,6 +196,12 @@ package Classes
 			mainScreen.removeEventListener(GameState.SINGLE_PLAYER, singlePlayerGame);
 			mainScreen.removeEventListener(GameState.MULTI_PLAYER, multiPlayerGame);
 		}
+		private function removeControllerListeners():void 
+		{
+			ioMonitor.removeEventListener(GameState.START_GAME, startGamePressed);
+			mainScreen.addEventListener(GameState.SINGLE_PLAYER, singlePlayerGame);
+			mainScreen.addEventListener(GameState.MULTI_PLAYER, multiPlayerGame);
+		}
 	
 		private function resetGameVariables():void 
 		{
@@ -225,8 +231,22 @@ package Classes
 		{
 			addControllerListeners();
 			mainScreen.confirmControllerScreen(event.target.currentDevice);
-			var id:Number = Number(event.target.currentDevice.id.charAt(event.target.currentDevice.id.length-1));
-			game.changeInputType(id);
+			var id:Number = Number(event.target.currentDevice.id.charAt(event.target.currentDevice.id.length - 1));
+			if (!cancelController(id,event)) 
+			{
+				game.changeInputType(id);
+			}
+		}
+		private function cancelController(playNum:int,event:Event):Boolean 
+		{
+			if (game.checkInputType(playNum) > 0) 
+			{
+				game.changeInputType(playNum, 1);
+				mainScreen.unConfirmControllerScreen(event.target.currentDevice);
+				removeControllerListeners();
+				return true;
+			}
+			return false;
 		}
 		
 		/*

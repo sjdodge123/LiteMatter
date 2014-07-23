@@ -73,6 +73,11 @@ package UI
 			var id:Number =  Number(device.id.charAt(device.id.length-1));
 			controller[id].confirmController();
 		}
+		public function unConfirmControllerScreen(device:GameInputDevice):void 
+		{
+			var id:Number =  Number(device.id.charAt(device.id.length-1));
+			controller[id].unConfirmController();
+		}
 		public function displayControllerScreens():void 
 		{
 			for (var i:int = 0; i < controller.length; i++) 

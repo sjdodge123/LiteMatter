@@ -6,7 +6,6 @@ package UI.Components
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.EventDispatcher;
-	import uint;
 	
 	public class ButtonBox extends Sprite
 	{

@@ -1,11 +1,15 @@
 package
 {
+	import Classes.PlayerObject;
 	import Classes.UIHub;
 	import Classes.IOMonitor;
 	import Classes.XboxController;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.text.TextField;
+	import Interfaces.IInputHandling;
+	import Models.Input.Player1InputModel;
+	import Models.Input.Player2InputModel;
 	import Models.Input.XboxControllerModel;
 	import UI.MainScreen;
 	import flash.events.Event;
@@ -154,10 +158,33 @@ package
 		{
 			field.text = o.toString();
 		}
-		public function changeInputType(playerNum:Number):void
+		public function changeInputType(playerNum:Number,type:int=0):void
 		{
-			var xboxInput:XboxControllerModel = new XboxControllerModel(stage, GameInput.getDeviceAt(playerNum));
-			gameBoard.changeInputType(playerNum+1, xboxInput);
+			if (type == 0) 
+			{
+				var input:XboxControllerModel = new XboxControllerModel(stage, GameInput.getDeviceAt(playerNum));
+				gameBoard.changeInputType(playerNum+1, input);
+			}
+			else 
+			{
+				if (playerNum == 0) 
+				{
+					gameBoard.changeInputType(playerNum+1,new Player1InputModel(stage));
+				}
+				if (playerNum == 1) 
+				{
+					gameBoard.changeInputType(playerNum+1,new Player2InputModel(stage));
+				}	
+			}
+			
+		}
+		public function checkInputType(playerNum:Number):int
+		{
+			if (gameBoard.checkInputType(playerNum+1) is XboxControllerModel) 
+			{
+				return 1;
+			}
+			return 0;
 		}
 
 		

@@ -31,6 +31,12 @@ package UI
 			pressStart = new LabelBox("Player " + (playNum + 1) + " now using a controller.\n Press A to start game.", 475 + (playNum * 250), 760, 300, 18);
 			addChild(pressStart);
 		}
+		public function unConfirmController():void 
+		{
+			removeChild(pressStart);
+			pressStart = new LabelBox("Press start to use for Player "+ (playNum+1), 475+(playNum*250), 760, 300, 18);
+			addChild(pressStart);
+		}
 		public function resetMenu():void
 		{
 			removeChild(pressStart);

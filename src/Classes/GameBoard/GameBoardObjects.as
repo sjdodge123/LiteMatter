@@ -88,6 +88,18 @@ package Classes.GameBoard
 				inputPlayer2 = inputType;
 			}
 		}
+		public function checkInputType(playerNum:int):IInputHandling 
+		{
+			if (playerNum == 1) 
+			{
+				return inputPlayer1;
+			}
+			if (playerNum == 2) 
+			{
+				return inputPlayer2;
+			}
+			return null;
+		}
 		
 		public function addPlayer2AI(scorePage:ScorePage):void 
 		{
