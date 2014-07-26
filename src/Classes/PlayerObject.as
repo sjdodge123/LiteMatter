@@ -150,11 +150,12 @@ package Classes
 						if (objectArray[i].getHP() <= 0) 
 						{
 							objectArray[i].explode();
-							
+							recordKill(objectArray[i]);
 						}
 						if (getHP() <= 0) 
 						{
 							explode();
+							objectArray[i].recordKill(this);
 						}
 						return true;
 					}
