@@ -6,6 +6,7 @@ package
 	import Classes.GamePadController;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.media.Sound;
 	import flash.text.TextField;
 	import Interfaces.IInputHandling;
 	import Models.Input.Player1InputModel;
@@ -17,6 +18,7 @@ package
 	import Classes.GameBoard.StopWatch;
 	import Events.GameState;
 	import flash.display.StageDisplayState;
+	import flash.media.SoundChannel;
 	
 	import flash.ui.GameInput;
 	
@@ -37,6 +39,8 @@ package
 		private var uiHub:UIHub;
 		private var xbc:GamePadController;
 		private var gameInput:GameInput;
+		private var menuTheme:Sound;
+		private var soundChannel:SoundChannel;
 	
 		public function LiteMatter()
 		{
@@ -48,15 +52,24 @@ package
 			stage.stageFocusRect = false;
 			uiHub = new UIHub(stage, this);
 			xbc = new GamePadController(uiHub);
-			popUpMenu(uiHub.mainScreen);
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
 			gameBoard = new GameBoardObjects(stageWidth, stageHeight, stage);
+			addChild(gameBoard);
+			popUpMenu(uiHub.mainScreen);
+			soundChannel = new SoundChannel();
+			menuTheme = gameBoard.soundLoader.loadSound("./Sounds/mainMenuTheme.mp3");
+			soundChannel = menuTheme.play(0, 150);
+			gameBoard.intitalizeBackgroundObjects();
 			
 		}
 		
 		public function InitializeGameBoard():void 
 		{
+			soundChannel.stop();
+			gameBoard.removeChildren();
+			gameBoard = null;
+			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			text2.x = stageWidth - 110;
 			text2.textColor = 0xFFFFFF;
 			text1.textColor = 0xFFFFFF;
@@ -68,14 +81,12 @@ package
 			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
 		
-		
 		public function update(e:Event):void
 		{
 			if (uiHub.getGameRunning())
 			{
 			deltaT = stopWatch.calcTime();
 			gameBoard.updateGameBoard(deltaT);
-			
 //			mousePoint = new Point(stage.mouseX,stage.mouseY);
 			
 			print("Player 1 lives: " +gameBoard.ship.getRespawnCount()+ "\n" + "HP: " + gameBoard.ship.getHP(), text1);
@@ -89,8 +100,7 @@ package
 			else if (gameBoard.ship2.getRespawnCount() == 0) 
 			{
 				uiHub.endGameScreen(gameBoard.ship.getShipId());
-			}
-			
+			}	
 		}
 		public function startGame(numPlayers:int):void 
 		{
@@ -107,7 +117,6 @@ package
 				gameBoard.addPlayer2HU(uiHub.getNextPage());
 			}
 		}
-		
 		public function displayFullScreen():void 
 		{
 			if (stage.displayState != StageDisplayState.FULL_SCREEN_INTERACTIVE) 
@@ -144,11 +153,24 @@ package
 			stage.focus = gameBoard;
 			uiHub.setOnMenu(false);
 		}
+		public function resetToMenu():void 
+		{
+			emptyGameBoard();
+			soundChannel = menuTheme.play(0, 150);
+			gameBoard.intitalizeBackgroundObjects();
+			addChild(gameBoard);
+		}
 			
 		public function emptyGameBoard():void 
 		{
-			stage.removeEventListener(Event.ENTER_FRAME, update);
-			removeChild(gameBoard);
+			if (stage.hasEventListener(Event.ENTER_FRAME)) 
+			{
+				stage.removeEventListener(Event.ENTER_FRAME, update);
+			}
+			if (contains(gameBoard)) 
+			{
+				removeChild(gameBoard);
+			}
 			uiHub.clearAllPages();
 			gameBoard = null;
 			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);

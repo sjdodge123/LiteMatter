@@ -20,7 +20,7 @@ package UI
 		public function StartScreen() 
 		{
 			welcomeBox = new MessageBox();
-			mainLabel = new LabelBox("Please Choose:", 600, 210, 250,30);
+			mainLabel = new LabelBox("Space Pirates", 600, 210, 250,30);
 			singlePlayerLabel = new LabelBox("Single Player:", 500, 300, 250,30);
 			multiPlayerLabel = new LabelBox("Local multiplayer:", 500, 400, 250,30);
 			singlePlayerButton = new ButtonBox(750, 300, 200,GameState.SINGLE_PLAYER);

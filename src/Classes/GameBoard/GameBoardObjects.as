@@ -51,6 +51,11 @@ package Classes.GameBoard
 			addStaticObjects();
 			addDynamicObjects(scorePage);	
 		}
+		public function intitalizeBackgroundObjects():void 
+		{
+			backGround = objectBuilder.buildBackGroundImage();
+			planet = objectBuilder.buildTokenPlanet(200, 200);
+		}
 		private function addStaticObjects():void
 		{
 			backGround = objectBuilder.buildBackGroundImage();

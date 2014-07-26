@@ -5,7 +5,12 @@ package Classes
 	import flash.display.MovieClip;	
 	import Classes.GameBoard.GameBoardObjects;
 	import flash.events.EventDispatcher;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	import flash.geom.Point;
+	import Interfaces.IAnimationModel;
+	import Interfaces.ISoundModel;
+	import Models.Sound.thrusterModel;
 	import UI.ScoreBoard.ScorePage;
 	import Interfaces.ICollisionModel;
 	import Interfaces.IImmunityModel;
@@ -14,6 +19,7 @@ package Classes
 	import Interfaces.IStaticMethods;
 	import Interfaces.IWeaponModel;
 	import Models.Input.BasicAIModel;
+	
 	import Classes.HealthBar;
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
@@ -46,6 +52,10 @@ package Classes
 		private var scorePage:ScorePage;
 		
 		
+		private var thrustSound:thrusterModel;
+		private var burstSoundRight:thrusterModel;
+		private var burstSoundLeft:thrusterModel;
+		
 		private var respawnX:int;
 		private var respawnY:int;
 		private var respawnsEmpty:Boolean;
@@ -60,6 +70,9 @@ package Classes
 			this.collisionModel = collisionModel;
 			this.immuneModel = immuneModel;
 			this.scorePage = scorePage;
+			thrustSound = new thrusterModel();
+			burstSoundRight = new thrusterModel();
+			burstSoundLeft = new thrusterModel();
 			if (inputModel.getInputType() == 1) 
 			{
 				scorePage.setPlayerName("Easy Computer");
@@ -90,6 +103,9 @@ package Classes
 			shipHitBox = collisionModel.buildModel(this);
 			weaponModel.buildModel(this);
 			immuneModel.buildModel(this);
+			thrustSound.buildModel(gameBoard.soundLoader.loadSound("./Sounds/thrusterspart2.mp3"),800,.6);
+			burstSoundRight.buildModel(gameBoard.soundLoader.loadSound("./Sounds/thrusterspart1.mp3"), 200, .8);
+			burstSoundLeft.buildModel(gameBoard.soundLoader.loadSound("./Sounds/thrusterspart1.mp3"), 200, .8);
 		}
 		
 		override public function update(deltaT:Number):void
@@ -176,15 +192,19 @@ package Classes
 		{
 			if (inputModel.getMoveForward() == true)
 			{
-					thrustAccelX = thrustAccelConst*dirX;
-					thrustAccelY = thrustAccelConst*dirY;
+				thrustAccelX = thrustAccelConst*dirX;
+				thrustAccelY = thrustAccelConst * dirY;
+				thrustSound.playSound();
 			}
-			
+			else 
+			{
+				thrustSound.stopSound();
+			}
 			if (inputModel.getMoveReverse() == true)
 			{
-					thrustAccelX = -thrustAccelConst*dirX;
-					thrustAccelY = -thrustAccelConst*dirY;
-			}	
+				thrustAccelX = -thrustAccelConst*dirX;
+				thrustAccelY = -thrustAccelConst*dirY;
+			}
 			
 			if (inputModel.getMoveForward()== false && inputModel.getMoveReverse() == false)
 			{
@@ -193,15 +213,22 @@ package Classes
 			}
 			if (inputModel.getMoveLeft() == true)
 			{
-				
-				rotAccel = -rotAccelConst;
-				
+				rotAccel = -rotAccelConst;	
+				burstSoundLeft.playSound();
+			}
+			else 
+			{
+				burstSoundLeft.stopSound();
 			}
 			if (inputModel.getMoveRight() == true)
 			{
-				
 				rotAccel = rotAccelConst;
-			}	
+				burstSoundRight.playSound();
+			}
+			else 
+			{
+				burstSoundRight.stopSound();
+			}
 			if (inputModel.getMoveLeft() == false && inputModel.getMoveRight() == false)
 			{
 				if (rotRate > 1)

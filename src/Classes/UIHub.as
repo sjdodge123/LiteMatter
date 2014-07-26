@@ -98,7 +98,7 @@ package Classes
 			{
 				resetGameVariables();
 				game.popDownMenu(mainScreen);
-				game.emptyGameBoard();
+				game.resetToMenu();
 				removeGameListeners();
 				game.resetWatch();
 				mainScreen.displayStartScreen();
