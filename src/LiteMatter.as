@@ -41,6 +41,7 @@ package
 		private var gameInput:GameInput;
 		private var menuTheme:Sound;
 		private var soundChannel:SoundChannel;
+		private var onMainMenu:Boolean = true;
 	
 		public function LiteMatter()
 		{
@@ -61,7 +62,8 @@ package
 			menuTheme = gameBoard.soundLoader.loadSound("./Sounds/mainMenuTheme.mp3");
 			soundChannel = menuTheme.play(0, 150);
 			gameBoard.intitalizeBackgroundObjects();
-			
+			stopWatch = new StopWatch();
+			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
 		
 		public function InitializeGameBoard():void 
@@ -85,27 +87,34 @@ package
 		{
 			if (uiHub.getGameRunning())
 			{
-			deltaT = stopWatch.calcTime();
-			gameBoard.updateGameBoard(deltaT);
-//			mousePoint = new Point(stage.mouseX,stage.mouseY);
-			
-			print("Player 1 lives: " +gameBoard.ship.getRespawnCount()+ "\n" + "HP: " + gameBoard.ship.getHP(), text1);
-			print("Player 2 lives: " +gameBoard.ship2.getRespawnCount() + "\n" + "HP: " + gameBoard.ship2.getHP(),text2);
+				deltaT = stopWatch.calcTime();
+				gameBoard.updateGameBoard(deltaT);
+				//mousePoint = new Point(stage.mouseX,stage.mouseY);
+				
+				print("Player 1 lives: " +gameBoard.ship.getRespawnCount()+ "\n" + "HP: " + gameBoard.ship.getHP(), text1);
+				print("Player 2 lives: " +gameBoard.ship2.getRespawnCount() + "\n" + "HP: " + gameBoard.ship2.getHP(), text2);
+				
+				if (gameBoard.ship.getRespawnCount() == 0) 
+				{
+					uiHub.endGameScreen(gameBoard.ship2.getShipId());
+				}
+				else if (gameBoard.ship2.getRespawnCount() == 0) 
+				{
+					uiHub.endGameScreen(gameBoard.ship.getShipId());
+				}	
 			}
-			
-			if (gameBoard.ship.getRespawnCount() == 0) 
+			else if (onMainMenu)
 			{
-				uiHub.endGameScreen(gameBoard.ship2.getShipId());
+				deltaT = stopWatch.calcTime();
+				gameBoard.updateGameBoard(deltaT);
 			}
-			else if (gameBoard.ship2.getRespawnCount() == 0) 
-			{
-				uiHub.endGameScreen(gameBoard.ship.getShipId());
-			}	
+		
 		}
 		public function startGame(numPlayers:int):void 
 		{
 			InitializeGameBoard();
-			stage.focus = gameBoard;			
+			stage.focus = gameBoard;
+			onMainMenu = false;
 			//1 is AI
 			if (numPlayers == 1) 
 			{
@@ -159,6 +168,8 @@ package
 			soundChannel = menuTheme.play(0, 150);
 			gameBoard.intitalizeBackgroundObjects();
 			addChild(gameBoard);
+			onMainMenu = true;
+			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
 			
 		public function emptyGameBoard():void 

@@ -55,6 +55,11 @@ package Classes.GameBoard
 		{
 			backGround = objectBuilder.buildBackGroundImage();
 			planet = objectBuilder.buildTokenPlanet(200, 200);
+			var planet2:StaticObject = objectBuilder.buildTokenPlanet(stageWidth-200, stageHeight-200);
+			var cannonball:DynamicObject = objectBuilder.buildAsteroid(400, 375);
+			cannonball.scaleX = .08;
+			cannonball.scaleY = .08;
+			cannonball.velX = 350;
 		}
 		private function addStaticObjects():void
 		{

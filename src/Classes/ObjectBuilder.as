@@ -3,6 +3,7 @@ package Classes
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import Interfaces.IAnimationPart;
+	import Models.Collision.AsteriodCollisionModel;
 	
 	import Classes.GameBoard.GameBoardObjects;
 	
@@ -67,6 +68,10 @@ package Classes
 		public function buildTokenCannonBall(x:int, y:int):DynamicObject
 		{
 			return addDynamic("./Images/cannonball.swf", 0, 0, x, y, staticArray, new CannonBallCollisionModel(),new PlayAnimationModel());
+		}
+		public function buildAsteroid(x:int, y:int):DynamicObject
+		{
+			return addDynamic("./Images/moon.swf", 0, 0, x, y, staticArray, new AsteriodCollisionModel(),new PlayAnimationModel());
 		}
 		public function buildPiratePlayer(inputModel:IInputHandling,x:int,y:int,scorePage:ScorePage):PlayerObject
 		{
