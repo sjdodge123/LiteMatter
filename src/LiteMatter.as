@@ -69,9 +69,13 @@ package
 		public function InitializeGameBoard():void 
 		{
 			soundChannel.stop();
+			var player1Input:IInputHandling = gameBoard.inputPlayer1;
+			var player2Input:IInputHandling = gameBoard.inputPlayer2;
 			gameBoard.removeChildren();
 			gameBoard = null;
-			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
+			gameBoard = new GameBoardObjects(stageWidth, stageHeight, stage);
+			gameBoard.inputPlayer1 = player1Input;
+			gameBoard.inputPlayer2 = player2Input;
 			text2.x = stageWidth - 110;
 			text2.textColor = 0xFFFFFF;
 			text1.textColor = 0xFFFFFF;

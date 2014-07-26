@@ -33,8 +33,8 @@ package Classes.GameBoard
 		private var objectBuilder:ObjectBuilder;
 		public var soundLoader:SoundLoader;
 		private var defaultAI:BasicAIModel;
-		private var inputPlayer1:IInputHandling;
-		private var inputPlayer2:IInputHandling;
+		public var inputPlayer1:IInputHandling;
+		public var inputPlayer2:IInputHandling;
 		
 		public function GameBoardObjects(stageWidth:int, stageHeight:int,stage:Stage)
 		{
