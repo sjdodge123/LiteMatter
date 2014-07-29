@@ -1,11 +1,12 @@
 package Classes 
 {
 	
-	import flash.ui.GameInput;
-	import flash.ui.GameInputDevice;
-	import Classes.UIHub;
 	import flash.events.Event;
 	import flash.events.GameInputEvent;
+	import flash.ui.GameInput;
+	import flash.ui.GameInputDevice;
+	
+	import Classes.UIHub;
 	public class GamePadController 
 	{
 		private var gameInput:GameInput;
@@ -20,17 +21,16 @@ package Classes
 			gameInput.addEventListener(GameInputEvent.DEVICE_REMOVED, controllerRemoved);
 			gameInput.addEventListener(GameInputEvent.DEVICE_UNUSABLE, controllerUnusable);
 		}
-		private function controllerAdded(event:Event):void 
+		private function controllerAdded(event:GameInputEvent):void 
 		{
-			uiHub.controllerAdded(GameInput.getDeviceAt(numDevices));
-			uiHub.addControllerPopUpScreen(numDevices,GameInput.getDeviceAt(numDevices));
+			uiHub.controllerAdded(event.device);
+			uiHub.addControllerPopUpScreen(int(event.device.id.charAt(event.device.id.length-1)),event.device);
 			numDevices += 1;
 		}
-		private function controllerRemoved(event:Event):void 
+		private function controllerRemoved(event:GameInputEvent):void 
 		{
-			trace(GameInput.numDevices);
+			uiHub.removeControllerPopUpScreen(numDevices,event.device);
 			numDevices -= 1;
-			//TODO Remove associated device from device array
 		}
 		private function controllerUnusable(event:Event):void 
 		{

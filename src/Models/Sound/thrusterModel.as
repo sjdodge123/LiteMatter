@@ -1,8 +1,5 @@
 package Models.Sound 
 {
-	import Events.EFireCannon;
-	import flash.display.DisplayObject;
-	import flash.events.Event;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.utils.Timer;

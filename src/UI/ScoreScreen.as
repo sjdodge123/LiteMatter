@@ -1,10 +1,7 @@
 package UI 
 {
-	import flash.display.Shape;
 	import flash.display.Sprite
 	import UI.Components.LabelBox;
-	import UI.Components.MessageBox;
-	import UI.ScoreBoard.ScorePage;
 	import UI.ScoreBoard.ScoreBoard;
 	
 	public class ScoreScreen extends Sprite

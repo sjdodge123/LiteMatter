@@ -3,9 +3,7 @@ package UI.Components
 	import Events.GameState;
 	import flash.events.MouseEvent;
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.EventDispatcher;
 	
 	public class ButtonBox extends Sprite
 	{

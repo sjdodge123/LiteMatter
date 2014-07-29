@@ -1,6 +1,5 @@
 package UI.ScoreBoard 
 {
-	import adobe.utils.CustomActions;
 	/**
 	 * ...
 	 * @author ...

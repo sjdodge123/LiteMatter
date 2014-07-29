@@ -4,12 +4,7 @@ package Classes
 	import Events.EFireCannon;
 	import flash.display.MovieClip;	
 	import Classes.GameBoard.GameBoardObjects;
-	import flash.events.EventDispatcher;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	import flash.geom.Point;
-	import Interfaces.IAnimationModel;
-	import Interfaces.ISoundModel;
 	import Models.Sound.thrusterModel;
 	import UI.ScoreBoard.ScorePage;
 	import Interfaces.ICollisionModel;
@@ -18,7 +13,6 @@ package Classes
 	import Interfaces.IPlayerMethods;
 	import Interfaces.IStaticMethods;
 	import Interfaces.IWeaponModel;
-	import Models.Input.BasicAIModel;
 	
 	import Classes.HealthBar;
 

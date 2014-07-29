@@ -3,7 +3,6 @@ package Models.Weapons
 	import Events.PageEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.media.Sound;
@@ -12,7 +11,6 @@ package Models.Weapons
 	import Classes.DynamicObject;
 	import Classes.PlayerObject;
 	import Classes.GameBoard.GameBoardObjects;
-	import Interfaces.IAnimationPart;
 	import Events.EFireCannon;
 	
 	import Interfaces.IWeaponModel;

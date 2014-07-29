@@ -1,7 +1,5 @@
 package Interfaces
 {
-	import flash.events.KeyboardEvent;
-
 	public interface IInputHandling
 	{
 		function getMoveForward():Boolean

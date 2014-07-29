@@ -2,9 +2,7 @@ package Models.Input
 {
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
-	import flash.ui.GameInputDevice;
 	import flash.ui.Keyboard;
-	
 	import Interfaces.IInputHandling;
 
 	public class Player1InputModel implements IInputHandling

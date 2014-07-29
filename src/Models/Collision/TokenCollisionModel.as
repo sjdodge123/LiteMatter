@@ -5,7 +5,6 @@ package Models.Collision
 	import Classes.CollisionBuilder;
 	import Classes.CollisionEngine;
 	import Classes.GameObject;
-	import Classes.StaticObject;
 	
 	import Interfaces.ICollisionModel;
 

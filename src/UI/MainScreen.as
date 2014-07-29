@@ -1,10 +1,12 @@
 package UI 
 {
-	import Classes.Config.Reader;
 	import flash.display.Sprite;
-	import Events.GameState;
 	import flash.ui.GameInputDevice;
-	import UI.Components.ArrowButton;
+	
+	import Classes.Config.Reader;
+	
+	import Events.GameState;
+	
 	import UI.ScoreBoard.ScoreBoard;
 	
 	
@@ -16,11 +18,16 @@ package UI
 		private var reader:Reader;
 		private var controller:Vector.<ControllerPopScreen>;
 		private var deviceID:int;
+		private var maxNumPlayers:int = 2;
 		public function MainScreen() 
 		{
 			displayStartScreen();
 			reader = new Reader();
 			controller = new Vector.<ControllerPopScreen>;
+			for(var i:int=0;i<maxNumPlayers;i++)
+			{
+				controller.push(null);
+			}
 			reader.readFile("version.txt"); 
 		}
 		
@@ -64,9 +71,9 @@ package UI
 		}
 		public function addControllerPopScreen(playNum:int,device:GameInputDevice):void 
 		{
-			var screen:ControllerPopScreen = new ControllerPopScreen(playNum);
+			var screen:ControllerPopScreen = new ControllerPopScreen(playNum,device);
 			var id:Number = Number(device.id.charAt(device.id.length-1));
-			controller.splice(id, 0, screen);
+			controller[id] = screen;
 			addChild(screen);
 		}
 		public function confirmControllerScreen(device:GameInputDevice):void 
@@ -85,12 +92,26 @@ package UI
 		{
 			for (var i:int = 0; i < controller.length; i++) 
 			{
-				controller[i].resetMenu();
-				addChild(controller[i]);
+				if(controller[i] != null)
+				{
+					controller[i].resetMenu();
+					addChild(controller[i]);
+				}
 			}
 		}
 		
 		
+		public function removeControllerPopScreen(playNum:int, device:GameInputDevice):void
+		{
+			for(var i:int=0;i<controller.length;i++)
+			{
+				if(controller[i].device == device)
+				{
+					removeChild(controller[i]);
+					controller[i] = null
+				}
+			}	
+		}
 	}
 
 }

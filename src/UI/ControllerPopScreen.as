@@ -2,14 +2,18 @@ package UI
 {
 	import flash.display.Sprite;
 	import flash.ui.GameInputDevice;
+	
 	import UI.Components.LabelBox;
+
 	public class ControllerPopScreen extends Sprite
 	{
 		private var msgBox:Sprite;
 		private var pressStart:LabelBox;
 		private var playNum:int;
-		public function ControllerPopScreen(playNum:int) 
+		public var device:GameInputDevice;
+		public function ControllerPopScreen(playNum:int,device:GameInputDevice) 
 		{
+			this.device = device;
 			this.playNum = playNum;
 			msgBox = new Sprite();	
 			msgBox.graphics.beginFill(0xFFFFFF);

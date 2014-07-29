@@ -1,6 +1,5 @@
 package Classes 
 {
-	import adobe.utils.CustomActions;
 	import flash.display.Stage;
 	import Classes.GameBoard.StopWatch;
 	import Events.GameState;
@@ -12,7 +11,6 @@ package Classes
 	import UI.ScoreBoard.ScorePage;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
-	import Models.Input.XboxControllerModel;
 	/**
 	 * ...
 	 * @author ...
@@ -226,6 +224,13 @@ package Classes
 				mainScreen.addControllerPopScreen(playNum,device);
 			}
 		}
+		public function removeControllerPopUpScreen(playNum:int,device:GameInputDevice):void 
+		{
+			if (!gameRunning) 
+			{
+				mainScreen.removeControllerPopScreen(playNum,device);
+			}
+		}
 		
 		private function controllerConfirmed(event:Event):void 
 		{
@@ -234,14 +239,14 @@ package Classes
 			var id:Number = Number(event.target.currentDevice.id.charAt(event.target.currentDevice.id.length - 1));
 			if (!cancelController(id,event)) 
 			{
-				game.changeInputType(id);
+				game.changeInputType(id,event.target.currentDevice); 
 			}
 		}
 		private function cancelController(playNum:int,event:Event):Boolean 
 		{
 			if (game.checkInputType(playNum) > 0) 
 			{
-				game.changeInputType(playNum, 1);
+				game.changeInputType(playNum,event.target.currentDevice, 1);
 				mainScreen.unConfirmControllerScreen(event.target.currentDevice);
 				removeControllerListeners();
 				return true;

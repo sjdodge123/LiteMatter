@@ -1,6 +1,5 @@
 package Models.Animation 
 {
-	import Loaders.AnimationLoader;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import Interfaces.IAnimationModel;

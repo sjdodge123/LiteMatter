@@ -1,26 +1,28 @@
 package
 {
-	import Classes.PlayerObject;
-	import Classes.UIHub;
-	import Classes.IOMonitor;
-	import Classes.GamePadController;
 	import flash.display.Sprite;
+	import flash.display.StageDisplayState;
+	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.media.Sound;
+	import flash.media.SoundChannel;
 	import flash.text.TextField;
+	import flash.ui.GameInput;
+	import flash.ui.GameInputDevice;
+	
+	import Classes.GamePadController;
+	import Classes.IOMonitor;
+	import Classes.UIHub;
+	import Classes.GameBoard.GameBoardObjects;
+	import Classes.GameBoard.StopWatch;
+	
 	import Interfaces.IInputHandling;
+	
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
 	import Models.Input.XboxControllerModel;
-	import UI.MainScreen;
-	import flash.events.Event;
-	import Classes.GameBoard.GameBoardObjects;
-	import Classes.GameBoard.StopWatch;
-	import Events.GameState;
-	import flash.display.StageDisplayState;
-	import flash.media.SoundChannel;
 	
-	import flash.ui.GameInput;
+	import UI.MainScreen;
 	
 	
 	[SWF(backgroundColor= "0x000000", width="1200", height ="900", frameRate='30')]
@@ -195,11 +197,11 @@ package
 		{
 			field.text = o.toString();
 		}
-		public function changeInputType(playerNum:Number,type:int=0):void
+		public function changeInputType(playerNum:Number,device:GameInputDevice,type:int=0):void
 		{
 			if (type == 0) 
 			{
-				var input:XboxControllerModel = new XboxControllerModel(stage, GameInput.getDeviceAt(playerNum));
+				var input:XboxControllerModel = new XboxControllerModel(stage, device);
 				gameBoard.changeInputType(playerNum+1, input);
 			}
 			else 

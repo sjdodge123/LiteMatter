@@ -6,7 +6,6 @@ package Classes
 	import flash.ui.GameInputControl;
 	import flash.ui.GameInputDevice;
 	import flash.ui.Keyboard;
-	import flash.events.EventDispatcher;
 	import flash.events.Event;
 	
 	public class IOMonitor extends GameObject

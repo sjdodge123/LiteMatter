@@ -2,8 +2,6 @@ package Classes
 {
 	import flash.display.Shape;
 	import flash.display.Sprite;
-	import flash.utils.Timer;
-	import flash.events.TimerEvent;
 	
 	public class HealthBar extends Sprite
 	{

@@ -1,10 +1,8 @@
 package Models.Input 
 {
 	import Classes.GameBoard.GameBoardObjects;
-	import Classes.GameObject;
 	import Classes.ObjectBuilder;
 	import Classes.PlayerObject;
-	import Events.EFireCannon;
 	import flash.events.Event;
 	import flash.display.Stage;
 	import flash.events.TimerEvent;

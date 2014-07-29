@@ -3,21 +3,16 @@ package Classes.GameBoard
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import Interfaces.IInputHandling;
-	import Interfaces.IObjectMethods;
 	import Models.Input.BasicAIModel;
 	import UI.ScoreBoard.ScorePage;
-	
 	import Classes.DynamicObject;
 	import Classes.GameObject;
 	import Classes.ObjectBuilder;
 	import Classes.PlayerObject;
 	import Classes.StaticObject;
-	
 	import Loaders.SoundLoader;
-	
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
-	import Models.Weapons.CannonModel;
 	
 
 	public class GameBoardObjects extends GameObject 

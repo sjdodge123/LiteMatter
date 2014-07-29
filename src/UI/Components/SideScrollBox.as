@@ -1,7 +1,6 @@
 package UI.Components 
 {
 	import flash.display.Sprite;
-	import flash.display.Shape;
 	/**
 	 * ...
 	 * @author Jake

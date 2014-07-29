@@ -5,7 +5,6 @@ package UI
 	import UI.Components.ButtonBox;
 	import flash.display.Sprite;
 	import Events.GameState;
-	import UI.Components.ArrowButton;
 	import UI.Components.SideScrollBox;
 	
 	public class StartScreen extends Sprite
