@@ -1,20 +1,16 @@
 package UI.Screens 
 {
-	import UI.Blocks.MessageBox;
 	import UI.Blocks.LabelBox;
-	import UI.Blocks.ButtonBox;
 	import flash.display.Sprite;
 	import Events.UIEvent;
 	import UI.ScoreBoard.ScoreBoard;
+	import UI.Blocks.LabelButton;
 	
 	public class EndScreen extends Sprite
 	{
 		private var mainLabel:LabelBox;
-		private var singlePlayerLabel:LabelBox;
-		private var multiPlayerLabel:LabelBox;
-		private var singlePlayerButton:ButtonBox;
-		private var multiPlayerButton:ButtonBox;
-		private var playAgainLabel:LabelBox;
+		private var backButton:LabelButton;
+		private var playAgainButton:LabelButton;
 		private var scoreScreen:ScoreScreen;
 		
 		public function EndScreen(endPlayerNum:int,scoreBoard:ScoreBoard) 
@@ -24,33 +20,27 @@ package UI.Screens
 			mainLabel.text.textColor =  scoreBoard.getColor();;
 			scoreScreen = new ScoreScreen(scoreBoard);
 			
-			playAgainLabel = new LabelBox("Play again?",  600, 490, 300,25);
-			singlePlayerLabel = new LabelBox("Single Player:", 500, 520, 250,30);
-			multiPlayerLabel = new LabelBox("Local multiplayer:", 500, 590, 250,30);
-			singlePlayerButton = new ButtonBox(750, 520, 200,UIEvent.SINGLE_PLAYER);
-			multiPlayerButton = new ButtonBox(750, 590, 200,UIEvent.MULTI_PLAYER);
-
+			playAgainButton = new LabelButton("Play again",  600, 600,250,40,UIEvent.PLAY);
+			playAgainButton.addEventListener(UIEvent.PLAY,playAgain);
+			backButton = new LabelButton("Back to Menu",600,700,250,40,UIEvent.BACK);
+			backButton.addEventListener(UIEvent.BACK,backToMenu);
+			
 			addChild(mainLabel);
-			addChild(playAgainLabel);
+			addChild(playAgainButton);
 			addChild(scoreScreen);
-			addChild(singlePlayerLabel);
-			addChild(multiPlayerLabel);
-			addChild(singlePlayerButton);
-			addChild(multiPlayerButton);
-			singlePlayerButton.addEventListener(UIEvent.SINGLE_PLAYER, singleGame);
-			multiPlayerButton.addEventListener(UIEvent.MULTI_PLAYER, multiGame);
+			addChild(backButton);
 		}
 		
 		
-		public function singleGame(event:UIEvent):void 
+		public function playAgain(event:UIEvent):void 
 		{
-			dispatchEvent(new UIEvent(UIEvent.SINGLE_PLAYER, null));
-			singlePlayerButton.removeEventListener(UIEvent.SINGLE_PLAYER, singleGame);
+			dispatchEvent(event);
+			playAgainButton.removeEventListener(UIEvent.PLAY, playAgain);
 		}
-		public function multiGame(event:UIEvent):void 
+		public function backToMenu(event:UIEvent):void 
 		{
-			dispatchEvent(new UIEvent(UIEvent.MULTI_PLAYER, null));
-			multiPlayerButton.removeEventListener(UIEvent.MULTI_PLAYER, multiGame);
+			dispatchEvent(event);
+			backButton.removeEventListener(UIEvent.BACK, backToMenu);
 		}
 		
 	}

@@ -93,5 +93,24 @@ package UI.Screens
 				}
 			}	
 		}
+		
+		public function reset():void
+		{
+			scoreBoard.removeAllPlayers();
+			scoreBoard.addPlayer(1);
+			scoreBoard.addPlayer(2);
+			removeChildren();
+			shipOne = new ShipOptions(25,10,scoreBoard.getNextPage());
+			addChild(shipOne);
+			shipTwo = new ShipOptions(350,10,scoreBoard.getNextPage());
+			addChild(shipTwo);
+
+			playButton = new LabelButton("Play", 600, 600, 250,40,UIEvent.PLAY);
+			playButton.addEventListener(UIEvent.PLAY,playGame);
+			addChild(playButton);
+			backButton = new LabelButton("Back",600,700,250,40,UIEvent.BACK);
+			backButton.addEventListener(UIEvent.BACK,backToMain);
+			addChild(backButton);
+		}
 	}
 }

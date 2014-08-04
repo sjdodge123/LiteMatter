@@ -64,10 +64,12 @@ package UI
 		protected function backToMain(event:Event):void
 		{
 			clearScreen();
-			optionsScreen.removeEventListener(UIEvent.BACK,backToMain);
-			gameSelection.removeEventListener(UIEvent.BACK,backToMain);
+			removeBackEvent(optionsScreen);
+			removeBackEvent(gameSelection);
+			removeBackEvent(endScreen);
 			gameSelection.removeEventListener(UIEvent.PLAY,playGame);
 			displayMainMenuScreen();
+			dispatchEvent(new UIEvent(UIEvent.BACK,null));
 		}
 		
 		protected function playGame(event:UIEvent):void
@@ -85,6 +87,7 @@ package UI
 		{
 			endScreen = new EndScreen(winPlayerNum,scoreBoard);
 			addChild(endScreen);
+			endScreen.addEventListener(UIEvent.BACK,backToMain);
 		}
 		
 		
@@ -125,6 +128,18 @@ package UI
 		public function buttonPressed(event:ButtonEvent):void
 		{
 			//make correct menu button press
+		}
+		
+		public function resetToMenu():void
+		{
+			gameSelection.reset();
+		}
+		private function removeBackEvent(obj:Sprite):void
+		{
+			if(obj.hasEventListener(UIEvent.BACK))
+			{
+				obj.removeEventListener(UIEvent.BACK,backToMain)
+			}
 		}
 	}
 

@@ -89,7 +89,7 @@ package Classes
 		  ************************************************
 		*/
 		
-		private function resetGame(event:UIEvent):void 
+		private function resetGamePaused(event:UIEvent):void 
 		{
 			if (gamePaused) 
 			{
@@ -100,8 +100,21 @@ package Classes
 				game.resetWatch();
 				screenController.displayMainMenuScreen();
 				screenController.displayControllerScreens();
+				screenController.resetToMenu();
 				game.popUpMenu(screenController);
 			}
+		}
+		private function resetGame(event:UIEvent):void 
+		{
+			resetGameVariables();
+			game.popDownMenu(screenController);
+			game.resetToMenu();
+			removeGameListeners();
+			game.resetWatch();
+			screenController.displayMainMenuScreen();
+			screenController.displayControllerScreens();
+			screenController.resetToMenu();
+			game.popUpMenu(screenController);
 		}
 		public function endGameScreen(playerNum:int):void
 		{
@@ -111,7 +124,9 @@ package Classes
 			game.emptyGameBoard();
 			game.popUpMenu(screenController);
 			screenController.displayControllerScreens();
+			screenController.addEventListener(UIEvent.BACK,resetGame);
 		}
+		
 		/*
 		  ************************************************
 						  *** GAME COMMANDS *** 
@@ -200,13 +215,13 @@ package Classes
 		}
 		private function addGameListeners():void 
 		{
-			ioMonitor.addEventListener(UIEvent.RESET, resetGame);
+			ioMonitor.addEventListener(UIEvent.RESET, resetGamePaused);
 			ioMonitor.addEventListener(UIEvent.MUTE_GAME, muteSound);
 	
 		}
 		private function removeGameListeners():void 
 		{
-			ioMonitor.removeEventListener(UIEvent.RESET, resetGame);
+			ioMonitor.removeEventListener(UIEvent.RESET, resetGamePaused);
 			ioMonitor.removeEventListener(UIEvent.MUTE_GAME, muteSound);
 			ioMonitor.removeEventListener(UIEvent.START_GAME, startGamePressed);
 		}
