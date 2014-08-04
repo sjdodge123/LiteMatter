@@ -64,9 +64,6 @@ package UI
 		protected function backToMain(event:Event):void
 		{
 			clearScreen();
-			removeBackEvent(optionsScreen);
-			removeBackEvent(gameSelection);
-			removeBackEvent(endScreen);
 			gameSelection.removeEventListener(UIEvent.PLAY,playGame);
 			displayMainMenuScreen();
 			dispatchEvent(new UIEvent(UIEvent.BACK,null));
