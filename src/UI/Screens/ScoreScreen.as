@@ -1,7 +1,7 @@
-package UI 
+package UI.Screens 
 {
 	import flash.display.Sprite
-	import UI.Components.LabelBox;
+	import UI.Blocks.LabelBox;
 	import UI.ScoreBoard.ScoreBoard;
 	
 	public class ScoreScreen extends Sprite

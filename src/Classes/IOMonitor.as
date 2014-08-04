@@ -1,12 +1,13 @@
 package Classes 
 {
-	import Events.GameState;
+	import Events.UIEvent;
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
 	import flash.ui.GameInputControl;
 	import flash.ui.GameInputDevice;
 	import flash.ui.Keyboard;
 	import flash.events.Event;
+	import Events.ButtonEvent;
 	
 	public class IOMonitor extends GameObject
 	{	
@@ -39,27 +40,27 @@ package Classes
 			{
 				case Keyboard.P:
 				{
-					dispatchEvent(new GameState(GameState.PAUSE_GAME, null));
+					dispatchEvent(new UIEvent(UIEvent.PAUSE_GAME, null));
 					break;
 				}
 				case Keyboard.ESCAPE:
 				{
-					dispatchEvent(new GameState(GameState.PAUSE_GAME, null));
+					dispatchEvent(new UIEvent(UIEvent.PAUSE_GAME, null));
 					break;
 				}
 				case Keyboard.R:
 				{
-					dispatchEvent(new GameState(GameState.RESET, null));
+					dispatchEvent(new UIEvent(UIEvent.RESET, null));
 					break;
 				}
 				case Keyboard.ALTERNATE + Keyboard.ENTER:
 				{
-					dispatchEvent(new GameState(GameState.FULL_SCREEN, null));
+					dispatchEvent(new UIEvent(UIEvent.FULL_SCREEN, null));
 					break;
 				}
 				case Keyboard.M:
 				{
-					dispatchEvent(new GameState(GameState.MUTE_GAME, null));
+					dispatchEvent(new UIEvent(UIEvent.MUTE_GAME, null));
 					break;
 				}
 			}
@@ -68,15 +69,15 @@ package Classes
 		private function startPressed(event:Event):void
 		{
 			currentDevice = event.target.device;
-			if (event.target.value == 1) { dispatchEvent(new GameState(GameState.PAUSE_GAME, currentDevice)); }
+			if (event.target.value == 1) { dispatchEvent(new UIEvent(UIEvent.PAUSE_GAME, currentDevice)); }
 		}
 		private function aPressed(event:Event):void 
 		{
-			if (event.target.value == 1) { dispatchEvent(new GameState(GameState.START_GAME, null)); }
+			if (event.target.value == 1) { dispatchEvent(new ButtonEvent(ButtonEvent.PRESSED,event)); }
 		}
 		private function backPressed(event:Event):void 
 		{
-			if (event.target.value == 1) { dispatchEvent(new GameState(GameState.RESET, null)); }
+			if (event.target.value == 1) { dispatchEvent(new UIEvent(UIEvent.RESET, null)); }
 		}
 		
 		

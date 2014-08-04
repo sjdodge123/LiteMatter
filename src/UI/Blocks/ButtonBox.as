@@ -1,6 +1,6 @@
-package UI.Components 
+package UI.Blocks 
 {
-	import Events.GameState;
+	import Events.UIEvent;
 	import flash.events.MouseEvent;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -25,7 +25,7 @@ package UI.Components
 		}
 		private function buttonClickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new GameState(this.gameState,null));
+			dispatchEvent(new UIEvent(this.gameState,null));
 		}
 		public function disableButton():void
 		{

@@ -1,4 +1,4 @@
-package UI.Components 
+package UI.Blocks 
 {
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -17,8 +17,11 @@ package UI.Components
 			myFormat.align = TextFormatAlign[alignment];
 			xPass = xValue;
 			text = new TextField();
+			text.selectable = false;
 			text.defaultTextFormat = myFormat;
+			text.textColor = 0xFFFFFF;
 			text.text = message;
+			text.height = 15+size;
 			text.width = width;
 			text.x = xValue - text.width/2;
 			text.y = y;

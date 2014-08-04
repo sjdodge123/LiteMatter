@@ -1,8 +1,7 @@
-package UI 
+package UI.Screens 
 {
 	import flash.display.Sprite
-	import UI.Components.LabelBox;
-	import UI.Components.MessageBox;
+	import UI.Blocks.LabelBox;
 	
 	public class PauseScreen extends Sprite
 	{
@@ -12,13 +11,11 @@ package UI
 		private var versionText:LabelBox;
 		public function PauseScreen(version:String) 
 		{
-			var msg:MessageBox = new MessageBox();
 			pauseText = new LabelBox("PAUSED", 600, 250, 250, 60);
 			resetText = new LabelBox("Press R/Back to reset", 600, 350, 300, 30);
 			muteText = new LabelBox("Press M to Mute/Unmute", 600, 450, 350, 30);
 			versionText = new LabelBox(version, 600, 550, 350, 15);
 			pauseText.text.textColor = 0xFF0000;
-			addChild(msg);
 			addChild(pauseText);
 			addChild(muteText);
 			addChild(resetText);

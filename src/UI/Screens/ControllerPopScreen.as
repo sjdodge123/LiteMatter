@@ -1,13 +1,12 @@
-package UI 
+package UI.Screens 
 {
 	import flash.display.Sprite;
 	import flash.ui.GameInputDevice;
 	
-	import UI.Components.LabelBox;
+	import UI.Blocks.LabelBox;
 
 	public class ControllerPopScreen extends Sprite
 	{
-		private var msgBox:Sprite;
 		private var pressStart:LabelBox;
 		private var playNum:int;
 		public var device:GameInputDevice;
@@ -15,15 +14,8 @@ package UI
 		{
 			this.device = device;
 			this.playNum = playNum;
-			msgBox = new Sprite();	
-			msgBox.graphics.beginFill(0xFFFFFF);
-			msgBox.graphics.drawRect(350+(playNum*250), 710, 250, 150);
-			msgBox.graphics.endFill();
-			msgBox.graphics.lineStyle(2, 0x000000, 100);
-			msgBox.graphics.drawRect(355+(playNum*250), 715, 240, 140);
 			var detected:LabelBox = new LabelBox("Controller detected", 475+(playNum*250), 720, 300, 22);
 			pressStart = new LabelBox("Press start to use for Player "+ (playNum+1), 475+(playNum*250), 760, 300, 18);
-			addChild(msgBox);
 			addChild(detected);
 			addChild(pressStart);
 			

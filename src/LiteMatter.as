@@ -22,7 +22,7 @@ package
 	import Models.Input.Player2InputModel;
 	import Models.Input.XboxControllerModel;
 	
-	import UI.MainScreen;
+	import UI.UserInterfaceController;
 	
 	
 	[SWF(backgroundColor= "0x000000", width="1200", height ="900", frameRate='30')]
@@ -59,7 +59,7 @@ package
 			this.stageHeight = stage.stageHeight;
 			gameBoard = new GameBoardObjects(stageWidth, stageHeight, stage);
 			addChild(gameBoard);
-			popUpMenu(uiHub.mainScreen);
+			popUpMenu(uiHub.screenController);
 			soundChannel = new SoundChannel();
 			menuTheme = gameBoard.soundLoader.loadSound("./Sounds/mainMenuTheme.mp3");
 			soundChannel = menuTheme.play(0, 150);
@@ -81,7 +81,7 @@ package
 			text2.x = stageWidth - 110;
 			text2.textColor = 0xFFFFFF;
 			text1.textColor = 0xFFFFFF;
-			gameBoard.initializeGameObjects(uiHub.getNextPage());
+			gameBoard.initializeGameObjects(uiHub.getPlayerOnePage());
 			addChild(gameBoard);
 			stopWatch = new StopWatch();
 			addChild(text1);
@@ -124,12 +124,12 @@ package
 			//1 is AI
 			if (numPlayers == 1) 
 			{
-				gameBoard.addPlayer2AI(uiHub.getNextPage());
+				gameBoard.addPlayer2AI(uiHub.getPlayerTwoPage());
 			}
 			//2 is HU
 			if (numPlayers == 2) 
 			{
-				gameBoard.addPlayer2HU(uiHub.getNextPage());
+				gameBoard.addPlayer2HU(uiHub.getPlayerTwoPage());
 			}
 		}
 		public function displayFullScreen():void 
@@ -152,19 +152,19 @@ package
 		{
 			print("Player " + playerNum  +" wins!!!!", text2);
 		}
-		public function popUpMenu(mainScreen:MainScreen):void 
+		public function popUpMenu(mainScreen:UserInterfaceController):void 
 		{
 			addChild(mainScreen);
 			stage.focus = mainScreen;
 			uiHub.setOnMenu(true);
 		}
-		public function popDownMenu(mainScreen:MainScreen):void
+		public function popDownMenu(mainScreen:UserInterfaceController):void
 		{
 			if (this.contains(mainScreen)) 
 			{
 				removeChild(mainScreen);
 			}
-			mainScreen.clearMainScreen();
+			mainScreen.clearScreen();
 			stage.focus = gameBoard;
 			uiHub.setOnMenu(false);
 		}
@@ -202,17 +202,17 @@ package
 			if (type == 0) 
 			{
 				var input:XboxControllerModel = new XboxControllerModel(stage, device);
-				gameBoard.changeInputType(playerNum+1, input);
+				gameBoard.changeInputType(playerNum, input);
 			}
 			else 
 			{
-				if (playerNum == 0) 
-				{
-					gameBoard.changeInputType(playerNum+1,new Player1InputModel(stage));
-				}
 				if (playerNum == 1) 
 				{
-					gameBoard.changeInputType(playerNum+1,new Player2InputModel(stage));
+					gameBoard.changeInputType(playerNum,new Player1InputModel(stage));
+				}
+				if (playerNum == 2) 
+				{
+					gameBoard.changeInputType(playerNum,new Player2InputModel(stage));
 				}	
 			}
 			

@@ -78,16 +78,8 @@ package Classes
 			location = new Point(x, y);
 			scorePage.setInitialLives(respawnCount);
 			shipId = scorePage.getPlayerNum();
+			playerColor = scorePage.getColor();
 			bulletArray = new Array();
-			if (shipId == 0)
-			{
-				playerColor = 0xFF0000;	
-			}
-			if (shipId == 1) 
-			{
-				playerColor = 0x0000FF;
-			}
-			scorePage.setColor(playerColor);
 			healthBar = new HealthBar(respawnHP, playerColor);
 			buildModel();
 			super(staticArray,gameBoard,collisionModel,initialX,initialY);
