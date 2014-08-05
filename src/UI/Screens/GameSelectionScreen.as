@@ -5,6 +5,7 @@ package UI.Screens
 	
 	import Events.UIEvent;
 	
+	import UI.Blocks.ClipLabel;
 	import UI.Blocks.InfoReadyObject;
 	import UI.Blocks.LabelButton;
 	import UI.Components.ShipOptions;
@@ -12,7 +13,7 @@ package UI.Screens
 
 	public class GameSelectionScreen extends Sprite
 	{
-		private var playButton:LabelButton;
+		private var playButton:ClipLabel;
 		private var backButton:LabelButton;
 		private var shipOne:ShipOptions;
 		private var shipTwo:ShipOptions;
@@ -35,7 +36,7 @@ package UI.Screens
 				controller.push(null);
 			}
 			
-			playButton = new LabelButton("Play", 600, 600, 250,40,UIEvent.PLAY);
+			playButton = new ClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);
 			playButton.addEventListener(UIEvent.PLAY,playGame);
 			addChild(playButton);
 			backButton = new LabelButton("Back",600,700,250,40,UIEvent.BACK);
@@ -105,7 +106,7 @@ package UI.Screens
 			shipTwo = new ShipOptions(350,10,scoreBoard.getNextPage());
 			addChild(shipTwo);
 
-			playButton = new LabelButton("Play", 600, 600, 250,40,UIEvent.PLAY);
+			playButton = new ClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);
 			playButton.addEventListener(UIEvent.PLAY,playGame);
 			addChild(playButton);
 			backButton = new LabelButton("Back",600,700,250,40,UIEvent.BACK);
