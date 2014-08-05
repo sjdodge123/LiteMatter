@@ -65,6 +65,13 @@ package UI.Components
 				addChild(textArray[currentIndex]);
 				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
 			}
+			else
+			{
+				removeChild(textArray[currentIndex]);
+				currentIndex = textArray.length-1;
+				addChild(textArray[currentIndex]);
+				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+			}
 		}
 		public function addLabel(newLabel:LabelBox):LabelBox
 		{
