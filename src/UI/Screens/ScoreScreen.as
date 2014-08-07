@@ -13,7 +13,7 @@ package UI.Screens
 		{
 			scoreLabel = new LabelBox("Scoreboard:", 600, 250, 350, 35);
 			addChild(scoreLabel);
-			scoreColumn = new LabelBox(("Lives Remaining:\n" + "Kills:\n" + "Shots Fired:\n" + "Shots Hit:\n"+ "Accuracy:\n" +"Suicides by bullet:\n" + "Planet Crashes:\n" ), 345, 315, 200, 20,"CENTER");
+			scoreColumn = new LabelBox(("Lives Remaining:\n" + "Kills:\n" + "Shots Fired:\n" + "Shots Hit:\n"+ "Accuracy:\n" +"Suicides by bullet:\n" + "Planet Crashes:\n" ), 345, 315, 200, 20,400,0x000000,"CENTER");
 			scoreColumn.changeHeight(400);
 			scoreColumn.noAutoCenter();
 			addChild(scoreColumn);

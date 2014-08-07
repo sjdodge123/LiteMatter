@@ -1,7 +1,6 @@
 package Classes 
 {
 	import flash.display.Stage;
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
@@ -100,7 +99,7 @@ package Classes
 				game.resetWatch();
 				screenController.displayMainMenuScreen();
 				screenController.displayControllerScreens();
-				screenController.resetToMenu();
+				screenController.resetToMenu(game.getColor(1),game.getColor(2));
 				game.popUpMenu(screenController);
 			}
 		}
@@ -113,7 +112,7 @@ package Classes
 			game.resetWatch();
 			screenController.displayMainMenuScreen();
 			screenController.displayControllerScreens();
-			screenController.resetToMenu();
+			screenController.resetToMenu(game.getColor(1),game.getColor(2));
 			game.popUpMenu(screenController);
 		}
 		public function endGameScreen(playerNum:int):void
@@ -261,11 +260,11 @@ package Classes
 				screenController.addControllerPopScreen(playNum,device);
 			}
 		}
-		public function removeControllerPopUpScreen(playNum:int,device:GameInputDevice):void 
+		public function removeControllerPopUpScreen(playNum:int):void 
 		{
 			if (!gameRunning) 
 			{
-				screenController.removeControllerPopScreen(playNum,device);
+				screenController.removeControllerPopScreen(playNum);
 			}
 		}
 		
@@ -296,6 +295,11 @@ package Classes
 			onMenu = value;
 		}
 		
+		public function getPlayerColor(value:int):uint
+		{
+			scoreBoard.openToPage(value);
+			return scoreBoard.getColor();
+		}
 	}
 
 }

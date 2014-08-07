@@ -55,7 +55,7 @@ package
 		private var replayPage2:ScorePage;
 		private var replayRabit1:PlayBackModel;
 		private var replayRabit2:PlayBackModel;
-		private var onEndScreen:Boolean = false;;
+		private var onEndScreen:Boolean = false;
 
 		
 		public function LiteMatter()
@@ -281,6 +281,18 @@ package
 			replayRabit2 = PlayBackModel(gameBoard.inputPlayer2);
 			stopWatch = new StopWatch();
 			stage.addEventListener(Event.ENTER_FRAME, update);
+		}
+		public function getColor(value:int):uint
+		{
+			if(value == 1)
+			{
+				return replayPage1.getColor();
+			}
+			else
+			{
+				return replayPage2.getColor();
+			}
+			
 		}
 
 		

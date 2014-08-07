@@ -2,9 +2,8 @@ package UI.Components
 {
 	import flash.display.Sprite;
 	import flash.ui.GameInputDevice;
-	
 	import Events.SelectionEvent;
-	
+	import UI.Components.SideScrollBox;
 	import UI.Blocks.LabelBox;
 	import UI.Blocks.StartGameObject;
 	import UI.ScoreBoard.ScorePage;
@@ -27,6 +26,9 @@ package UI.Components
 		private var playerColor:uint;
 		private var device:GameInputDevice = null;
 		private var deviceID:int;
+		private var colorSelection:SideScrollBox;
+		private var unlockedColor:LabelBox;
+		private var lockedColor:LabelBox;
 		
 		public function ShipOptions(x:int,y:int,page:ScorePage)
 		{
@@ -57,8 +59,11 @@ package UI.Components
 			inputBox.graphics.endFill();
 			addChild(inputBox);
 			
-			computerLabel = new LabelBox("Computer",0,0,200,30);
-			humanLabel = new LabelBox("Human",0,0,200,30);
+			
+			
+			
+			computerLabel = new LabelBox("Computer",225+x,-5,200,30,37);
+			humanLabel = new LabelBox("Human",225+x,-5,200,30,37);
 			playerType = new SideScrollBox(x+115,y,computerLabel);
 			playerType.addLabel(humanLabel);
 			addComp(playerType);
@@ -66,48 +71,81 @@ package UI.Components
 			
 			
 			
-			firstPlayer = new LabelBox("WASD",0,0,200,30);
-			secondPlayer = new LabelBox("IJKL",0,0,200,30);
+			firstPlayer = new LabelBox("WASD",225+x,-5,200,30,37);
+			secondPlayer = new LabelBox("IJKL",225+x,-5,200,30,37);
 			
 			humanInputs = new SideScrollBox(x+115,y,firstPlayer);
 			humanInputs.addLabel(secondPlayer);
 			
 			
-			AIEasy = new LabelBox("AI: Easy",0,0,200,30);
+			AIEasy = new LabelBox("AI: Easy",225+x,-5,200,30,37);
 			computerInputs =  new SideScrollBox(x+115,y,AIEasy);
 			
-			
+			lockedColor = new LabelBox("Red",225+x,-5,200,30,37,0xFF0000);
+			colorSelection = new SideScrollBox(x+115,y,new LabelBox("Blue",225+x,-5,200,30,37,0x0000FF));
+			colorSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
+			colorSelection.addLabel(lockedColor);
+			colorSelection.addLabel(new LabelBox("Green",225+x,-5,200,30,37,0x00FF00));
+			colorSelection.addLabel(new LabelBox("Purple",225+x,-5,200,30,37,0x9A32CD));
 			
 			//If Player 1
 			if(page.getPlayerNum()+1 == 1)
 			{
 				playerType.changeLabel(humanLabel);
-				playerColor = 0xFF0000;	
+				playerType.enableButtons();
+				colorSelection.changeLabel(lockedColor);
+				playerColor = 0xFF0000;
 				addComp(humanInputs);
+				addComp(colorSelection);
 			}
 			//If Player 2
 			if(page.getPlayerNum()+1 == 2)
 			{
 				playerColor = 0x0000FF;
 				addComp(computerInputs);
+				addComp(colorSelection);
 			}
+			
 			page.setColor(playerColor);
 			playerTitle.text.textColor = page.getColor();
+		}
+		public function resetPage(page:ScorePage,color:uint):void
+		{
+			this.page = page;
+			page.setColor(color);
 		}
 		
 		protected function inputTypeChanged(event:SelectionEvent):void
 		{
 			var id:int;
-			if(event.params == computerLabel)
+			var currentLabel:LabelBox;
+			if(event.params == playerType)
 			{
-				id = removeComp(humanInputs);
-				addCompAt(id,computerInputs);
+				currentLabel = playerType.getCurrentLabel();
+				if(currentLabel == computerLabel)
+				{
+					id = removeComp(humanInputs);
+					addCompAt(id,computerInputs);
+				}
+				
+				if(currentLabel == humanLabel)
+				{
+					id = removeComp(computerInputs);
+					addCompAt(id,humanInputs);
+				}
 			}
-			
-			if(event.params == humanLabel)
+			if(event.params == colorSelection)
 			{
-				id = removeComp(computerInputs);
-				addCompAt(id,humanInputs);
+				var colorChanges:Array = new Array();
+				var newColor:LabelBox = colorSelection.getCurrentLabel();
+				page.setColor(newColor.getColor());
+				removeChild(playerTitle);
+				playerTitle.text.textColor = page.getColor();
+				addChild(playerTitle);
+//				unlockedColor = lockedColor;
+//				lockedColor = newColor;
+//				colorChanges.push(unlockedColor,lockedColor);
+//				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,colorChanges));
 			}
 		}
 		
@@ -148,21 +186,17 @@ package UI.Components
 		
 		public function deviceAdded(deviceID:int,device:GameInputDevice):void
 		{
-			xbox = new LabelBox("Controller " + deviceID,0,0,200,30);
+			xbox = new LabelBox("Controller " + deviceID,225+x,-5,200,30,37);
 			humanInputs.addLabel(xbox);
-			humanInputs.changeLabel(xbox);
-			this.device = device;
-			this.deviceID = deviceID;
-			if(page.getPlayerNum()+1 == 2)
+			if(page.getPlayerNum()+1 == 1)
 			{
-				var id:int = removeComp(computerInputs);
-				addCompAt(id,humanInputs);
-				playerType.changeLabel(humanLabel);
 				humanInputs.changeLabel(xbox);
 			}
+			this.device = device;
+			this.deviceID = deviceID;
 			
 		}
-		public function deviceRemoved(deviceID:int, device:GameInputDevice):void
+		public function deviceRemoved(deviceID:int):void
 		{
 			if(deviceID == 1)
 			{
@@ -211,5 +245,11 @@ package UI.Components
 		}
 		
 		
+		public function addColor(unlockedColor:LabelBox,lockedColor:LabelBox):void
+		{
+			colorSelection.addColorLabel(unlockedColor.text.text,unlockedColor.getColor());
+			colorSelection.removeLabel(lockedColor);
+			
+		}
 	}
 }

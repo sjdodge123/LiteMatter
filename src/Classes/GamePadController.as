@@ -29,7 +29,7 @@ package Classes
 		}
 		private function controllerRemoved(event:GameInputEvent):void 
 		{
-			uiHub.removeControllerPopUpScreen(numDevices,event.device);
+			uiHub.removeControllerPopUpScreen(numDevices);
 			numDevices -= 1;
 		}
 		private function controllerUnusable(event:Event):void 

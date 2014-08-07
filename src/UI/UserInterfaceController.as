@@ -32,6 +32,8 @@ package UI
 		private var currentMenu:Sprite;
 		private var selectSound:Sound;
 		private var soundLoader:SoundLoader;
+		private var controllerCount:int;
+		private var controllerArray:Array;
 
 		public function UserInterfaceController(scoreBoard:ScoreBoard) 
 		{
@@ -42,6 +44,7 @@ package UI
 			optionsScreen = new OptionsScreen();
 			gameSelection = new GameSelectionScreen(scoreBoard);
 			reader.readFile("version.txt"); 
+			controllerArray = new Array();
 			
 		}
 		
@@ -110,7 +113,7 @@ package UI
 		}
 		public function addControllerPopScreen(playNum:int,device:GameInputDevice):void 
 		{
-			gameSelection.addControllerPopScreen(playNum,device);
+			gameSelection.addControllerToScroll(playNum,device);
 		}
 		public function confirmControllerScreen(device:GameInputDevice):void 
 		{
@@ -127,9 +130,10 @@ package UI
 			gameSelection.displayControllerScreens();
 		}
 		
-		public function removeControllerPopScreen(playNum:int, device:GameInputDevice):void
+		public function removeControllerPopScreen(playNum:int):void
 		{
-			gameSelection.removeControllerPopScreen(playNum, device);
+			gameSelection.removeControllerFromScroll(playNum);
+			controllerArray.splice(playNum-1,1);
 		}
 		
 		public function buttonPressed(event:ButtonEvent):void
@@ -137,9 +141,9 @@ package UI
 			//make correct menu button press
 		}
 		
-		public function resetToMenu():void
+		public function resetToMenu(colorOne:uint,colorTwo:uint):void
 		{
-			gameSelection.reset();
+			gameSelection.reset(colorOne,colorTwo);
 		}
 		private function removeBackEvent(obj:Sprite):void
 		{

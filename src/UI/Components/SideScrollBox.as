@@ -1,4 +1,4 @@
-package UI.Components 
+package UI.Components
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -43,18 +43,22 @@ package UI.Components
 		{
 			if(currentIndex+1 < textArray.length)
 			{
-				removeChild(textArray[currentIndex]);
+				removeChildren();
 				currentIndex += 1;
 				addChild(textArray[currentIndex]);
-				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+				addChild(rightArrowButton);
+				addChild(leftArrowButton);
+				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
 				return true;
 			}
 			else
 			{
-				removeChild(textArray[currentIndex]);
+				removeChildren();
 				currentIndex = 0;
 				addChild(textArray[currentIndex]);
-				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+				addChild(rightArrowButton);
+				addChild(leftArrowButton);
+				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
 				return false;
 			}
 		}
@@ -62,35 +66,66 @@ package UI.Components
 		{
 			if(currentIndex != 0)
 			{
-				removeChild(textArray[currentIndex]);
+				removeChildren();
 				currentIndex -= 1;
 				addChild(textArray[currentIndex]);
-				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+				addChild(rightArrowButton);
+				addChild(leftArrowButton);
+				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
 				return true;
 			}
 			else
 			{
-				removeChild(textArray[currentIndex]);
+				removeChildren();
 				currentIndex = textArray.length-1;
 				addChild(textArray[currentIndex]);
-				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+				addChild(rightArrowButton);
+				addChild(leftArrowButton);
+				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
 				return false;
 			}
 		}
 		public function addLabel(newLabel:LabelBox):LabelBox
 		{
-			newLabel.changeHeight(size+7);
-			newLabel.x += baseX+107.5;
-			newLabel.y += baseY-15;
-			newLabel.width = 200;
-			textArray.push(newLabel);
-			return newLabel;
+			if(!searchForLabel(newLabel))
+			{
+				newLabel.width = 200;
+				textArray.push(newLabel);
+				return newLabel;
+			}
+			return null;		
+		}
+		
+		public function addColorLabel(title:String,color:uint):LabelBox
+		{
+			var newColor:LabelBox = new LabelBox(title,baseX+110,baseY-15,200,30,37,color);
+			textArray.push(newColor);
+			return newColor;
+		}
+		
+		private function searchForLabel(newLabel:LabelBox):Boolean
+		{
+			if(textArray.indexOf(newLabel) >= 0)
+			{
+				return true;
+			}
+			return false;
 		}
 		public function removeLabel(deadLabel:LabelBox):void
 		{
-			previousLabel(null);
+			var removeColor:uint = deadLabel.getColor();
 			var loc:int = textArray.indexOf(deadLabel);
+			var index:int = indexOfColor(removeColor);
 			textArray.splice(loc,1);
+			if(loc < 0)
+			{
+				textArray.splice(index,1);
+			}
+			
+			if(checkCurrentLabel(deadLabel) || index < 0)
+			{
+				trace("Label is not a member of this");
+			}
 		}
 		public function changeLabel(label:LabelBox):void
 		{
@@ -101,7 +136,7 @@ package UI.Components
 					removeChild(textArray[currentIndex]);
 					currentIndex = i;
 					addChild(textArray[currentIndex]);
-					dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+					dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
 				}
 			}
 		}
@@ -117,6 +152,17 @@ package UI.Components
 				return true;
 			}
 			return false;
+		}
+		public function indexOfColor(color:uint):int
+		{
+			for(var i:int=0;i<textArray.length;i++)
+			{
+				if(textArray[i].getColor() ==  color)
+				{
+					return i;
+				}
+			}
+			return -1;
 		}
 		
 		public function disableButtons():void
@@ -140,6 +186,10 @@ package UI.Components
 			var text:LabelBox = new LabelBox(value, 625, 485, 200, 30);
 			text.changeHeight(size);
 			addChild(text);
+		}
+		public function getLength():int
+		{
+			return textArray.length;
 		}
 	}
 

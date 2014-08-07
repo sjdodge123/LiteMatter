@@ -1,17 +1,19 @@
 package UI.Screens
 {
 	import flash.display.Sprite;
+	import flash.media.Sound;
 	import flash.ui.GameInputDevice;
 	
+	import Events.SelectionEvent;
 	import Events.UIEvent;
 	
 	import Loaders.SoundLoader;
 	
 	import UI.Blocks.ClipLabel;
+	import UI.Blocks.LabelBox;
 	import UI.Blocks.LabelButton;
 	import UI.Components.ShipOptions;
 	import UI.ScoreBoard.ScoreBoard;
-	import flash.media.Sound;
 
 	public class GameSelectionScreen extends Sprite
 	{
@@ -24,14 +26,17 @@ package UI.Screens
 		private var maxNumPlayers:int = 2;
 		private var soundLoader:SoundLoader;
 		private var selectSound:Sound;
+		private var lockedColor:uint;
 		public function GameSelectionScreen(scoreBoard:ScoreBoard)
 		{
 			this.scoreBoard = scoreBoard;
 			scoreBoard.addPlayer(1);
 			scoreBoard.addPlayer(2);
 			shipOne = new ShipOptions(25,10,scoreBoard.getNextPage());
+			shipOne.addEventListener(SelectionEvent.INPUT_CHANGE,colorShipOneChange);
 			addChild(shipOne);
 			shipTwo = new ShipOptions(350,10,scoreBoard.getNextPage());
+			shipTwo.addEventListener(SelectionEvent.INPUT_CHANGE,colorShipTwoChange);
 			addChild(shipTwo);
 			soundLoader = new SoundLoader();
 			selectSound = soundLoader.loadSound("./Sounds/select.mp3");
@@ -50,6 +55,17 @@ package UI.Screens
 			addChild(backButton);
 		}
 		
+		
+		protected function colorShipOneChange(event:SelectionEvent):void
+		{
+			shipTwo.addColor(LabelBox(event.params[0]),LabelBox(event.params[1]));
+		}
+		protected function colorShipTwoChange(event:SelectionEvent):void
+		{
+			shipOne.addColor(LabelBox(event.params[0]),LabelBox(event.params[1]));
+		}
+		
+		
 		protected function playGame(event:UIEvent):void
 		{
 			selectSound.play();
@@ -63,20 +79,10 @@ package UI.Screens
 			dispatchEvent(event);
 		}		
 		
-		public function addControllerPopScreen(playNum:int,device:GameInputDevice):void
+		public function addControllerToScroll(playNum:int,device:GameInputDevice):void
 		{
-			//var screen:ControllerPopScreen = new ControllerPopScreen(playNum,device);
-			//var id:Number = Number(device.id.charAt(device.id.length-1));
-			//controller[id] = screen;
-			if(playNum == 0)
-			{
-				shipOne.deviceAdded(playNum+1,device);
-			}
-			if(playNum == 1)
-			{
-				shipTwo.deviceAdded(playNum+1,device);
-			}
-			
+			shipOne.deviceAdded(playNum+1,device);
+			shipTwo.deviceAdded(playNum+1,device);
 		}
 		
 		public function displayControllerScreens():void
@@ -91,30 +97,29 @@ package UI.Screens
 			}
 		}
 		
-		public function removeControllerPopScreen(playNum:int, device:GameInputDevice):void
+		public function removeControllerFromScroll(playNum:int):void
 		{
 			if(playNum == 1)
 			{
-				shipOne.deviceRemoved(playNum,device);
+				shipOne.deviceRemoved(playNum);
 				
 			}
 			if(playNum == 2)
 			{
-				shipTwo.deviceRemoved(playNum,device);
+				shipTwo.deviceRemoved(playNum);
 			}			
 		}
 		
-		public function reset():void
+		public function reset(colorOne:uint,colorTwo:uint):void
 		{
 			scoreBoard.removeAllPlayers();
 			scoreBoard.addPlayer(1);
 			scoreBoard.addPlayer(2);
 			removeChildren();
-			shipOne = new ShipOptions(25,10,scoreBoard.getNextPage());
+			shipOne.resetPage(scoreBoard.getNextPage(),colorOne);
 			addChild(shipOne);
-			shipTwo = new ShipOptions(350,10,scoreBoard.getNextPage());
+			shipTwo.resetPage(scoreBoard.getNextPage(),colorTwo);;
 			addChild(shipTwo);
-
 			playButton = new ClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);
 			playButton.addEventListener(UIEvent.PLAY,playGame);
 			addChild(playButton);
