@@ -136,18 +136,18 @@ package Classes
 		
 		protected function playGame(event:UIEvent):void
 		{
-			var playerOneSignal:int = event.params.playerOne.inputSignal;
-			var playerTwoSignal:int = event.params.playerTwo.inputSignal;
-			playerOnePage = event.params.playerOne.page;
-			playerTwoPage = event.params.playerTwo.page;
+			var playerOneSignal:int = event.params[0].inputSignal;
+			var playerTwoSignal:int = event.params[1].inputSignal;
+			playerOnePage = event.params[0].page;
+			playerTwoPage = event.params[1].page;
 			
 			if(playerOneSignal == 3)
 			{
-				game.changeInputType(1,event.params.playerOne.device);
+				game.changeInputType(1,event.params[0].device);
 			}
 			if(playerTwoSignal == 3)
 			{
-				game.changeInputType(2,event.params.playerTwo.device);
+				game.changeInputType(2,event.params[1].device);
 				multiPlayerGame();
 			}
 			if(playerTwoSignal == 4)

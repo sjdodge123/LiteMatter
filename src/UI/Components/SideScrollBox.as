@@ -39,7 +39,7 @@ package UI.Components
 			addChild(textArray[currentIndex]);
 		}
 		
-		public function nextLabel(event:Event):void
+		public function nextLabel(event:Event):Boolean
 		{
 			if(currentIndex+1 < textArray.length)
 			{
@@ -47,6 +47,7 @@ package UI.Components
 				currentIndex += 1;
 				addChild(textArray[currentIndex]);
 				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+				return true;
 			}
 			else
 			{
@@ -54,9 +55,10 @@ package UI.Components
 				currentIndex = 0;
 				addChild(textArray[currentIndex]);
 				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+				return false;
 			}
 		}
-		public function previousLabel(event:Event):void
+		public function previousLabel(event:Event):Boolean
 		{
 			if(currentIndex != 0)
 			{
@@ -64,6 +66,7 @@ package UI.Components
 				currentIndex -= 1;
 				addChild(textArray[currentIndex]);
 				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+				return true;
 			}
 			else
 			{
@@ -71,6 +74,7 @@ package UI.Components
 				currentIndex = textArray.length-1;
 				addChild(textArray[currentIndex]);
 				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,textArray[currentIndex],true));
+				return false;
 			}
 		}
 		public function addLabel(newLabel:LabelBox):LabelBox
@@ -81,6 +85,12 @@ package UI.Components
 			newLabel.width = 200;
 			textArray.push(newLabel);
 			return newLabel;
+		}
+		public function removeLabel(deadLabel:LabelBox):void
+		{
+			previousLabel(null);
+			var loc:int = textArray.indexOf(deadLabel);
+			textArray.splice(loc,1);
 		}
 		public function changeLabel(label:LabelBox):void
 		{

@@ -162,13 +162,28 @@ package UI.Components
 			}
 			
 		}
+		public function deviceRemoved(deviceID:int, device:GameInputDevice):void
+		{
+			if(deviceID == 1)
+			{
+				humanInputs.removeLabel(xbox);
+				humanInputs.changeLabel(firstPlayer);
+			}
+			if(deviceID == 2)
+			{
+				humanInputs.removeLabel(xbox);
+				humanInputs.changeLabel(secondPlayer);
+			}
+			this.device = device;
+			this.deviceID = deviceID;
+		}
 		
 		public function collectInfo():StartGameObject
 		{
 			var input:LabelBox;
 			if(contains(humanInputs))
 			{
-				input= humanInputs.getCurrentLabel();
+				input = humanInputs.getCurrentLabel();
 			}
 			else
 			{
@@ -194,5 +209,7 @@ package UI.Components
 			return new StartGameObject(inputSignal,page,device);
 			
 		}
+		
+		
 	}
 }

@@ -8,7 +8,6 @@ package UI.Screens
 	import Loaders.SoundLoader;
 	
 	import UI.Blocks.ClipLabel;
-	import UI.Blocks.InfoReadyObject;
 	import UI.Blocks.LabelButton;
 	import UI.Components.ShipOptions;
 	import UI.ScoreBoard.ScoreBoard;
@@ -54,7 +53,8 @@ package UI.Screens
 		protected function playGame(event:UIEvent):void
 		{
 			selectSound.play();
-			var infoReady:InfoReadyObject = new InfoReadyObject(shipOne.collectInfo(),shipTwo.collectInfo());
+			var infoReady:Array = new Array();
+			infoReady.push(shipOne.collectInfo(),shipTwo.collectInfo());
 			dispatchEvent(new UIEvent(UIEvent.PLAY, infoReady,true));
 		}
 		
@@ -66,7 +66,7 @@ package UI.Screens
 		public function addControllerPopScreen(playNum:int,device:GameInputDevice):void
 		{
 			//var screen:ControllerPopScreen = new ControllerPopScreen(playNum,device);
-			var id:Number = Number(device.id.charAt(device.id.length-1));
+			//var id:Number = Number(device.id.charAt(device.id.length-1));
 			//controller[id] = screen;
 			if(playNum == 0)
 			{
@@ -93,14 +93,15 @@ package UI.Screens
 		
 		public function removeControllerPopScreen(playNum:int, device:GameInputDevice):void
 		{
-			for(var i:int=0;i<controller.length;i++)
+			if(playNum == 1)
 			{
-				if(controller[i].device == device)
-				{
-					removeChild(controller[i]);
-					controller[i] = null
-				}
-			}	
+				shipOne.deviceRemoved(playNum,device);
+				
+			}
+			if(playNum == 2)
+			{
+				shipTwo.deviceRemoved(playNum,device);
+			}			
 		}
 		
 		public function reset():void
