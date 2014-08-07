@@ -7,7 +7,6 @@ package Classes
 	import flash.ui.GameInputDevice;
 	import flash.ui.Keyboard;
 	import flash.events.Event;
-	import Events.ButtonEvent;
 	
 	public class IOMonitor extends GameObject
 	{	
@@ -29,8 +28,6 @@ package Classes
 			startButton.addEventListener(Event.CHANGE, startPressed);
 			backButton = device.getControlAt(12);
 			backButton.addEventListener(Event.CHANGE, backPressed);
-			aButton = device.getControlAt(4);
-			aButton.addEventListener(Event.CHANGE, aPressed);
 			deviceList.push(device);
 		}
 		
@@ -70,10 +67,6 @@ package Classes
 		{
 			currentDevice = event.target.device;
 			if (event.target.value == 1) { dispatchEvent(new UIEvent(UIEvent.PAUSE_GAME, currentDevice)); }
-		}
-		private function aPressed(event:Event):void 
-		{
-			if (event.target.value == 1) { dispatchEvent(new ButtonEvent(ButtonEvent.PRESSED,event)); }
 		}
 		private function backPressed(event:Event):void 
 		{

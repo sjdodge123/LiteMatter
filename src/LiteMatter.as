@@ -23,7 +23,7 @@ package
 	import Models.Input.XboxControllerModel;
 	
 	import Recording.Rabbit;
-	import Recording.RabbitInputModel;
+	import Recording.PlayBackModel;
 	
 	import UI.UserInterfaceController;
 	import UI.ScoreBoard.ScorePage;
@@ -53,8 +53,8 @@ package
 		private var rabbit2:Rabbit;
 		private var replayPage1:ScorePage;
 		private var replayPage2:ScorePage;
-		private var replayRabit1:RabbitInputModel;
-		private var replayRabit2:RabbitInputModel;
+		private var replayRabit1:PlayBackModel;
+		private var replayRabit2:PlayBackModel;
 		private var onEndScreen:Boolean = false;;
 
 		
@@ -277,8 +277,8 @@ package
 			addChild(gameBoard);
 			onEndScreen = true;
 			gameBoard.initializePlayBack(rabbit1.getEventArray(),rabbit2.getEventArray(),replayPage1,replayPage2,rabbit1);
-			replayRabit1 = RabbitInputModel(gameBoard.inputPlayer1);
-			replayRabit2 = RabbitInputModel(gameBoard.inputPlayer2);
+			replayRabit1 = PlayBackModel(gameBoard.inputPlayer1);
+			replayRabit2 = PlayBackModel(gameBoard.inputPlayer2);
 			stopWatch = new StopWatch();
 			stage.addEventListener(Event.ENTER_FRAME, update);
 		}

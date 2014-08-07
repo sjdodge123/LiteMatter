@@ -6,7 +6,7 @@ package Recording
 	
 	import Interfaces.IInputHandling;
 
-	public class RabbitInputModel extends EventDispatcher implements IInputHandling
+	public class PlayBackModel extends EventDispatcher implements IInputHandling
 	{
 		private var moveForward:Boolean = false;
 		private var moveReverse:Boolean = false;
@@ -18,7 +18,7 @@ package Recording
 		private var ship:PlayerObject;
 		private var count:int = 0;
 		private var deltaT:Number;
-		public function RabbitInputModel(eventArray:Array)
+		public function PlayBackModel(eventArray:Array)
 		{
 			this.eventArray = eventArray;
 			
@@ -41,6 +41,7 @@ package Recording
 				ship.rotationZ = value[9];
 				ship.setHP(value[10]);
 				ship.setRespawnCount(value[11]);
+				ship.setImmuneModel(value[12]);
 			}
 			else
 			{

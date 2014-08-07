@@ -40,6 +40,7 @@ package Recording
 			eventInfo.push(ship.rotationZ);
 			eventInfo.push(ship.getHP());
 			eventInfo.push(ship.getRespawnCount());
+			eventInfo.push(ship.getImmuneModel());
 			eventInfo.push(count);
 			events[count] = eventInfo;
 			count += 1; 

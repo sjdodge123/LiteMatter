@@ -18,7 +18,7 @@ package Classes.GameBoard
 	import Models.Input.Player2InputModel;
 	
 	import Recording.Rabbit;
-	import Recording.RabbitInputModel;
+	import Recording.PlayBackModel;
 	
 	import UI.ScoreBoard.ScorePage;
 	import Events.EFireCannon;
@@ -152,15 +152,15 @@ package Classes.GameBoard
 		
 		public function initializePlayBack(player1Events:Array,player2Events:Array,scorePage1:ScorePage,scorePage2:ScorePage,rabbit:Rabbit):void
 		{
-			inputPlayer1 = new RabbitInputModel(player1Events);
-			inputPlayer2 = new RabbitInputModel(player2Events);
+			inputPlayer1 = new PlayBackModel(player1Events);
+			inputPlayer2 = new PlayBackModel(player2Events);
 			addStaticObjects();
 			addPlayer1(scorePage1);
 			ship2 =  objectBuilder.buildPiratePlayer(inputPlayer2, stageWidth - 50, stageHeight - 50,scorePage2);
 			ship2.initialRotation = 180;
 			ship2.rotationZ= 180;
-			RabbitInputModel(inputPlayer1).setShip(ship);
-			RabbitInputModel(inputPlayer2).setShip(ship2);
+			PlayBackModel(inputPlayer1).setShip(ship);
+			PlayBackModel(inputPlayer2).setShip(ship2);
 		}
 		
 		public function playBack(infoArray:Array):void

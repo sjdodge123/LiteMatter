@@ -439,6 +439,16 @@ package Classes
 			return healthBar;
 		}
 		
+		public function getImmuneModel():Boolean
+		{
+			return immuneModel.getImmuneStatus();
+		}
+		
+		public function setImmuneModel(newModel:Boolean):void
+		{
+			immuneModel.setImmuneStatus(newModel);
+		}
+		
 		public function getCanRecord():Boolean
 		{
 			return canRecord;
