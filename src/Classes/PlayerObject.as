@@ -1,12 +1,17 @@
 package Classes
 {
 	
-	import Events.EFireCannon;
-	import flash.display.MovieClip;	
-	import Classes.GameBoard.GameBoardObjects;
+	import flash.display.MovieClip;
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import Models.Sound.thrusterModel;
-	import UI.ScoreBoard.ScorePage;
+	import flash.media.Sound;
+	import flash.utils.Timer;
+	
+	import Classes.HealthBar;
+	import Classes.GameBoard.GameBoardObjects;
+	
+	import Events.EFireCannon;
+	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IImmunityModel;
 	import Interfaces.IInputHandling;
@@ -14,13 +19,15 @@ package Classes
 	import Interfaces.IStaticMethods;
 	import Interfaces.IWeaponModel;
 	
-	import Classes.HealthBar;
+	import Models.Sound.thrusterModel;
+	
+	import UI.ScoreBoard.ScorePage;
 
 	public class PlayerObject extends DynamicObject implements IPlayerMethods
 	{		
 		private var shipId:int = 0;
 		private var playerColor:uint;
-		private var respawnCount:int = 5;
+		private var respawnCount:int = 2;
 		private var HP:int = 100;
 		private var respawnHP:int = HP;
 		private const thrustAccelConst:Number = 180;
@@ -28,7 +35,7 @@ package Classes
 		private var thrustAccelY:Number = 0;
 		private var rotAccel:Number = 0;
 		private var rotAccelConst:Number = 200;
-		private var bulletArray:Array;
+		public var bulletArray:Array;
 		private var healthBar:HealthBar;
 		
 		private var velocityMax:Number = 150;
@@ -54,6 +61,10 @@ package Classes
 		private var respawnY:int;
 		private var respawnsEmpty:Boolean;
 		private var location:Point;
+		private var canRecord:Boolean;
+		private var recordTimer:Timer;
+		private var shipExplode:Sound;
+		private var shipRam:Sound;
 		
 		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int,scorePage:ScorePage)
 		{
@@ -64,9 +75,14 @@ package Classes
 			this.collisionModel = collisionModel;
 			this.immuneModel = immuneModel;
 			this.scorePage = scorePage;
+			shipExplode = gameBoard.soundLoader.loadSound("./Sounds/shipExplode.mp3");
+			shipRam =  gameBoard.soundLoader.loadSound("./Sounds/shipRam.mp3");
+			canRecord = true;
 			thrustSound = new thrusterModel();
 			burstSoundRight = new thrusterModel();
 			burstSoundLeft = new thrusterModel();
+			recordTimer = new Timer(100,1);
+			recordTimer.addEventListener(TimerEvent.TIMER_COMPLETE,changeRecord);
 			if (inputModel.getInputType() == 1) 
 			{
 				scorePage.setPlayerName("Easy Computer");
@@ -83,6 +99,11 @@ package Classes
 			healthBar = new HealthBar(respawnHP, playerColor);
 			buildModel();
 			super(staticArray,gameBoard,collisionModel,initialX,initialY);
+		}
+		
+		protected function changeRecord(event:TimerEvent):void
+		{
+			canRecord = true;
 		}
 		override public function buildModel():void
 		{
@@ -105,10 +126,13 @@ package Classes
 			{
 				explode();
 			}
-			updatePlayerInput(deltaT);
 			location.x = x;
 			location.y = y;
 			checkHitDyn(gameBoard.objectArray);
+			if(canRecord)
+			{
+				updatePlayerInput(deltaT);
+			}
 		}
 		
 		override public function checkHitStatic():Boolean
@@ -127,23 +151,29 @@ package Classes
 		{
 			for(var i:int=0;i<objectArray.length;i++)
 			{
-				if(objectArray[i] != this && objectArray[i].isPlayer() && collisionModel.checkHit(objectArray[i]))
+				if(objectArray[i] != this && objectArray[i] as PlayerObject && collisionModel.checkHit(objectArray[i]))
 				{
 					if (objectArray[i].getImmuneStatus() == false && !immuneModel.getImmuneStatus())
 					{	
-						var damageToOtherShip:int = calcDamage(this, objectArray[i]);
-						objectArray[i].takeAwayHP(damageToOtherShip);
-						if (objectArray[i].getHP() <= 0) 
+						if(objectArray[i] as PlayerObject && this as PlayerObject)
 						{
-							objectArray[i].explode();
-							recordKill(objectArray[i]);
+							var damageToOtherShip:int = calcDamage(this, objectArray[i]);
+							objectArray[i].takeAwayHP(damageToOtherShip);
+							shipRam.play();
+							if (objectArray[i].getHP() <= 0) 
+							{
+								recordKill(objectArray[i]);
+								objectArray[i].explode();
+								
+							}
+							if (getHP() <= 0) 
+							{
+								objectArray[i].recordKill(this);
+								explode();
+								
+							}
+							return true;
 						}
-						if (getHP() <= 0) 
-						{
-							explode();
-							objectArray[i].recordKill(this);
-						}
-						return true;
 					}
 				}
 			}
@@ -291,8 +321,11 @@ package Classes
 		
 		override public function explode():void
 		{	
+			canRecord = false;
+			recordTimer.reset();
+			recordTimer.start();
 			var explosion:MovieClip = gameBoard.addExplosion(x, y,.5,.5);
-			explodeSound.play();
+			shipExplode.play();
 			gameBoard.addChild(explosion);
 			respawnCount--;
 			scorePage.removeLife();
@@ -324,6 +357,11 @@ package Classes
 		{
 			return HP;
 		}
+		public function setHP(hp:int):void
+		{
+			this.HP = hp;
+			healthBar.updateHealthBar(this.HP);
+		}
 		public function getCollisionPoint():Point 
 		{
 			return collisionModel.getCollisionPoint();
@@ -344,6 +382,10 @@ package Classes
 		public function getRespawnCount():int 
 		{
 			return respawnCount;
+		}
+		public function setRespawnCount(value:int):void
+		{
+			respawnCount = value;
 		}
 		public function getVelX():Number
 		{
@@ -395,6 +437,25 @@ package Classes
 		public function getHealthBar():HealthBar 
 		{
 			return healthBar;
+		}
+		
+		public function getCanRecord():Boolean
+		{
+			return canRecord;
+		}
+		public function fireOne(value:Boolean):void
+		{
+			if(value)
+			{
+				dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, null));
+			}
+		}
+		public function fireTwo(value:Boolean):void
+		{
+			if(value)
+			{
+				dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
+			}
 		}
 	}
 }

@@ -1,17 +1,18 @@
 package Models.Weapons
 {
-	import Events.PageEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.utils.Timer;
-	import Events.EFireCannon;
+	
 	import Classes.DynamicObject;
 	import Classes.PlayerObject;
 	import Classes.GameBoard.GameBoardObjects;
+	
 	import Events.EFireCannon;
+	import Events.PageEvent;
 	
 	import Interfaces.IWeaponModel;
 	
@@ -27,6 +28,8 @@ package Models.Weapons
 		private var fireSound:Sound;
 		private var playerPoint:Point;
 		private var convertedPoint:Point;
+		private var projectileArray:Array;
+		
 		public function CannonModel (gameBoard:GameBoardObjects)
 		{
 			this.gameBoard = gameBoard;
@@ -49,7 +52,7 @@ package Models.Weapons
 		{
 			if(oneCanShoot)
 				{
-					dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, null));
+					
 					dispatchEvent(new PageEvent(PageEvent.SHOT_FIRED, null));
 					playerPoint = new Point(-8, -17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
@@ -61,6 +64,9 @@ package Models.Weapons
 					var projectileOne2:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
 					projectileOne2.velX = (350*playerObject.getDirY())+playerObject.getVelX();
 					projectileOne2.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
+					projectileArray = new Array();
+					projectileArray.push(projectileOne,projectileOne2);
+					dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, projectileArray));
 					fireSound.play();
 					oneCanShoot = false;
 					playerObject.recordShot(projectileOne,projectileOne2);
@@ -72,7 +78,7 @@ package Models.Weapons
 		{
 			if(twoCanShoot)
 				{
-					dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
+					
 					dispatchEvent(new PageEvent(PageEvent.SHOT_FIRED, null));
 					playerPoint = new Point(-8, 17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
@@ -84,6 +90,9 @@ package Models.Weapons
 					var projectileTwo2:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
 					projectileTwo2.velX = (-350*playerObject.getDirY())+playerObject.getVelX();
 					projectileTwo2.velY = (350 * playerObject.getDirX()) + playerObject.getVelY();
+					projectileArray = new Array();
+					projectileArray.push(projectileTwo,projectileTwo2);
+					dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, projectileArray));
 					fireSound.play();
 					twoCanShoot = false;
 					playerObject.recordShot(projectileTwo,projectileTwo2);

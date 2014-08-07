@@ -53,7 +53,7 @@ package Classes
 					dispatchEvent(new UIEvent(UIEvent.RESET, null));
 					break;
 				}
-				case Keyboard.ALTERNATE + Keyboard.ENTER:
+				case Keyboard.ALTERNATE:
 				{
 					dispatchEvent(new UIEvent(UIEvent.FULL_SCREEN, null));
 					break;

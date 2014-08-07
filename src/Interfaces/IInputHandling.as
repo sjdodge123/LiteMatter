@@ -1,5 +1,7 @@
 package Interfaces
 {
+	import Classes.DynamicObject;
+
 	public interface IInputHandling
 	{
 		function getMoveForward():Boolean

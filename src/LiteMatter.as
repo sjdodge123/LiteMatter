@@ -22,7 +22,11 @@ package
 	import Models.Input.Player2InputModel;
 	import Models.Input.XboxControllerModel;
 	
+	import Recording.Rabbit;
+	import Recording.RabbitInputModel;
+	
 	import UI.UserInterfaceController;
+	import UI.ScoreBoard.ScorePage;
 	
 	
 	[SWF(backgroundColor= "0x000000", width="1200", height ="900", frameRate='30')]
@@ -44,7 +48,16 @@ package
 		private var menuTheme:Sound;
 		private var soundChannel:SoundChannel;
 		private var onMainMenu:Boolean = true;
-	
+		private var theta:Number = .034;
+		private var rabbit1:Rabbit;
+		private var rabbit2:Rabbit;
+		private var replayPage1:ScorePage;
+		private var replayPage2:ScorePage;
+		private var replayRabit1:RabbitInputModel;
+		private var replayRabit2:RabbitInputModel;
+		private var onEndScreen:Boolean = false;;
+
+		
 		public function LiteMatter()
 		{
 			Initialize();	
@@ -81,7 +94,10 @@ package
 			text2.x = stageWidth - 110;
 			text2.textColor = 0xFFFFFF;
 			text1.textColor = 0xFFFFFF;
+			rabbit1 = new Rabbit();
+			rabbit2 = new Rabbit();
 			gameBoard.initializeGameObjects(uiHub.getPlayerOnePage());
+			rabbit1.buildModel(player1Input);
 			addChild(gameBoard);
 			stopWatch = new StopWatch();
 			addChild(text1);
@@ -93,8 +109,18 @@ package
 		{
 			if (uiHub.getGameRunning())
 			{
+				
 				deltaT = stopWatch.calcTime();
 				gameBoard.updateGameBoard(deltaT);
+				if(gameBoard.ship.getCanRecord())
+				{
+					rabbit1.record(deltaT,gameBoard.ship,gameBoard.objectArray);
+				}
+				
+				if(gameBoard.ship2.getCanRecord())
+				{
+					rabbit2.record(deltaT,gameBoard.ship2,gameBoard.objectArray);
+				}
 				//mousePoint = new Point(stage.mouseX,stage.mouseY);
 				
 				print("Player 1 lives: " +gameBoard.ship.getRespawnCount()+ "\n" + "HP: " + gameBoard.ship.getHP(), text1);
@@ -111,8 +137,23 @@ package
 			}
 			else if (onMainMenu)
 			{
-				deltaT = stopWatch.calcTime();
+				deltaT = theta;
 				gameBoard.updateGameBoard(deltaT);
+			}
+			else if (onEndScreen)
+			{
+				stage.frameRate = 1/deltaT;
+				deltaT = replayRabit1.playBack();
+				replayRabit2.playBack();
+				gameBoard.updateGameBoard(deltaT);
+				if (gameBoard.ship.getRespawnCount() == 0) 
+				{
+					onEndScreen = false;
+				}
+				else if (gameBoard.ship2.getRespawnCount() == 0) 
+				{
+					onEndScreen = false;
+				}	
 			}
 		
 		}
@@ -131,6 +172,7 @@ package
 			{
 				gameBoard.addPlayer2HU(uiHub.getPlayerTwoPage());
 			}
+			rabbit2.buildModel(gameBoard.inputPlayer2);
 		}
 		public function displayFullScreen():void 
 		{
@@ -171,10 +213,12 @@ package
 		public function resetToMenu():void 
 		{
 			emptyGameBoard();
+			soundChannel.stop();
 			soundChannel = menuTheme.play(0, 150);
 			gameBoard.intitalizeBackgroundObjects();
 			addChild(gameBoard);
 			onMainMenu = true;
+			onEndScreen = false;
 			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
 			
@@ -188,6 +232,8 @@ package
 			{
 				removeChild(gameBoard);
 			}
+			replayPage1 = uiHub.getPlayerOnePage();
+			replayPage2 = uiHub.getPlayerTwoPage();
 			uiHub.clearAllPages();
 			gameBoard = null;
 			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
@@ -224,6 +270,17 @@ package
 				return 1;
 			}
 			return 0;
+		}
+		public function initiatePlayBack():void
+		{
+			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
+			addChild(gameBoard);
+			onEndScreen = true;
+			gameBoard.initializePlayBack(rabbit1.getEventArray(),rabbit2.getEventArray(),replayPage1,replayPage2,rabbit1);
+			replayRabit1 = RabbitInputModel(gameBoard.inputPlayer1);
+			replayRabit2 = RabbitInputModel(gameBoard.inputPlayer2);
+			stopWatch = new StopWatch();
+			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
 
 		

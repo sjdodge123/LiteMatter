@@ -2,6 +2,7 @@ package UI
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.media.Sound;
 	import flash.ui.GameInputDevice;
 	
 	import Classes.Config.Reader;
@@ -9,8 +10,9 @@ package UI
 	import Events.ButtonEvent;
 	import Events.UIEvent;
 	
+	import Loaders.SoundLoader;
+	
 	import UI.ScoreBoard.ScoreBoard;
-	import UI.Screens.ControllerPopScreen;
 	import UI.Screens.EndScreen;
 	import UI.Screens.GameSelectionScreen;
 	import UI.Screens.MainMenu;
@@ -28,14 +30,19 @@ package UI
 		private var reader:Reader;
 		private var deviceID:int;
 		private var currentMenu:Sprite;
+		private var selectSound:Sound;
+		private var soundLoader:SoundLoader;
 
 		public function UserInterfaceController(scoreBoard:ScoreBoard) 
 		{
 			displayMainMenuScreen();
+			soundLoader = new SoundLoader();
+			selectSound = soundLoader.loadSound("./Sounds/select.mp3");
 			reader = new Reader();
 			optionsScreen = new OptionsScreen();
 			gameSelection = new GameSelectionScreen(scoreBoard);
 			reader.readFile("version.txt"); 
+			
 		}
 		
 		public function displayMainMenuScreen():void
@@ -49,6 +56,7 @@ package UI
 		
 		protected function moveToOptions(event:Event):void
 		{
+			selectSound.play();
 			clearScreen();
 			addBackListners();
 			addChild(optionsScreen);
@@ -56,6 +64,7 @@ package UI
 		
 		protected function moveToSelection(event:Event):void
 		{
+			selectSound.play();
 			clearScreen();
 			addBackListners();
 			addChild(gameSelection);
@@ -63,6 +72,7 @@ package UI
 		
 		protected function backToMain(event:Event):void
 		{
+			selectSound.play();
 			clearScreen();
 			gameSelection.removeEventListener(UIEvent.PLAY,playGame);
 			displayMainMenuScreen();

@@ -9,7 +9,7 @@ package Events
 	{
 		public static const FIRE_ONE:String = "fireWeaponOne";
 		public static const FIRE_TWO:String = "fireWeaponTwo";
-		public var params:Object
+		public var params:Object;
 		public function EFireCannon(type:String,params:Object,bubbles:Boolean = false,cancelable:Boolean = false) 
 		{
 			super(type, bubbles, cancelable);

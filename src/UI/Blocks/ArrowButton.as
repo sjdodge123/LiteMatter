@@ -3,7 +3,11 @@ package UI.Blocks
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	
 	import Events.ButtonEvent;
+	
+	import Loaders.SoundLoader;
+	import flash.media.Sound;
 
 	/**
 	 * ...
@@ -15,10 +19,14 @@ package UI.Blocks
 		private var xValue:int;
 		private var yValue:int;
 		private var invert:int = 0;
+		private var soundLoader:SoundLoader;
+		private var cycle:Sound;
 		public function ArrowButton(x:int,y:int,invert:int=0) 
 		{
 			xValue = x;
 			yValue = y;
+			soundLoader = new SoundLoader();
+			cycle = soundLoader.loadSound("./Sounds/cycle.mp3");
 			addEventListener(MouseEvent.CLICK, buttonClickHandler);
 			buttonMode = true;
 			useHandCursor = true;
@@ -74,6 +82,7 @@ package UI.Blocks
 		}
 		private function buttonClickHandler(event:MouseEvent):void
 		{
+			cycle.play();
 			dispatchEvent(new ButtonEvent(ButtonEvent.PRESSED,null));
 		}
 		private function drawStem(x:int,y:int,fill:int=1):Sprite

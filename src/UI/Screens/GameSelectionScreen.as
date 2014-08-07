@@ -5,11 +5,14 @@ package UI.Screens
 	
 	import Events.UIEvent;
 	
+	import Loaders.SoundLoader;
+	
 	import UI.Blocks.ClipLabel;
 	import UI.Blocks.InfoReadyObject;
 	import UI.Blocks.LabelButton;
 	import UI.Components.ShipOptions;
 	import UI.ScoreBoard.ScoreBoard;
+	import flash.media.Sound;
 
 	public class GameSelectionScreen extends Sprite
 	{
@@ -20,6 +23,8 @@ package UI.Screens
 		private var scoreBoard:ScoreBoard;
 		private var controller:Vector.<ControllerPopScreen>;
 		private var maxNumPlayers:int = 2;
+		private var soundLoader:SoundLoader;
+		private var selectSound:Sound;
 		public function GameSelectionScreen(scoreBoard:ScoreBoard)
 		{
 			this.scoreBoard = scoreBoard;
@@ -29,6 +34,8 @@ package UI.Screens
 			addChild(shipOne);
 			shipTwo = new ShipOptions(350,10,scoreBoard.getNextPage());
 			addChild(shipTwo);
+			soundLoader = new SoundLoader();
+			selectSound = soundLoader.loadSound("./Sounds/select.mp3");
 			
 			controller = new Vector.<ControllerPopScreen>;
 			for(var i:int=0;i<maxNumPlayers;i++)
@@ -46,6 +53,7 @@ package UI.Screens
 		
 		protected function playGame(event:UIEvent):void
 		{
+			selectSound.play();
 			var infoReady:InfoReadyObject = new InfoReadyObject(shipOne.collectInfo(),shipTwo.collectInfo());
 			dispatchEvent(new UIEvent(UIEvent.PLAY, infoReady,true));
 		}

@@ -122,6 +122,7 @@ package Classes
 			resetGameVariables();
 			screenController.displayEndScreen(playerNum, scoreBoard);
 			game.emptyGameBoard();
+			game.initiatePlayBack();
 			game.popUpMenu(screenController);
 			screenController.displayControllerScreens();
 			screenController.addEventListener(UIEvent.BACK,resetGame);
