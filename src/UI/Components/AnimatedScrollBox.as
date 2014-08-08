@@ -6,16 +6,17 @@ package UI.Components
 	import Events.ButtonEvent;
 	import Events.SelectionEvent;
 	
-	import UI.Blocks.LabelBox;
+	import UI.Blocks.StaticClipLabel;
 	import UI.Blocks.AnimatedArrow;
+	import UI.Blocks.StaticClipLabel;
 
 	/**
 	 * ...
 	 * @author Jake
 	 */
-	public class SideScrollBox extends Sprite
+	public class AnimatedScrollBox extends Sprite
 	{
-		private var textArray:Vector.<LabelBox>;
+		private var textArray:Vector.<StaticClipLabel>;
 		private var size:int;
 		private var baseX:int;
 		private var baseY:int;
@@ -23,16 +24,16 @@ package UI.Components
 		private var leftArrowButton:AnimatedArrow;
 		private var rightArrowButton:AnimatedArrow;
 		
-		public function SideScrollBox(baseX:int,baseY:int,firstLabel:LabelBox,size:int=30) 
+		public function AnimatedScrollBox(baseX:int,baseY:int,firstLabel:StaticClipLabel,size:int=30) 
 		{
 			this.baseX = baseX;
 			this.baseY = baseY;
 			this.size = size;
-			textArray = new Vector.<LabelBox>;
+			textArray = new Vector.<StaticClipLabel>;
 			addLabel(firstLabel);
-			leftArrowButton = new AnimatedArrow("./Images/leftArrowButton.swf",baseX, baseY);
+			leftArrowButton = new AnimatedArrow("./Images/leftArrowButton.swf",baseX-50, baseY);
 			leftArrowButton.addEventListener(ButtonEvent.PRESSED,previousLabel);
-			rightArrowButton = new AnimatedArrow("./Images/rightArrowButton.swf",baseX + 200, baseY);
+			rightArrowButton = new AnimatedArrow("./Images/rightArrowButton.swf",baseX + 250, baseY);
 			rightArrowButton.addEventListener(ButtonEvent.PRESSED,nextLabel);
 			addChild(rightArrowButton);
 			addChild(leftArrowButton);
@@ -45,7 +46,7 @@ package UI.Components
 			if(currentIndex+1 < textArray.length)
 			{
 				removeChildren();
-				currentIndex += 1;
+				currentIndex++;
 				addChild(textArray[currentIndex]);
 				addChild(rightArrowButton);
 				addChild(leftArrowButton);
@@ -99,7 +100,7 @@ package UI.Components
 				return false;
 			}
 		}
-		public function addLabel(newLabel:LabelBox):LabelBox
+		public function addLabel(newLabel:StaticClipLabel):StaticClipLabel
 		{
 			if(!searchForLabel(newLabel))
 			{
@@ -109,14 +110,7 @@ package UI.Components
 			return null;		
 		}
 		
-		public function addColorLabel(title:String,color:uint):LabelBox
-		{
-			var newColor:LabelBox = new LabelBox(title,baseX,baseY,30,37,color);
-			textArray.push(newColor);
-			return newColor;
-		}
-		
-		private function searchForLabel(newLabel:LabelBox):Boolean
+		private function searchForLabel(newLabel:StaticClipLabel):Boolean
 		{
 			if(textArray.indexOf(newLabel) >= 0)
 			{
@@ -124,7 +118,7 @@ package UI.Components
 			}
 			return false;
 		}
-		public function removeLabel(deadLabel:LabelBox):void
+		public function removeLabel(deadLabel:StaticClipLabel):void
 		{
 			var removeColor:uint = deadLabel.getColor();
 			var loc:int = textArray.indexOf(deadLabel);
@@ -140,7 +134,7 @@ package UI.Components
 				trace("Label is not a member of this");
 			}
 		}
-		public function changeLabel(label:LabelBox):void
+		public function changeLabel(label:StaticClipLabel):void
 		{
 			for(var i:int=0; i<textArray.length;i++)
 			{
@@ -152,12 +146,12 @@ package UI.Components
 				}
 			}
 		}
-		public function getCurrentLabel():LabelBox
+		public function getCurrentLabel():StaticClipLabel
 		{
 			return textArray[currentIndex];
 		}
 		
-		public function checkCurrentLabel(label:LabelBox):Boolean
+		public function checkCurrentLabel(label:StaticClipLabel):Boolean
 		{
 			if(currentIndex == textArray.indexOf(label))
 			{
@@ -176,29 +170,7 @@ package UI.Components
 			}
 			return -1;
 		}
-		
-		public function disableButtons():void
-		{
-//			leftArrowButton.removeEventListener(ButtonEvent.PRESSED,previousLabel);
-//			leftArrowButton.disableButton();
-//			rightArrowButton.removeEventListener(ButtonEvent.PRESSED,previousLabel);
-//			rightArrowButton.disableButton();
-		}
-		public function enableButtons():void
-		{
-//			leftArrowButton.addEventListener(ButtonEvent.PRESSED,previousLabel);
-//			leftArrowButton.enableButton();
-//			rightArrowButton.addEventListener(ButtonEvent.PRESSED,previousLabel);
-//			rightArrowButton.enableButton();
-		}
-		
-		private function changeText(value:String,size:int):void 
-		{
-			removeChild(text);
-			var text:LabelBox = new LabelBox(value, 625, 485, 200, 30);
-			text.changeHeight(size);
-			addChild(text);
-		}
+			
 		public function getLength():int
 		{
 			return textArray.length;

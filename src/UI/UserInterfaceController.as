@@ -116,7 +116,10 @@ package UI
 		
 		public function clearScreen():void 
 		{
-			removeChildren(0, this.numChildren-1);
+			if(numChildren > 0)
+			{
+				removeChildren(0, this.numChildren-1);
+			}
 		}
 		public function addControllerPopScreen(playNum:int,device:GameInputDevice):void 
 		{

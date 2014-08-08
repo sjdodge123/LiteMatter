@@ -2,20 +2,25 @@ package UI.Blocks
 {
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+	
 	import Events.UIEvent;
+	
 	import Loaders.AnimationLoader;
+	
 	import Models.Animation.PlayAnimationModel;
 	
-	public class ClipLabel extends MovieClip
+	public class AnimatedClipLabel extends MovieClip
 	{
 		private var customEvent:String;
 		private var tempClip:MovieClip;
 		private var imageLoad:AnimationLoader;
-		public function ClipLabel(imageLocation:String,x:int,y:int,event:String) 
+		private var color:uint;
+		public function AnimatedClipLabel(imageLocation:String,x:int,y:int,event:String,color:uint = 0x000000) 
 		{
 			this.x = x;
 			this.y = y;
 			customEvent = event;
+			this.color = color;
 			tempClip = new MovieClip();
 			imageLoad = new AnimationLoader(imageLocation,0, 0,new PlayAnimationModel());
 			imageLoad.addEventListener(MouseEvent.CLICK,buttonPressed);
@@ -27,5 +32,11 @@ package UI.Blocks
 		{
 			dispatchEvent(new UIEvent(customEvent,null));
 		}
+		public function getColor():uint
+		{
+			return color;
+		}
+		
+		
 	}
 }

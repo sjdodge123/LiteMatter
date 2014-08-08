@@ -1,7 +1,6 @@
 package UI.Screens
 {
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.media.Sound;
 	import flash.ui.GameInputDevice;
 	
@@ -10,19 +9,18 @@ package UI.Screens
 	
 	import Loaders.SoundLoader;
 	
-	import UI.Blocks.ClipLabel;
+	import UI.Blocks.AnimatedClipLabel;
 	import UI.Blocks.LabelBox;
-	import UI.Blocks.LabelButton;
-	import UI.Components.ShipOptions;
 	import UI.Components.SideScrollBox;
 	import UI.ScoreBoard.ScoreBoard;
+	import UI.Components.ShipOptionsSWF;
 
 	public class GameSelectionScreen extends Sprite
 	{
-		private var playButton:ClipLabel;
-		private var backButton:LabelButton;
-		private var shipOne:ShipOptions;
-		private var shipTwo:ShipOptions;
+		private var playButton:AnimatedClipLabel;
+		private var backButton:AnimatedClipLabel;
+		private var shipOne:ShipOptionsSWF;
+		private var shipTwo:ShipOptionsSWF;
 		private var scoreBoard:ScoreBoard;
 		private var controller:Vector.<ControllerPopScreen>;
 		private var maxNumPlayers:int = 2;
@@ -36,11 +34,11 @@ package UI.Screens
 			this.scoreBoard = scoreBoard;
 			scoreBoard.addPlayer(1);
 			scoreBoard.addPlayer(2);
-			shipOne = new ShipOptions(25,10,scoreBoard.getNextPage());
-			shipOne.addEventListener(SelectionEvent.INPUT_CHANGE,colorShipOneChange);
+			shipOne = new ShipOptionsSWF(25,10,scoreBoard.getNextPage());
+			//shipOne.addEventListener(SelectionEvent.INPUT_CHANGE,colorShipOneChange);
 			addChild(shipOne);
-			shipTwo = new ShipOptions(350,10,scoreBoard.getNextPage());
-			shipTwo.addEventListener(SelectionEvent.INPUT_CHANGE,colorShipTwoChange);
+			shipTwo = new ShipOptionsSWF(350,10,scoreBoard.getNextPage());
+			//shipTwo.addEventListener(SelectionEvent.INPUT_CHANGE,colorShipTwoChange);
 			addChild(shipTwo);
 			soundLoader = new SoundLoader();
 			selectSound = soundLoader.loadSound("./Sounds/select.mp3");
@@ -50,13 +48,14 @@ package UI.Screens
 			{
 				controller.push(null);
 			}
-			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,610,485,200,30,37));
+			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,527.5,480,26,37));
 			livesSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			addChild(livesSelection);
-			playButton = new ClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);
+			playButton = new AnimatedClipLabel("./Images/beginButton.swf",600,600,UIEvent.PLAY);
 			playButton.addEventListener(UIEvent.PLAY,playGame);
 			addChild(playButton);
-			backButton = new LabelButton("Back",600,700,250,40,UIEvent.BACK);
+			
+			backButton = new AnimatedClipLabel("./Images/backButton.swf",600,700,UIEvent.BACK);
 			backButton.addEventListener(UIEvent.BACK,backToMain);
 			addChild(backButton);
 		}
@@ -76,7 +75,7 @@ package UI.Screens
 						lives--;
 					}
 				}
-				var newLabel:LabelBox = new LabelBox("Respawns: " + lives,610,485,200,30,37);
+				var newLabel:LabelBox = new LabelBox("Respawns: " + lives,527.5,480,26,37);
 				livesSelection.addLabel(newLabel);
 				var oldLabel:LabelBox = livesSelection.getCurrentLabel();
 				livesSelection.changeLabel(newLabel);
@@ -148,13 +147,13 @@ package UI.Screens
 			addChild(shipOne);
 			shipTwo.resetPage(scoreBoard.getNextPage(),colorTwo);
 			addChild(shipTwo);
-			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,610,485,200,30,37));
+			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,527.5,480,26,37));
 			livesSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			addChild(livesSelection);
-			playButton = new ClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);
+			playButton = new AnimatedClipLabel("./Images/beginButton.swf",600,600,UIEvent.PLAY);
 			playButton.addEventListener(UIEvent.PLAY,playGame);
 			addChild(playButton);
-			backButton = new LabelButton("Back",600,700,250,40,UIEvent.BACK);
+			backButton = new AnimatedClipLabel("./Images/backButton.swf",600,700,UIEvent.BACK);
 			backButton.addEventListener(UIEvent.BACK,backToMain);
 			addChild(backButton);
 		}

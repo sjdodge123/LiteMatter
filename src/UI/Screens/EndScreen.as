@@ -4,6 +4,7 @@ package UI.Screens
 	
 	import Events.UIEvent;
 	
+	import UI.Blocks.AnimatedClipLabel;
 	import UI.Blocks.LabelBox;
 	import UI.Blocks.LabelButton;
 	import UI.ScoreBoard.ScoreBoard;
@@ -11,8 +12,8 @@ package UI.Screens
 	public class EndScreen extends Sprite
 	{
 		private var mainLabel:LabelBox;
-		private var backButton:LabelButton;
-		private var playAgainButton:LabelButton;
+		private var backButton:AnimatedClipLabel;
+		private var playAgainButton:AnimatedClipLabel;
 		private var scoreScreen:ScoreScreen;
 		private var playerOneColor:uint;
 		private var playerTwoColor:uint;
@@ -27,13 +28,15 @@ package UI.Screens
 			mainLabel.text.textColor =  scoreBoard.getColor();;
 			scoreScreen = new ScoreScreen(scoreBoard);
 			
-			playAgainButton = new LabelButton("Play again",  600, 100,250,40,UIEvent.PLAY);
+			playAgainButton = new AnimatedClipLabel("./Images/playAgainButton.swf",600,600,UIEvent.PLAY);
 			playAgainButton.addEventListener(UIEvent.PLAY,playAgain);
-			backButton = new LabelButton("Back to Menu",600,700,250,40,UIEvent.BACK);
+			addChild(playAgainButton);
+			
+			backButton = new AnimatedClipLabel("./Images/mainMenuButton.swf",600,700,UIEvent.BACK);
 			backButton.addEventListener(UIEvent.BACK,backToMenu);
+			addChild(backButton);
 			
 			addChild(mainLabel);
-			addChild(playAgainButton);
 			addChild(scoreScreen);
 			addChild(backButton);
 		}

@@ -11,12 +11,13 @@ package UI.Blocks
 		private var xPass:int;
 		private var myFormat:TextFormat;
 		private var color:uint;
-		public function LabelBox(message:String,xValue:int, y:int,width:int,size:int,height:int = 100,color:uint = 0x000000, alignment:String = "CENTER") 
+		public function LabelBox(message:String,x:int, y:int,size:int,height:int = 100,color:uint = 0x000000, alignment:String = "CENTER") 
 		{
+			this.x = x;
+			this.y = y;
 			myFormat = new TextFormat();
 			myFormat.size = size;
 			myFormat.align = TextFormatAlign[alignment];
-			xPass = xValue;
 			this.color = color;
 			text = new TextField();
 			text.selectable = false;
@@ -24,14 +25,16 @@ package UI.Blocks
 			text.textColor = 0xFFFFFF;
 			text.text = message;
 			text.height = height;
-			text.width = width;
-			text.x = xValue - text.width/2;
-			text.y = y;
+			text.width = 150;
 			addChild(text);
 		}
 		public function changeHeight(value:int):void 
 		{
 			text.height = value;
+		}
+		public function changeWidth(value:int):void 
+		{
+			text.width = value;
 		}
 		
 		public function noAutoCenter():void 

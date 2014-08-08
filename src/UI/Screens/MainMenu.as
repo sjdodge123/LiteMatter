@@ -5,23 +5,23 @@ package UI.Screens
 	import Events.UIEvent;
 	
 	import UI.Blocks.LabelBox;
-	import UI.Blocks.LabelButton;
-	import UI.Blocks.ClipLabel;
+	import UI.Blocks.AnimatedClipLabel;
 	
 	public class MainMenu extends Sprite
 	{
 		private var title:LabelBox;
-		private var playButton:ClipLabel;
-		private var optionsButton:LabelButton;
+		private var playButton:AnimatedClipLabel;
+		private var optionsButton:AnimatedClipLabel;
 		
 		public function MainMenu() 
 		{
-			title = new LabelBox("Space Pirates",600,200,400,60);
+			title = new LabelBox("Space Pirates",380,200,80,100);
+			title.changeWidth(450);
 			addChild(title);
-			playButton = new ClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);
+			playButton = new AnimatedClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);
 			playButton.addEventListener(UIEvent.PLAY,playGame);
 			addChild(playButton);
-			optionsButton = new LabelButton("Options", 600, 650, 250,40,UIEvent.OPTIONS);
+			optionsButton = new AnimatedClipLabel("./Images/optionsButton.swf", 600, 650,UIEvent.OPTIONS);
 			optionsButton.addEventListener(UIEvent.OPTIONS,optionsMenu);
 			addChild(optionsButton);
 		}

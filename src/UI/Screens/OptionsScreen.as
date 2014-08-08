@@ -1,18 +1,18 @@
 package UI.Screens
 {
+	import flash.display.Sprite;
 	import flash.events.Event;
 	
 	import Events.UIEvent;
 	
-	import UI.Blocks.LabelButton;
-	import flash.display.Sprite;
+	import UI.Blocks.AnimatedClipLabel;
 
 	public class OptionsScreen extends Sprite
 	{
-		private var backButton:LabelButton;
+		private var backButton:AnimatedClipLabel;
 		public function OptionsScreen()
 		{
-			backButton = new LabelButton("Back",600,700,250,40,UIEvent.BACK);
+			backButton = new AnimatedClipLabel("./Images/backButton.swf",600,700,UIEvent.BACK);
 			backButton.addEventListener(UIEvent.BACK,backToMain);
 			addChild(backButton);
 		}

@@ -62,31 +62,31 @@ package UI.Components
 			
 			
 			
-			computerLabel = new LabelBox("Computer",225+x,-5,200,30,37);
-			humanLabel = new LabelBox("Human",225+x,-5,200,30,37);
-			playerType = new SideScrollBox(x+115,y,computerLabel);
+			computerLabel = new LabelBox("Computer",x+135,-5,30,37);
+			humanLabel = new LabelBox("Human",x+135,-5,30,37);
+			playerType = new SideScrollBox(x+75,y+5,computerLabel);
 			playerType.addLabel(humanLabel);
 			addComp(playerType);
 			playerType.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			
 			
 			
-			firstPlayer = new LabelBox("WASD",225+x,-5,200,30,37);
-			secondPlayer = new LabelBox("IJKL",225+x,-5,200,30,37);
+			firstPlayer = new LabelBox("WASD",365+x,-5,30,37);
+			secondPlayer = new LabelBox("IJKL",365+x,-5,30,37);
 			
-			humanInputs = new SideScrollBox(x+115,y,firstPlayer);
+			humanInputs = new SideScrollBox(x+125,y+5,firstPlayer);
 			humanInputs.addLabel(secondPlayer);
 			
 			
-			AIEasy = new LabelBox("AI: Easy",225+x,-5,200,30,37);
-			computerInputs =  new SideScrollBox(x+115,y,AIEasy);
+			AIEasy = new LabelBox("AI: Easy",365+x,-5,30,37);
+			computerInputs =  new SideScrollBox(x+125,y+5,AIEasy);
 			
-			lockedColor = new LabelBox("Red",225+x,-5,200,30,37,0xFF0000);
-			colorSelection = new SideScrollBox(x+115,y,new LabelBox("Blue",225+x,-5,200,30,37,0x0000FF));
+			lockedColor = new LabelBox("Red",365+x,-5,30,37,0xFF0000);
+			colorSelection = new SideScrollBox(x+125,y+5,new LabelBox("Blue",365+x,-5,30,37,0x0000FF));
 			colorSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			colorSelection.addLabel(lockedColor);
-			colorSelection.addLabel(new LabelBox("Green",225+x,-5,200,30,37,0x00FF00));
-			colorSelection.addLabel(new LabelBox("Purple",225+x,-5,200,30,37,0x9A32CD));
+			colorSelection.addLabel(new LabelBox("Green",365+x,-5,30,37,0x00FF00));
+			colorSelection.addLabel(new LabelBox("Purple",365+x,-5,30,37,0x9A32CD));
 			
 			//If Player 1
 			if(page.getPlayerNum()+1 == 1)
