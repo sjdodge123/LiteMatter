@@ -48,7 +48,7 @@ package UI.Screens
 			{
 				controller.push(null);
 			}
-			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,527.5,480,26,37));
+			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,525,480,25,37));
 			livesSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			addChild(livesSelection);
 			playButton = new AnimatedClipLabel("./Images/beginButton.swf",600,600,UIEvent.PLAY);
@@ -75,7 +75,7 @@ package UI.Screens
 						lives--;
 					}
 				}
-				var newLabel:LabelBox = new LabelBox("Respawns: " + lives,527.5,480,26,37);
+				var newLabel:LabelBox = new LabelBox("Respawns: " + lives,525,480,25,37);
 				livesSelection.addLabel(newLabel);
 				var oldLabel:LabelBox = livesSelection.getCurrentLabel();
 				livesSelection.changeLabel(newLabel);
@@ -147,7 +147,7 @@ package UI.Screens
 			addChild(shipOne);
 			shipTwo.resetPage(scoreBoard.getNextPage(),colorTwo);
 			addChild(shipTwo);
-			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,527.5,480,26,37));
+			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,525,480,25,37));
 			livesSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			addChild(livesSelection);
 			playButton = new AnimatedClipLabel("./Images/beginButton.swf",600,600,UIEvent.PLAY);
