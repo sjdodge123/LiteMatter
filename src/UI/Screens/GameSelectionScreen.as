@@ -1,6 +1,7 @@
 package UI.Screens
 {
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.media.Sound;
 	import flash.ui.GameInputDevice;
 	
@@ -13,6 +14,7 @@ package UI.Screens
 	import UI.Blocks.LabelBox;
 	import UI.Blocks.LabelButton;
 	import UI.Components.ShipOptions;
+	import UI.Components.SideScrollBox;
 	import UI.ScoreBoard.ScoreBoard;
 
 	public class GameSelectionScreen extends Sprite
@@ -27,6 +29,8 @@ package UI.Screens
 		private var soundLoader:SoundLoader;
 		private var selectSound:Sound;
 		private var lockedColor:uint;
+		private var lives:int = 2;
+		private var livesSelection:SideScrollBox;
 		public function GameSelectionScreen(scoreBoard:ScoreBoard)
 		{
 			this.scoreBoard = scoreBoard;
@@ -46,7 +50,9 @@ package UI.Screens
 			{
 				controller.push(null);
 			}
-			
+			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,610,485,200,30,37));
+			livesSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
+			addChild(livesSelection);
 			playButton = new ClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);
 			playButton.addEventListener(UIEvent.PLAY,playGame);
 			addChild(playButton);
@@ -55,6 +61,28 @@ package UI.Screens
 			addChild(backButton);
 		}
 		
+		protected function inputTypeChanged(event:SelectionEvent):void
+		{
+			if(event.params[0] == livesSelection)
+			{
+				if(event.params[1])
+				{
+					lives++;
+				}
+				else
+				{
+					if(lives > 1)
+					{
+						lives--;
+					}
+				}
+				var newLabel:LabelBox = new LabelBox("Respawns: " + lives,610,485,200,30,37);
+				livesSelection.addLabel(newLabel);
+				var oldLabel:LabelBox = livesSelection.getCurrentLabel();
+				livesSelection.changeLabel(newLabel);
+				livesSelection.removeLabel(oldLabel);
+			}
+		}		
 		
 		protected function colorShipOneChange(event:SelectionEvent):void
 		{
@@ -70,7 +98,7 @@ package UI.Screens
 		{
 			selectSound.play();
 			var infoReady:Array = new Array();
-			infoReady.push(shipOne.collectInfo(),shipTwo.collectInfo());
+			infoReady.push(shipOne.collectInfo(),shipTwo.collectInfo(),lives);
 			dispatchEvent(new UIEvent(UIEvent.PLAY, infoReady,true));
 		}
 		
@@ -118,14 +146,27 @@ package UI.Screens
 			removeChildren();
 			shipOne.resetPage(scoreBoard.getNextPage(),colorOne);
 			addChild(shipOne);
-			shipTwo.resetPage(scoreBoard.getNextPage(),colorTwo);;
+			shipTwo.resetPage(scoreBoard.getNextPage(),colorTwo);
 			addChild(shipTwo);
+			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,610,485,200,30,37));
+			livesSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
+			addChild(livesSelection);
 			playButton = new ClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);
 			playButton.addEventListener(UIEvent.PLAY,playGame);
 			addChild(playButton);
 			backButton = new LabelButton("Back",600,700,250,40,UIEvent.BACK);
 			backButton.addEventListener(UIEvent.BACK,backToMain);
 			addChild(backButton);
+		}
+		public function replay(colorOne:uint,colorTwo:uint):void
+		{
+			scoreBoard.removeAllPlayers();
+			scoreBoard.addPlayer(1);
+			scoreBoard.addPlayer(2);
+			removeChildren();
+			shipOne.resetPage(scoreBoard.getNextPage(),colorOne);
+			shipTwo.resetPage(scoreBoard.getNextPage(),colorTwo);
+			playGame(null);
 		}
 	}
 }

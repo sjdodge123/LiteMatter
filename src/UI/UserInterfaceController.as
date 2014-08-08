@@ -97,9 +97,16 @@ package UI
 		{
 			endScreen = new EndScreen(winPlayerNum,scoreBoard);
 			addChild(endScreen);
+			endScreen.addEventListener(UIEvent.PLAY,playAgain);
 			endScreen.addEventListener(UIEvent.BACK,backToMain);
 		}
 		
+		protected function playAgain(event:UIEvent):void
+		{
+			backToMain(null);
+			gameSelection.addEventListener(UIEvent.PLAY,playGame);
+			gameSelection.replay(event.params[0],event.params[1]);
+		}
 		
 		public function displayPauseScreen():void 
 		{

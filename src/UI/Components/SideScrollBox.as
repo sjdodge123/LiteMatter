@@ -41,6 +41,7 @@ package UI.Components
 		
 		public function nextLabel(event:Event):Boolean
 		{
+			var changeArray:Array;
 			if(currentIndex+1 < textArray.length)
 			{
 				removeChildren();
@@ -48,7 +49,10 @@ package UI.Components
 				addChild(textArray[currentIndex]);
 				addChild(rightArrowButton);
 				addChild(leftArrowButton);
-				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
+				changeArray = new Array();
+				changeArray.push(this);	
+				changeArray.push(true);
+				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,changeArray));
 				return true;
 			}
 			else
@@ -58,12 +62,16 @@ package UI.Components
 				addChild(textArray[currentIndex]);
 				addChild(rightArrowButton);
 				addChild(leftArrowButton);
-				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
+				changeArray = new Array();
+				changeArray.push(this);	
+				changeArray.push(true);
+				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,changeArray));
 				return false;
 			}
 		}
 		public function previousLabel(event:Event):Boolean
 		{
+			var changeArray:Array;
 			if(currentIndex != 0)
 			{
 				removeChildren();
@@ -71,7 +79,10 @@ package UI.Components
 				addChild(textArray[currentIndex]);
 				addChild(rightArrowButton);
 				addChild(leftArrowButton);
-				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
+				changeArray = new Array();
+				changeArray.push(this);	
+				changeArray.push(false);
+				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,changeArray));
 				return true;
 			}
 			else
@@ -81,7 +92,10 @@ package UI.Components
 				addChild(textArray[currentIndex]);
 				addChild(rightArrowButton);
 				addChild(leftArrowButton);
-				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
+				changeArray = new Array();
+				changeArray.push(this);	
+				changeArray.push(false);
+				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,changeArray));
 				return false;
 			}
 		}
@@ -136,7 +150,6 @@ package UI.Components
 					removeChild(textArray[currentIndex]);
 					currentIndex = i;
 					addChild(textArray[currentIndex]);
-					dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,this));
 				}
 			}
 		}

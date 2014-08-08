@@ -119,7 +119,7 @@ package UI.Components
 		{
 			var id:int;
 			var currentLabel:LabelBox;
-			if(event.params == playerType)
+			if(event.params[0] == playerType)
 			{
 				currentLabel = playerType.getCurrentLabel();
 				if(currentLabel == computerLabel)
@@ -134,7 +134,7 @@ package UI.Components
 					addCompAt(id,humanInputs);
 				}
 			}
-			if(event.params == colorSelection)
+			if(event.params[0] == colorSelection)
 			{
 				var colorChanges:Array = new Array();
 				var newColor:LabelBox = colorSelection.getCurrentLabel();

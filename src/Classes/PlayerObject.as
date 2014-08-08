@@ -27,7 +27,7 @@ package Classes
 	{		
 		private var shipId:int = 0;
 		private var playerColor:uint;
-		private var respawnCount:int = 2;
+		private var respawnCount:int;
 		private var HP:int = 100;
 		private var respawnHP:int = HP;
 		private const thrustAccelConst:Number = 180;
@@ -92,7 +92,7 @@ package Classes
 			respawnX = initialX;
 			respawnY = initialY;
 			location = new Point(x, y);
-			scorePage.setInitialLives(respawnCount);
+			respawnCount = scorePage.getLives();
 			shipId = scorePage.getPlayerNum();
 			playerColor = scorePage.getColor();
 			bulletArray = new Array();

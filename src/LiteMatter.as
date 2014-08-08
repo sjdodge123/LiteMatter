@@ -142,7 +142,6 @@ package
 			}
 			else if (onEndScreen)
 			{
-				stage.frameRate = 1/deltaT;
 				deltaT = replayRabit1.playBack();
 				replayRabit2.playBack();
 				gameBoard.updateGameBoard(deltaT);
@@ -294,7 +293,6 @@ package
 			}
 			
 		}
-
 		
 	}
 }

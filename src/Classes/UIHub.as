@@ -139,6 +139,8 @@ package Classes
 			var playerTwoSignal:int = event.params[1].inputSignal;
 			playerOnePage = event.params[0].page;
 			playerTwoPage = event.params[1].page;
+			playerOnePage.setInitialLives(event.params[2]);
+			playerTwoPage.setInitialLives(event.params[2]);
 			
 			if(playerOneSignal == 3)
 			{
