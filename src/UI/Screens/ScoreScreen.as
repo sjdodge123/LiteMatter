@@ -11,10 +11,11 @@ package UI.Screens
 		private var scoreColumn:LabelBox;
 		public function ScoreScreen(scoreBoard:ScoreBoard) 
 		{
-			scoreLabel = new LabelBox("Scoreboard", 440, 0, 50, 35);
-			scoreLabel.changeWidth(300);
-			scoreLabel.changeHeight(100);
-			addChild(scoreLabel);
+			
+//			scoreLabel = new LabelBox("Player "+ 1 +"wins!", 440, 0, 50, 35);
+//			scoreLabel.changeWidth(300);
+//			scoreLabel.changeHeight(100);
+//			addChild(scoreLabel);
 			scoreColumn = new LabelBox(("Lives Remaining:\n" + "Kills:\n" + "Shots Fired:\n" + "Shots Hit:\n"+ "Accuracy:\n" +"Suicides by bullet:\n" + "Planet Crashes:\n" ), 235, 115,30,300,0x000000,"CENTER");
 			scoreColumn.changeWidth(300);
 			scoreColumn.changeHeight(400);

@@ -33,6 +33,7 @@ package Models.Weapons
 		public function CannonModel (gameBoard:GameBoardObjects)
 		{
 			this.gameBoard = gameBoard;
+			fireSound = gameBoard.soundLoader.loadSound("./Sounds/cannonFire.mp3");
 			weaponOneTimer = new Timer(weaponCoolDownSeconds * 1000, 1);
 			weaponTwoTimer = new Timer(weaponCoolDownSeconds * 1000, 1);
 			weaponOneTimer.addEventListener(TimerEvent.TIMER_COMPLETE, oneReadyToShoot);
@@ -40,15 +41,12 @@ package Models.Weapons
 			weaponOneTimer.start();
 			weaponTwoTimer.start();
 		}
-		
 		public function buildModel(playerObject:PlayerObject):void
 		{
 			this.playerObject = playerObject;
-			playerObject.addEventListener(EFireCannon.FIRE_ONE, fireWeaponOne);
-			playerObject.addEventListener(EFireCannon.FIRE_TWO, fireWeaponTwo);
-			fireSound = gameBoard.soundLoader.loadSound("./Sounds/cannonFire.mp3");
 		}
-		private function fireWeaponOne(event:EFireCannon):void 
+		
+		public function fireWeaponOne(event:EFireCannon):void 
 		{
 			if(oneCanShoot)
 				{
@@ -57,13 +55,13 @@ package Models.Weapons
 					playerPoint = new Point(-8, -17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileOne:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
-					projectileOne.velX = (350*playerObject.getDirY())+playerObject.getVelX();
-					projectileOne.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
+					projectileOne.changeVelX((350*playerObject.getDirY())+playerObject.getVelX());
+					projectileOne.changeVelY((-350*playerObject.getDirX())+playerObject.getVelY());
 					playerPoint = new Point(9, -17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileOne2:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
-					projectileOne2.velX = (350*playerObject.getDirY())+playerObject.getVelX();
-					projectileOne2.velY = (-350*playerObject.getDirX())+playerObject.getVelY();
+					projectileOne2.changeVelX((350*playerObject.getDirY())+playerObject.getVelX());
+					projectileOne2.changeVelY((-350*playerObject.getDirX())+playerObject.getVelY());
 					projectileArray = new Array();
 					projectileArray.push(projectileOne,projectileOne2);
 					dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, projectileArray));
@@ -74,22 +72,21 @@ package Models.Weapons
 					weaponOneTimer.start();
 				}
 		}
-		private function fireWeaponTwo(event:EFireCannon):void 
+		public function fireWeaponTwo(event:EFireCannon):void 
 		{
 			if(twoCanShoot)
 				{
-					
 					dispatchEvent(new PageEvent(PageEvent.SHOT_FIRED, null));
 					playerPoint = new Point(-8, 17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileTwo:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
-					projectileTwo.velX = (-350*playerObject.getDirY())+playerObject.getVelX();
-					projectileTwo.velY = (350*playerObject.getDirX())+playerObject.getVelY();
+					projectileTwo.changeVelX((-350*playerObject.getDirY())+playerObject.getVelX());
+					projectileTwo.changeVelY((350*playerObject.getDirX())+playerObject.getVelY());
 					playerPoint = new Point(9, 17.5);
 					convertedPoint = playerObject.localToGlobal(playerPoint);
 					var projectileTwo2:DynamicObject = gameBoard.addCannonBall(convertedPoint.x, convertedPoint.y);
-					projectileTwo2.velX = (-350*playerObject.getDirY())+playerObject.getVelX();
-					projectileTwo2.velY = (350 * playerObject.getDirX()) + playerObject.getVelY();
+					projectileTwo2.changeVelX((-350*playerObject.getDirY())+playerObject.getVelX());
+					projectileTwo2.changeVelY((350 * playerObject.getDirX()) + playerObject.getVelY());
 					projectileArray = new Array();
 					projectileArray.push(projectileTwo,projectileTwo2);
 					dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, projectileArray));

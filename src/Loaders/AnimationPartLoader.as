@@ -4,11 +4,10 @@ package Loaders
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.net.URLRequest;
-	import Interfaces.IAnimationPart;
 	
 	import Classes.GameBoard.GameBoardObjects;
 	
-	import Interfaces.IAnimationModel;
+	import Interfaces.IAnimationPart;
 	
 	
 	public class AnimationPartLoader extends MovieClip 

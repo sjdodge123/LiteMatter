@@ -2,12 +2,12 @@ package Classes
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import Interfaces.IAnimationPart;
-	import Models.Collision.AsteriodCollisionModel;
+	import flash.display.Stage;
 	
 	import Classes.GameBoard.GameBoardObjects;
 	
 	import Interfaces.IAnimationModel;
+	import Interfaces.IAnimationPart;
 	import Interfaces.ICollisionModel;
 	import Interfaces.IImmunityModel;
 	import Interfaces.IInputHandling;
@@ -26,14 +26,18 @@ package Classes
 	import Models.Animation.StopAnimationModel;
 	import Models.Animation.TokenAnimationModel;
 	import Models.Basic.ImmunityModel;
+	import Models.Collision.AsteriodCollisionModel;
 	import Models.Collision.CannonBallCollisionModel;
 	import Models.Collision.PirateShipCollisionModel;
 	import Models.Collision.PlanetCollisionModel;
 	import Models.Collision.TokenCollisionModel;
+	import Models.Physics.ObjectPhysicsModel;
 	import Models.Physics.PlanetPhysicsModel;
+	import Models.Physics.PlayerPhysicsModel;
 	import Models.Weapons.CannonModel;
+	
 	import UI.ScoreBoard.ScorePage;
-	import flash.events.Event;
+
 	/**
 	 * ...
 	 * @author Jake
@@ -42,10 +46,14 @@ package Classes
 	{
 		private var gameBoard:GameBoardObjects;
 		public var staticArray:Array = new Array();
+		private var stageWidth:Number;
+		private var stageHeight:Number;
+		private var gameStage:Stage;
 		
-		public function ObjectBuilder(gameBoard:GameBoardObjects) 
+		public function ObjectBuilder(gameBoard:GameBoardObjects,stage:Stage) 
 		{
 			this.gameBoard = gameBoard;
+			gameStage = stage;
 		}
 		
 		
@@ -89,7 +97,7 @@ package Classes
 			Sprite(tempSprite);
 			var imageLoad:AnimationLoader;
 			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY,animationModel);
-			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel, weaponModel,gameBoard,respawnModel,objInitialX,objInitialY,scorePage);
+			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel, weaponModel,new PlayerPhysicsModel(gameStage),staticArray,gameBoard,respawnModel,objInitialX,objInitialY,scorePage);
 			gameBoard.objectArray.push(tempSprite);                
 			gameBoard.addChild(tempSprite);
 			tempSprite.addChild(imageLoad);
@@ -114,10 +122,9 @@ package Classes
 			imageLoadPortCannons = new AnimationPartLoader(imageLocationPortCannons,imageOffsetX, imageOffsetY,portCannonsPart);
 			imageLoadStarCannons = new AnimationPartLoader(imageLocationStarCannons,imageOffsetX, imageOffsetY,starCannonsPart);
 
-			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,gameBoard,respawnModel,objInitialX,objInitialY,scorePage);
+			tempSprite = new PlayerObject(staticArray, inputModel,collisionModel,weaponModel,new PlayerPhysicsModel(gameStage),staticArray,gameBoard,respawnModel,objInitialX,objInitialY,scorePage);
 			gameBoard.objectArray.push(tempSprite);                
 			gameBoard.addChild(tempSprite);
-			
 			
 			tempSprite.addChild(imageLoadPortThrust);
 			tempSprite.addChild(imageLoadStarThrust);
@@ -133,7 +140,7 @@ package Classes
 			var tempSprite:DynamicObject;
 			var imageLoad:AnimationLoader;
 			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY,animationModel);
-			tempSprite = new DynamicObject(staticArray, gameBoard, collisionModel,objInitialX,objInitialY);
+			tempSprite = new DynamicObject(staticArray, gameBoard, collisionModel,new ObjectPhysicsModel(gameStage),objInitialX,objInitialY);
 			gameBoard.objectArray.push(tempSprite);                  
 			gameBoard.addChild(tempSprite);
 			tempSprite.addChild(imageLoad);

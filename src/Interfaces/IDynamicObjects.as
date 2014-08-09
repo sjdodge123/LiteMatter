@@ -2,12 +2,10 @@ package Interfaces
 {
 	public interface IDynamicObjects extends IObjectMethods
 	{
-		function update(deltaT:Number):void;
-		function updateVelocity(deltaT:Number):void;
-		function updateRotation(deltaT:Number):void;
-		function updatePosition(deltaT:Number):void;
-		function checkScreenBounds():void;
 		function buildModel():void;
-		function checkHitDyn(objectArray:Array):Boolean
+		function update(deltaT:Number):void;
+		function checkHitDyn(objectArray:Array):Boolean;
+		function changeVelX(value:Number):void;
+		function changeVelY(value:Number):void;
 	}
 }

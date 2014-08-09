@@ -15,48 +15,31 @@ package Classes
 	import Interfaces.ICollisionModel;
 	import Interfaces.IImmunityModel;
 	import Interfaces.IInputHandling;
-	import Interfaces.IPlayerMethods;
-	import Interfaces.IStaticMethods;
+	import Interfaces.IPhysicsModel;
 	import Interfaces.IWeaponModel;
-	
-	import Models.Sound.thrusterModel;
 	
 	import UI.ScoreBoard.ScorePage;
 
-	public class PlayerObject extends DynamicObject implements IPlayerMethods
+	public class PlayerObject extends GameObject
 	{		
 		private var shipId:int = 0;
 		private var playerColor:uint;
 		private var respawnCount:int;
 		private var HP:int = 100;
 		private var respawnHP:int = HP;
-		private const thrustAccelConst:Number = 180;
-		public var thrustAccelX:Number = 0;
-		private var thrustAccelY:Number = 0;
-		private var rotAccel:Number = 0;
-		private var rotAccelConst:Number = 200;
+	
 		public var bulletArray:Array;
 		private var healthBar:HealthBar;
-		
-		private var velocityMax:Number = 150;
-		private var velocityDirX:Number = 0;
-		private var velocityDirY:Number = 0;
-		private var dirX:Number = 0;
-		private var dirY:Number = 0;
-		public var initialRotation:int = 0;
-		public var inputModel:IInputHandling;
-		public var collisionModel:ICollisionModel;
+		private var initialRotation:int = 0;
+		private var inputModel:IInputHandling;
+		private var collisionModel:ICollisionModel;
+		private var physicsModel:IPhysicsModel;
 		private var immuneModel:IImmunityModel;
 		private var gameBoard:GameBoardObjects;
 		private var shipHitBox:GameObject;
 		private var weaponModel:IWeaponModel;
 		private var scorePage:ScorePage;
-		
-		
-		private var thrustSound:thrusterModel;
-		private var burstSoundRight:thrusterModel;
-		private var burstSoundLeft:thrusterModel;
-		
+		private var staticArray:Array;
 		private var respawnX:int;
 		private var respawnY:int;
 		private var respawnsEmpty:Boolean;
@@ -65,22 +48,26 @@ package Classes
 		private var recordTimer:Timer;
 		private var shipExplode:Sound;
 		private var shipRam:Sound;
+		private var positionInfo:Vector.<Number>;
 		
-		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int,scorePage:ScorePage)
+		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,physicsModel:IPhysicsModel,staticArray:Array, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int,scorePage:ScorePage)
 		{
 			
 			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
 			this.weaponModel = weaponModel;
+			this.physicsModel = physicsModel;
 			this.collisionModel = collisionModel;
 			this.immuneModel = immuneModel;
 			this.scorePage = scorePage;
+			this.staticArray = staticArray;
+			width = 0;
+			height = 0;
+			physicsModel.addEventListener(EFireCannon.FIRE_ONE,fireWeaponOne);
+			physicsModel.addEventListener(EFireCannon.FIRE_TWO,fireWeaponTwo);
 			shipExplode = gameBoard.soundLoader.loadSound("./Sounds/shipExplode.mp3");
 			shipRam =  gameBoard.soundLoader.loadSound("./Sounds/shipRam.mp3");
 			canRecord = true;
-			thrustSound = new thrusterModel();
-			burstSoundRight = new thrusterModel();
-			burstSoundLeft = new thrusterModel();
 			recordTimer = new Timer(100,1);
 			recordTimer.addEventListener(TimerEvent.TIMER_COMPLETE,changeRecord);
 			if (inputModel.getInputType() == 1) 
@@ -91,51 +78,53 @@ package Classes
 			y = initialY;
 			respawnX = initialX;
 			respawnY = initialY;
+			
 			location = new Point(x, y);
 			respawnCount = scorePage.getLives();
 			shipId = scorePage.getPlayerNum();
+			if(shipId+1 == 2)
+			{
+				initialRotation = 180;
+				rotationZ = initialRotation;
+				x = gameBoard.gameStage.stageWidth - 50;
+				y = gameBoard.gameStage.stageHeight - 50;
+			}
 			playerColor = scorePage.getColor();
 			bulletArray = new Array();
 			healthBar = new HealthBar(respawnHP, playerColor);
 			buildModel();
-			super(staticArray,gameBoard,collisionModel,initialX,initialY);
 		}
 		
-		protected function changeRecord(event:TimerEvent):void
-		{
-			canRecord = true;
-		}
-		override public function buildModel():void
+		public function buildModel():void
 		{
 			shipHitBox = collisionModel.buildModel(this);
-			weaponModel.buildModel(this);
 			immuneModel.buildModel(this);
-			thrustSound.buildModel(gameBoard.soundLoader.loadSound("./Sounds/thrusterspart2.mp3"),800,.6);
-			burstSoundRight.buildModel(gameBoard.soundLoader.loadSound("./Sounds/thrusterspart1.mp3"), 200, .8);
-			burstSoundLeft.buildModel(gameBoard.soundLoader.loadSound("./Sounds/thrusterspart1.mp3"), 200, .8);
+			weaponModel.buildModel(this);
+			physicsModel.buildModel(staticArray,width,height,x,y,initialRotation,inputModel);
 		}
 		
-		override public function update(deltaT:Number):void
+		public function update(deltaT:Number):void
 		{
-			updateRotation(deltaT);
-			calculateGravity();
-			updateVelocity(deltaT);
-			updatePosition(deltaT);
-			checkScreenBounds();
+			updatePhysics(deltaT);
 			if(checkHitStatic())
 			{
 				explode();
 			}
-			location.x = x;
-			location.y = y;
+			
 			checkHitDyn(gameBoard.objectArray);
-			if(canRecord)
-			{
-				updatePlayerInput(deltaT);
-			}
 		}
 		
-		override public function checkHitStatic():Boolean
+		private function updatePhysics(deltaT:Number):void
+		{
+			positionInfo = physicsModel.update(deltaT);
+			x = positionInfo[0];
+			y = positionInfo[1];
+			location.x = x;
+			location.y = y;
+			rotationZ = positionInfo[2];
+		}
+		
+		public function checkHitStatic():Boolean
 		{
 			for(var i:int=0;i<staticArray.length;i++)
 			{
@@ -147,7 +136,7 @@ package Classes
 			}
 			return false;
 		}
-		override public function checkHitDyn(objectArray:Array):Boolean
+		public function checkHitDyn(objectArray:Array):Boolean
 		{
 			for(var i:int=0;i<objectArray.length;i++)
 			{
@@ -185,10 +174,10 @@ package Classes
 			var damageDone:int;
 			ship1.setImmuneStatus(true);
 			ship2.setImmuneStatus(true);
-			ship2.velX = ship1.getVelX() + ship2.getVelX() - (ship1.getVelX() * .25);
-			ship2.velY = ship1.getVelY() + ship2.getVelY() - (ship1.getVelY() * .25);
-			ship1.velX = (( -ship2.getVelX()*.35)+50);
-			ship1.velY = (( -ship2.getVelY()*.35)+50);
+			ship2.changeVelX(ship1.getVelX() + ship2.getVelX() - (ship1.getVelX() * .25));
+			ship2.changeVelY(ship1.getVelY() + ship2.getVelY() - (ship1.getVelY() * .25));
+			ship1.changeVelX((-ship2.getVelX()*.35)+50);
+			ship1.changeVelY(( -ship2.getVelY()*.35)+50);
 			ship1.setImmuneStatus(false);
 			ship2.setImmuneStatus(false);
 			var ship1Mag:Number = Math.sqrt(Math.pow(ship1.getVelX(), 2) + Math.pow(ship1.getVelY(), 2));
@@ -198,128 +187,18 @@ package Classes
 			return damageDone;
 		}
 		
-		override public function calcGravAccel(staticObj:IStaticMethods):void
-		{
-			gravAccelContribution = (staticObj.getGravityConst()/6)/Math.pow(dist,2);
-			gravAccelX += gravAccelContribution*distX/dist;
-			gravAccelY += gravAccelContribution*distY/dist;
-		}
-		
-		public function updatePlayerInput(deltaT:Number):void
-		{
-			if (inputModel.getMoveForward() == true)
-			{
-				thrustAccelX = thrustAccelConst*dirX;
-				thrustAccelY = thrustAccelConst * dirY;
-				thrustSound.playSound();
-			}
-			else 
-			{
-				thrustSound.stopSound();
-			}
-			if (inputModel.getMoveReverse() == true)
-			{
-				thrustAccelX = -thrustAccelConst*dirX;
-				thrustAccelY = -thrustAccelConst*dirY;
-			}
-			
-			if (inputModel.getMoveForward()== false && inputModel.getMoveReverse() == false)
-			{
-				thrustAccelX = 0;
-				thrustAccelY = 0;
-			}
-			if (inputModel.getMoveLeft() == true)
-			{
-				rotAccel = -rotAccelConst;	
-				burstSoundLeft.playSound();
-			}
-			else 
-			{
-				burstSoundLeft.stopSound();
-			}
-			if (inputModel.getMoveRight() == true)
-			{
-				rotAccel = rotAccelConst;
-				burstSoundRight.playSound();
-			}
-			else 
-			{
-				burstSoundRight.stopSound();
-			}
-			if (inputModel.getMoveLeft() == false && inputModel.getMoveRight() == false)
-			{
-				if (rotRate > 1)
-				{
-					rotAccel = -100;
-				}
-				if (rotRate < -1)
-				{
-					rotAccel =  100;
-				}
-				if (rotRate > -0.10 && rotRate < 0.10)
-				{	
-					rotRate = 0;
-					rotAccel = 0;
-				}
-			}
-			if(inputModel.getFireWeaponOne()==true)
-			{
-				dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE, null));
-			}
-			if(inputModel.getFireWeaponTwo()==true)
-			{
-				dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
-			}
-			
-		}
-		override public function updateVelocity(deltaT:Number):void
-		{
-			if (velocity < velocityMax)
-			{
-				velX += thrustAccelX*deltaT + gravAccelX*deltaT - .005*velX;
-				velY += thrustAccelY*deltaT + gravAccelY*deltaT - .005*velY;
-			}
-			if (velocity > velocityMax)
-			{
-				velX += thrustAccelX*deltaT + gravAccelX*deltaT - .025*velX;
-				velY += thrustAccelY*deltaT + gravAccelY*deltaT - .025*velY;
-			}
-			velocity = Math.sqrt(Math.pow(velX, 2) + Math.pow(velY, 2));
-			velocityDirX = velX/velocity;
-			velocityDirY = velY/velocity;
-			gravAccelX = 0;
-			gravAccelY = 0;
-
-		}
-		override public function updateRotation(deltaT:Number):void
-		{
-			rotRate += rotAccel*deltaT;
-			rotationZ += rotRate*deltaT;
-			dirX=Math.cos((Math.PI*rotationZ)/180);
-			dirY=Math.sin((Math.PI*rotationZ)/180);
-		}
-		override public function respawn():void
+		public function respawn():void
 		{
 			x = respawnX;
 			y = respawnY;
-			gravAccelX = 0;
-			gravAccelY = 0;
-			thrustAccelX = 0;
-			thrustAccelY = 0;
-			rotAccel = 0;
-			rotRate = 0;
-			velocityDirX = 0;
-			velocityDirY = 0;
-			velocity = 0;
-			velX = 0;
-			velY = 0;
+			rotationZ = initialRotation;
+			physicsModel.resetPhysics(x,y,rotationZ);
 			HP = respawnHP;
 			healthBar.updateHealthBar(respawnHP);
-			rotationZ = initialRotation;
 			immuneModel.resetImmuneTimer();
 		}
 		
-		override public function explode():void
+		public function explode():void
 		{	
 			canRecord = false;
 			recordTimer.reset();
@@ -339,7 +218,16 @@ package Classes
 			}
 		}
 		
-		override public function getImmuneStatus():Boolean 
+		public function fireWeaponOne(event:EFireCannon):void
+		{
+			weaponModel.fireWeaponOne(event);
+		}
+		public function fireWeaponTwo(event:EFireCannon):void
+		{
+			weaponModel.fireWeaponTwo(event);
+		}
+		
+		public function getImmuneStatus():Boolean 
 		{
 			return immuneModel.getImmuneStatus();
 		}
@@ -373,11 +261,11 @@ package Classes
 			
 		public function getDirY():Number
 		{
-			return dirY;
+			return physicsModel.getDirY();
 		}
 		public function getDirX():Number
 		{
-			return dirX;
+			return physicsModel.getDirX();
 		}
 		public function getRespawnCount():int 
 		{
@@ -389,7 +277,7 @@ package Classes
 		}
 		public function getVelX():Number
 		{
-			return this.velX;
+			return  physicsModel.getVelX();
 		}
 		public function getLocation():Point 
 		{
@@ -398,13 +286,13 @@ package Classes
 		
 		public function getVelY():Number
 		{
-			return this.velY;
+			return physicsModel.getVelY();
 		}
 		public function getShipId():int
 		{
 			return shipId;
 		}
-		override public function isPlayer():Boolean
+		public function isPlayer():Boolean
 		{
 			return true;
 		}
@@ -453,6 +341,14 @@ package Classes
 		{
 			return canRecord;
 		}
+		public function changeVelX(value:Number):void
+		{
+			physicsModel.changeVelX(value);
+		}
+		public function changeVelY(value:Number):void
+		{
+			physicsModel.changeVelY(value);
+		}
 		public function fireOne(value:Boolean):void
 		{
 			if(value)
@@ -466,6 +362,10 @@ package Classes
 			{
 				dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
 			}
+		}
+		protected function changeRecord(event:TimerEvent):void
+		{
+			canRecord = true;
 		}
 	}
 }

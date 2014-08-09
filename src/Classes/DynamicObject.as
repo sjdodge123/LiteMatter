@@ -3,43 +3,35 @@ package Classes
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.media.Sound;
+	
 	import Classes.GameBoard.GameBoardObjects;
 	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
-	import Interfaces.IStaticMethods;
+	import Interfaces.IPhysicsModel;
 
 	public class DynamicObject extends GameObject implements IDynamicObjects
 	{
-		public var velX:Number = 0;
-		public var velY:Number = 0;
-		public var velocity:Number = 0;
-		public var rotRate:Number = 0;
-		public var rotAngle:Number = 0;
-		
-		protected var gravAccelContribution: Number;
-		protected var gravAccelX:Number = 0;
-		protected var gravAccelY:Number = 0;
-
-		protected var distX:Number = 0;
-		protected var distY:Number = 0;
-		protected var dist:Number = 0;
 		
 		private var owner:PlayerObject;
-		
 		private var gameBoard:GameBoardObjects;
 		private var collisionModel:ICollisionModel;
+		private var physicsModel:IPhysicsModel;
 		private var collisionPoint:Point;
 		private var objHitBox:GameObject;
+		private var positionInfo:Vector.<Number>;
 		protected var staticArray:Array;
 		protected var explodeSound:Sound;
 		
-		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel,initialX:int,initialY:int)
+		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel,physicsModel:IPhysicsModel,initialX:int,initialY:int)
 		{	
 			this.staticArray = new Array();
 			this.gameBoard = gameBoard;
 			this.staticArray = staticArray;
 			this.collisionModel = collisionModel;
+			this.physicsModel = physicsModel;
+			this.width = width;
+			this.height = height;
 			x = initialX;
 			y = initialY;
 			explodeSound = gameBoard.soundLoader.loadSound("./Sounds/explode.mp3");
@@ -48,14 +40,11 @@ package Classes
 		public function buildModel():void
 		{
 			objHitBox = collisionModel.buildModel(this);
+			physicsModel.buildModel(staticArray,width,height,x,y,rotationZ,null);
 		}
 		public function update(deltaT:Number):void
 		{
-			calculateGravity();
-			updateVelocity(deltaT);
-			updatePosition(deltaT);
-			updateRotation(deltaT);
-			checkScreenBounds();
+			updatePhysics(deltaT);
 			if(checkHitStatic())
 			{
 				explode();
@@ -63,6 +52,13 @@ package Classes
 			checkHitDyn(gameBoard.objectArray);
 		}
 		
+		private function updatePhysics(deltaT:Number):void
+		{
+			positionInfo = physicsModel.update(deltaT);
+			x = positionInfo[0];
+			y = positionInfo[1];
+			rotationZ = positionInfo[2];
+		}
 		public function checkHitStatic():Boolean
 		{
 			for(var i:int=0;i<staticArray.length;i++)
@@ -103,18 +99,6 @@ package Classes
 			}
 			return false;
 		}
-		public function calculateGravity():void
-		{
-			for(var i:int=0;i<staticArray.length;i++)
-			{
-				calcDist(staticArray[i].getPosition());
-				if(dist>83.5)
-				{
-					calcGravAccel(staticArray[i]);
-				}
-			}
-		}
-		
 		public function explode():void
 		{	
 			var explosion:MovieClip = gameBoard.addExplosion(x, y,.15,.15);
@@ -125,56 +109,15 @@ package Classes
 				gameBoard.removeObject(this);
 			}
 		}
-		public function calcDist(point:Point):void
-		{
-			distX = point.x - this.x;
-			distY = point.y - this.y;
-			dist = Math.sqrt(Math.pow(distX,2)+Math.pow(distY,2));
-		}
-		public function calcGravAccel(staticObj:IStaticMethods):void
-		{
-			gravAccelContribution = staticObj.getGravityConst()/Math.pow(dist,2);
-			
-			gravAccelX += gravAccelContribution*distX/dist;
-			gravAccelY += gravAccelContribution*distY/dist;
-		}
-		public function updateVelocity(deltaT:Number):void
-		{
-			velX += gravAccelX*deltaT;
-			velY += gravAccelY*deltaT;
-			velocity = Math.sqrt(Math.pow(velX, 2) + Math.pow(velY, 2));
-			gravAccelX = 0;
-			gravAccelY = 0;
-		}
-		public function updateRotation(deltaT:Number):void
-		{
-			rotationZ += rotRate*deltaT;
-		}
-		public function updatePosition(deltaT:Number):void
-		{
-			this.x += velX*deltaT;
-			this.y += velY*deltaT;
-		}
-		public function checkScreenBounds():void 
-		{	
-			if (x > gameBoard.stageWidth + this.width/2)
-			{
-				x = -this.width/2;
-			}
-			if (x < -this.width/2)
-			{
-				x = gameBoard.stageWidth + this.width/2;
-			}
-			if (y >  gameBoard.stageHeight + this.height/2)
-			{
-				y = -this.height/2;
-			}
-			if (y < -this.height/2)
-			{
-				y = gameBoard.stageHeight + this.height/2;
-			}
-		}
 		
+		public function changeVelX(value:Number):void
+		{
+			physicsModel.changeVelX(value);
+		}
+		public function changeVelY(value:Number):void
+		{
+			physicsModel.changeVelY(value);
+		}
 		public function respawn():void
 		{
 			

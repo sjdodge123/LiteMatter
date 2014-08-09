@@ -27,6 +27,7 @@ package Models.Input
 		private var leftTrig:GameInputControl;
 		private var defaultValue:Number;
 		
+		
 		public function XboxControllerModel(gameStage:Stage,device:GameInputDevice) 
 		{
 			this.gameStage = gameStage;

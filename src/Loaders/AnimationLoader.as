@@ -15,7 +15,7 @@ package Loaders
 		private var url:URLRequest;
 		private var ldr:Loader;
 		private var gameBoard:GameBoardObjects;
-		private var animationModel:IAnimationModel
+		private var animationModel:IAnimationModel;
 		
 		public function AnimationLoader(path:String, x:int, y:int,animationModel:IAnimationModel):void
 		{

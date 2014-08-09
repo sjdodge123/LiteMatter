@@ -6,7 +6,6 @@ package UI.Screens
 	
 	import UI.Blocks.AnimatedClipLabel;
 	import UI.Blocks.LabelBox;
-	import UI.Blocks.LabelButton;
 	import UI.ScoreBoard.ScoreBoard;
 	
 	public class EndScreen extends Sprite
@@ -24,7 +23,10 @@ package UI.Screens
 			scoreBoard.openToPage(1);
 			playerTwoColor = scoreBoard.getColor();
 			scoreBoard.openToPage(endPlayerNum);
-			mainLabel = new LabelBox(scoreBoard.getPlayerName() + " wins!", 600, 170, 300, 30);
+			
+			mainLabel = new LabelBox(scoreBoard.getPlayerName() +" wins!", 430, 10, 45, 35);
+			mainLabel.changeWidth(400);
+			mainLabel.changeHeight(100);
 			mainLabel.text.textColor =  scoreBoard.getColor();;
 			scoreScreen = new ScoreScreen(scoreBoard);
 			
