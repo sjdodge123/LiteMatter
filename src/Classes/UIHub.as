@@ -1,6 +1,7 @@
 package Classes 
 {
 	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
@@ -105,13 +106,13 @@ package Classes
 		}
 		private function resetGame(event:UIEvent):void 
 		{
+			screenController.removeEventListener(UIEvent.BACK,resetGame);
 			resetGameVariables();
 			game.popDownMenu(screenController);
 			game.resetToMenu();
 			removeGameListeners();
 			game.resetWatch();
 			screenController.displayMainMenuScreen();
-			screenController.displayControllerScreens();
 			screenController.resetToMenu(game.getColor(1),game.getColor(2));
 			game.popUpMenu(screenController);
 		}
@@ -159,6 +160,10 @@ package Classes
 			{
 				multiPlayerGame();
 			}
+		}
+		protected function optionsInfo(event:UIEvent):void
+		{
+			game.changePace(event.params[0]);		
 		}
 		protected function aPressed(event:ButtonEvent):void
 		{
@@ -210,6 +215,8 @@ package Classes
 		{
 			ioMonitor.addEventListener(UIEvent.PAUSE_GAME, pauseGame);
 			ioMonitor.addEventListener(UIEvent.FULL_SCREEN, displayFullScreen);
+			screenController.addEventListener(UIEvent.BACK,optionsInfo);
+			
 		}
 		private function addMenuListeners():void 
 		{

@@ -29,6 +29,7 @@ package UI.Screens
 		private var lockedColor:uint;
 		private var lives:int = 2;
 		private var livesSelection:SideScrollBox;
+		private var respawnBox:LabelBox;
 		public function GameSelectionScreen(scoreBoard:ScoreBoard)
 		{
 			this.scoreBoard = scoreBoard;
@@ -48,7 +49,9 @@ package UI.Screens
 			{
 				controller.push(null);
 			}
-			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,525,480,25,37));
+			respawnBox = new LabelBox("RESPAWNS: " + lives,475,480,25,37);
+			respawnBox.changeWidth(250);
+			livesSelection = new SideScrollBox(500,500,respawnBox);
 			livesSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			addChild(livesSelection);
 			playButton = new AnimatedClipLabel("./Images/beginButton.swf",600,600,UIEvent.PLAY);
@@ -75,10 +78,12 @@ package UI.Screens
 						lives--;
 					}
 				}
-				var newLabel:LabelBox = new LabelBox("Respawns: " + lives,525,480,25,37);
-				livesSelection.addLabel(newLabel);
+				
+				respawnBox = new LabelBox("RESPAWNS: " + lives,475,480,25,37);
+				respawnBox.changeWidth(250);
+				livesSelection.addLabel(respawnBox);
 				var oldLabel:LabelBox = livesSelection.getCurrentLabel();
-				livesSelection.changeLabel(newLabel);
+				livesSelection.changeLabel(respawnBox);
 				livesSelection.removeLabel(oldLabel);
 			}
 		}		
@@ -154,7 +159,9 @@ package UI.Screens
 			addChild(shipOne);
 			shipTwo.resetPage(scoreBoard.getNextPage(),colorTwo);
 			addChild(shipTwo);
-			livesSelection = new SideScrollBox(500,500,new LabelBox("Respawns: " + lives,525,480,25,37));
+			respawnBox = new LabelBox("RESPAWNS: " + lives,475,480,25,37);
+			respawnBox.changeWidth(250);
+			livesSelection = new SideScrollBox(500,500,respawnBox);
 			livesSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			addChild(livesSelection);
 			playButton = new AnimatedClipLabel("./Images/beginButton.swf",600,600,UIEvent.PLAY);

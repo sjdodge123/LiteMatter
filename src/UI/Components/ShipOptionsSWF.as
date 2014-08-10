@@ -104,7 +104,7 @@ package UI.Components
 			colorSelection.addLabel(blueColor);
 			colorSelection.addLabel(new StaticClipLabel("./Images/greenText.swf",x+225,15,"GREEN",0x00FF00));
 			colorSelection.addLabel(new StaticClipLabel("./Images/yellowText.swf",x+225,15,"YELLOW",0xFFFF00));
-			colorSelection.addLabel(new StaticClipLabel("./Images/tealText.swf",x+225,15,"TEAL",0x3EB489));
+			colorSelection.addLabel(new StaticClipLabel("./Images/tealText.swf",x+225,15,"TEAL",0x00CC99));
 			colorSelection.addLabel(new StaticClipLabel("./Images/magentaText.swf",x+225,15,"MAGENTA",0xFF00FF));
 			
 			//If Player 1

@@ -30,9 +30,9 @@ package UI.Components
 			this.size = size;
 			textArray = new Vector.<LabelBox>;
 			addLabel(firstLabel);
-			leftArrowButton = new AnimatedArrow("./Images/leftArrowButton.swf",baseX, baseY);
+			leftArrowButton = new AnimatedArrow("./Images/leftArrowButton.swf",baseX-50, baseY);
 			leftArrowButton.addEventListener(ButtonEvent.PRESSED,previousLabel);
-			rightArrowButton = new AnimatedArrow("./Images/rightArrowButton.swf",baseX + 200, baseY);
+			rightArrowButton = new AnimatedArrow("./Images/rightArrowButton.swf",baseX + 250, baseY);
 			rightArrowButton.addEventListener(ButtonEvent.PRESSED,nextLabel);
 			addChild(rightArrowButton);
 			addChild(leftArrowButton);

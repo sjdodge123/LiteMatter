@@ -37,7 +37,7 @@ package UI
 
 		public function UserInterfaceController(scoreBoard:ScoreBoard) 
 		{
-			displayMainMenuScreen();
+			mainMenu = new MainMenu();
 			soundLoader = new SoundLoader();
 			selectSound = soundLoader.loadSound("./Sounds/select.mp3");
 			reader = new Reader();
@@ -45,12 +45,12 @@ package UI
 			gameSelection = new GameSelectionScreen(scoreBoard);
 			reader.readFile("version.txt"); 
 			controllerArray = new Array();
+			displayMainMenuScreen();
 			
 		}
 		
 		public function displayMainMenuScreen():void
 		{
-			mainMenu = new MainMenu();
 			currentMenu = mainMenu;
 			mainMenu.addEventListener(UIEvent.PLAY, moveToSelection);
 			mainMenu.addEventListener(UIEvent.OPTIONS, moveToOptions);
@@ -79,7 +79,7 @@ package UI
 			clearScreen();
 			gameSelection.removeEventListener(UIEvent.PLAY,playGame);
 			displayMainMenuScreen();
-			dispatchEvent(new UIEvent(UIEvent.BACK,null));
+			dispatchEvent(new UIEvent(UIEvent.BACK,optionsScreen.collectInfo()));
 		}
 		
 		protected function playGame(event:UIEvent):void

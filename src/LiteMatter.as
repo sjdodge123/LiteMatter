@@ -48,7 +48,6 @@ package
 		private var menuTheme:Sound;
 		private var soundChannel:SoundChannel;
 		private var onMainMenu:Boolean = true;
-		private var theta:Number = .034;
 		private var rabbit1:Rabbit;
 		private var rabbit2:Rabbit;
 		private var replayPage1:ScorePage;
@@ -56,7 +55,11 @@ package
 		private var replayRabit1:PlayBackModel;
 		private var replayRabit2:PlayBackModel;
 		private var onEndScreen:Boolean = false;
-
+		
+		private var slowPace:Number = 0.026;
+		private var normalPace:Number = 0.034;	
+		private var fastPace:Number = 0.045;
+		private var currentPace:Number;
 		
 		public function LiteMatter()
 		{
@@ -78,6 +81,7 @@ package
 			soundChannel = menuTheme.play(0, 150);
 			gameBoard.intitalizeBackgroundObjects();
 			stopWatch = new StopWatch();
+			currentPace = normalPace;
 			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
 		
@@ -109,9 +113,8 @@ package
 		{
 			if (uiHub.getGameRunning())
 			{
-				
-				deltaT = stopWatch.calcTime();
-				gameBoard.updateGameBoard(deltaT);
+				//deltaT = stopWatch.calcTime();
+				gameBoard.updateGameBoard(currentPace);
 				if(gameBoard.ship.getCanRecord())
 				{
 					rabbit1.record(deltaT,gameBoard.ship,gameBoard.objectArray);
@@ -123,8 +126,8 @@ package
 				}
 				//mousePoint = new Point(stage.mouseX,stage.mouseY);
 				
-				print("Player 1 lives: " +gameBoard.ship.getRespawnCount()+ "\n" + "HP: " + gameBoard.ship.getHP(), text1);
-				print("Player 2 lives: " +gameBoard.ship2.getRespawnCount() + "\n" + "HP: " + gameBoard.ship2.getHP(), text2);
+				print("Player 1 lives: " +gameBoard.ship.getRespawnCount(), text1);
+				print("Player 2 lives: " +gameBoard.ship2.getRespawnCount(), text2);
 				
 				if (gameBoard.ship.getRespawnCount() == 0) 
 				{
@@ -137,14 +140,15 @@ package
 			}
 			else if (onMainMenu)
 			{
-				deltaT = theta;
+				deltaT = normalPace;
 				gameBoard.updateGameBoard(deltaT);
 			}
 			else if (onEndScreen)
 			{
 				deltaT = replayRabit1.playBack();
+				stage.frameRate = 1/deltaT;
 				replayRabit2.playBack();
-				gameBoard.updateGameBoard(deltaT);
+				gameBoard.updateGameBoard(currentPace);
 				if (gameBoard.ship.getRespawnCount() == 0) 
 				{
 					onEndScreen = false;
@@ -294,5 +298,21 @@ package
 			
 		}
 		
+		public function changePace(pace:Number):void
+		{
+			if(pace == 1)
+			{
+				currentPace = slowPace;
+			}
+			if(pace == 2)
+			{
+				currentPace = normalPace;
+			}
+			if(pace == 3)
+			{
+				currentPace = fastPace;
+			}
+			
+		}
 	}
 }

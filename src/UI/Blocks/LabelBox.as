@@ -17,12 +17,15 @@ package UI.Blocks
 			this.y = y;
 			myFormat = new TextFormat();
 			myFormat.size = size;
+			myFormat.font = "Verdana";
+			myFormat.bold = true;
+			myFormat.italic = true;
 			myFormat.align = TextFormatAlign[alignment];
 			this.color = color;
 			text = new TextField();
 			text.selectable = false;
 			text.defaultTextFormat = myFormat;
-			text.textColor = 0xFFFFFF;
+			text.textColor = 0x00CC99;
 			text.text = message;
 			text.height = height;
 			text.width = 150;
