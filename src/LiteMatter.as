@@ -1,7 +1,6 @@
 package
 {
 	import flash.display.Sprite;
-	import flash.display.Stage;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.geom.Point;

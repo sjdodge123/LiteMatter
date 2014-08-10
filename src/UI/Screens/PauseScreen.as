@@ -11,7 +11,8 @@ package UI.Screens
 		private var versionText:LabelBox;
 		public function PauseScreen(version:String) 
 		{
-			pauseText = new LabelBox("PAUSED", 600, 250, 250, 60);
+			pauseText = new LabelBox("PAUSED",460,250,60);
+			pauseText.changeWidth(300);
 			resetText = new LabelBox("Press R/Back to reset", 600, 350, 300, 30);
 			muteText = new LabelBox("Press M to Mute/Unmute", 600, 450, 350, 30);
 			versionText = new LabelBox(version, 600, 550, 350, 15);

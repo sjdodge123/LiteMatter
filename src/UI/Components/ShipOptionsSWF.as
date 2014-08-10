@@ -103,6 +103,7 @@ package UI.Components
 			colorSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			colorSelection.addLabel(blueColor);
 			colorSelection.addLabel(new StaticClipLabel("./Images/greenText.swf",x+225,15,"GREEN",0x00FF00));
+			colorSelection.addLabel(new StaticClipLabel("./Images/yellowText.swf",x+225,15,"YELLOW",0xFFFF00));
 			colorSelection.addLabel(new StaticClipLabel("./Images/tealText.swf",x+225,15,"TEAL",0x3EB489));
 			colorSelection.addLabel(new StaticClipLabel("./Images/magentaText.swf",x+225,15,"MAGENTA",0xFF00FF));
 			
@@ -159,50 +160,29 @@ package UI.Components
 			if(event.params[0] == humanInputs)
 			{
 				currentLabel = humanInputs.getCurrentLabel();
-				if(currentLabel == xbox)
-				{
-					addChild(controllerNum);
-					if(page.getPlayerNum()+1 == 1)
-					{
-						//Does not display correct value && sometimes they are set for both players
-						if(xbox.getColor() == 1)
-						{
-							removeChild(controllerNum);
-							controllerNum = new StaticClipLabel("./Images/oneText.swf",x+310,610,"ONE");
-							addChild(controllerNum);
-						}
-						if(xbox.getColor() == 2)
-						{
-							removeChild(controllerNum);
-							controllerNum = new StaticClipLabel("./Images/twoText.swf",x+310,610,"TWO");
-							addChild(controllerNum);
-						}
-						
-					}
-					if(page.getPlayerNum()+1 == 2)
-					{
-						if(xbox.getColor() == 1)
-						{
-							removeChild(controllerNum);
-							controllerNum = new StaticClipLabel("./Images/oneText.swf",x+310,610,"ONE");
-							addChild(controllerNum);
-						}
-						if(xbox.getColor() == 2)
-						{
-							removeChild(controllerNum);
-							controllerNum = new StaticClipLabel("./Images/twoText.swf",x+310,610,"TWO");
-							addChild(controllerNum);
-						}
-					}	
-				}
-				else
-				{
-					if(contains(controllerNum))
-					{
-						removeChild(controllerNum);	
-					}
-					
-				}
+//				if(currentLabel == xbox)
+//				{
+//					
+//					deviceID = xbox.getColor();
+//					if(deviceID == 1)
+//					{
+//						controllerNum = new StaticClipLabel("./Images/oneText.swf",x+310,610,"ONE");
+//						addChild(controllerNum);
+//					}
+//					if(deviceID == 2)
+//					{
+//						controllerNum = new StaticClipLabel("./Images/twoText.swf",x+310,610,"TWO");
+//						addChild(controllerNum);
+//					}
+//				}
+//				else
+//				{
+//					if(contains(controllerNum))
+//					{
+//						removeChild(controllerNum);	
+//					}
+//					
+//				}
 			}
 			if(event.params[0] == colorSelection)
 			{
@@ -270,28 +250,43 @@ package UI.Components
 		
 		public function deviceAdded(deviceID:int,device:GameInputDevice):void
 		{
-			xbox = new StaticClipLabel("./Images/controllerText.swf",x+170,15,"XBOX",deviceID);
-			humanInputs.addLabel(xbox);
-			if(page.getPlayerNum()+1 == deviceID)
+			if(deviceID == 1)
 			{
-				if(deviceID == 1)
-				{
-					controllerNum = new StaticClipLabel("./Images/oneText.swf",x+310,610,"ONE");
-					addChild(controllerNum);
-				}
-				if(deviceID == 2)
-				{
-					playerType.changeLabel(humanLabel);
-					var id:int = removeComp(computerInputs);
-					addCompAt(id,humanInputs);
-					controllerNum = new StaticClipLabel("./Images/twoText.swf",x+310,610,"TWO");
-					addChild(controllerNum);
-				}
-				humanInputs.changeLabel(xbox);
+				xbox = new StaticClipLabel("./Images/oneText.swf",x+220,15,"XBOX");
+				humanInputs.addLabel(xbox);
 			}
-			
+			if(deviceID == 2)
+			{
+				playerType.changeLabel(humanLabel);
+				var id:int = removeComp(computerInputs);
+				addCompAt(id,humanInputs);
+				xbox = new StaticClipLabel("./Images/twoText.swf",x+220,15,"XBOX");
+				humanInputs.addLabel(xbox);
+			}
+			humanInputs.changeLabel(xbox);
 			this.device = device;
 			this.deviceID = deviceID;
+//			xbox = new StaticClipLabel("./Images/controllerText.swf",x+170,15,"XBOX",deviceID);
+//			humanInputs.addLabel(xbox);
+//			if(page.getPlayerNum()+1 == deviceID)
+//			{
+//				if(deviceID == 1)
+//				{
+//					controllerNum = new StaticClipLabel("./Images/oneText.swf",x+310,610,"ONE");
+//					addChild(controllerNum);
+//				}
+//				if(deviceID == 2)
+//				{
+//					playerType.changeLabel(humanLabel);
+//					var id:int = removeComp(computerInputs);
+//					addCompAt(id,humanInputs);
+//					controllerNum = new StaticClipLabel("./Images/twoText.swf",x+310,610,"TWO");
+//					addChild(controllerNum);
+//				}
+//				humanInputs.changeLabel(xbox);
+//			}
+//			
+			
 			
 		}
 		public function deviceRemoved(deviceID:int):void

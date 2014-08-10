@@ -253,7 +253,6 @@ package Classes
 			numControllers += 1;
 			ioMonitor.controllerAdded(device);
 			addControllerListeners();
-			game
 		}
 		public function addControllerPopUpScreen(playNum:int,device:GameInputDevice):void 
 		{

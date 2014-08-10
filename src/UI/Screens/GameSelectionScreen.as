@@ -108,8 +108,15 @@ package UI.Screens
 		
 		public function addControllerToScroll(playNum:int,device:GameInputDevice):void
 		{
-			shipOne.deviceAdded(playNum+1,device);
-			shipTwo.deviceAdded(playNum+1,device);
+			if(playNum+1 == 1)
+			{
+				shipOne.deviceAdded(playNum+1,device);
+			}
+			if(playNum+1 == 2)
+			{
+				shipTwo.deviceAdded(playNum+1,device);
+			}
+			
 		}
 		
 		public function displayControllerScreens():void
