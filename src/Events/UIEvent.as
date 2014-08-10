@@ -16,6 +16,7 @@ package Events
 		public static const MUTE_GAME:String = "muteGame";
 		public static const START_GAME:String = "startGame";
 		public static const DROP_CONTROLLER:String = "dropController";
+		public static const LOAD_COMPLETE:String = "loadCompleted";
 		public var params:Object
 		public function UIEvent(type:String,params:Object,bubbles:Boolean = false,cancelable:Boolean = false) 
 		{

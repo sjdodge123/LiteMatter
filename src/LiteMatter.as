@@ -18,6 +18,8 @@ package
 	
 	import Interfaces.IInputHandling;
 	
+	import Loaders.Sentinel;
+	
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
 	import Models.Input.XboxControllerModel;
@@ -27,6 +29,7 @@ package
 	
 	import UI.UserInterfaceController;
 	import UI.ScoreBoard.ScorePage;
+	import Events.UIEvent;
 	
 	
 	[SWF(backgroundColor= "0x000000", width="1200", height ="900", frameRate='30')]
@@ -56,6 +59,8 @@ package
 		private var replayRabit2:PlayBackModel;
 		private var onEndScreen:Boolean = false;
 		
+		private var sentinel:Sentinel;
+		
 		private var slowPace:Number = 0.026;
 		private var normalPace:Number = 0.034;	
 		private var fastPace:Number = 0.045;
@@ -63,11 +68,18 @@ package
 		
 		public function LiteMatter()
 		{
-			Initialize();	
+			preLoad();
 		}
-		 
-		private function Initialize():void
+		
+		private function preLoad():void
 		{
+			sentinel = new Sentinel();
+			addChild(sentinel);
+			sentinel.addEventListener(UIEvent.LOAD_COMPLETE,Initialize);
+		}
+		private function Initialize(event:UIEvent):void
+		{
+			removeChild(sentinel);
 			stage.stageFocusRect = false;
 			uiHub = new UIHub(stage, this);
 			xbc = new GamePadController(uiHub);
@@ -87,6 +99,7 @@ package
 		
 		public function InitializeGameBoard():void 
 		{
+		
 			soundChannel.stop();
 			var player1Input:IInputHandling = gameBoard.inputPlayer1;
 			var player2Input:IInputHandling = gameBoard.inputPlayer2;
