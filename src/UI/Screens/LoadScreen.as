@@ -15,8 +15,8 @@ package UI.Screens
 		private var emptySpace:Sprite
 		private var fill:Sprite;
 		private var totalAssets:Number;
-		private var fillPercent:Number;
-		private var assetCount:Number = 0;
+		private var fillPercent:Number = 0;
+//		private var assetCount:Number = 0;
 		private var assetTitle:LabelBox;
 		public function LoadScreen(assetCount:Number)
 		{
@@ -48,17 +48,15 @@ package UI.Screens
 		public function changeAsset(value:String):void
 		{
 			removeChild(assetTitle);
-			assetTitle = new LabelBox("("+value+")",250,300,40);
-			assetTitle.changeWidth(700);
+			assetTitle = new LabelBox("("+value+")" + " " + (int((fillPercent)*100)/100)*100 + "%",120,300,20);
+			assetTitle.changeWidth(900);
 			addChild(assetTitle);
-			trace("newLoad");
 		}
 		
-		public function adjustFill():void
+		public function adjustFill(currentCount:int):void
 		{
 			removeChild(fill);
-			assetCount++;
-			fillPercent = assetCount/totalAssets;
+			fillPercent = currentCount/totalAssets;
 			newWidth = barWidth*fillPercent;
 			fill.graphics.beginFill(fillColor);
 			fill.graphics.drawRect(310,410,newWidth,80);
@@ -70,10 +68,12 @@ package UI.Screens
 		
 		public function error():void
 		{
+			
 			removeChild(loadingTitle);		
 			loadingTitle = new LabelBox("ERROR LOADING, TRY REFRESHING",50,250,60);
 			loadingTitle.changeWidth(1200);
 			addChild(loadingTitle);		
 		}
+		
 	}
 }

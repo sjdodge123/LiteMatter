@@ -44,7 +44,7 @@ package Loaders
 			addAsset("./Images/Background.swf");
 			addAsset("./Images/beginButton.swf");
 			addAsset("./Images/blueText.swf");
-			addAsset("./Images/cannonBall.swf");
+			addAsset("./Images/cannonball.swf");
 			addAsset("./Images/compText.swf");
 			addAsset("./Images/controllerText.swf");
 			addAsset("./Images/explosion.swf");
@@ -86,7 +86,6 @@ package Loaders
 				type = checkType(values[i]);
 				if(type > -1)
 				{
-					loadScreen.changeAsset(values[i]);
 					if(type == 0) //LOAD SOUND
 					{
 						req = new URLRequest(values[i]);
@@ -105,7 +104,7 @@ package Loaders
 				else
 				{
 					trace("Error Loading Asset");
-					loadScreen.error();
+					loadScreen.changeAsset("Error Loading Asset");
 				}
 				
 			}
@@ -114,12 +113,15 @@ package Loaders
 		protected function loadPartComplete(event:Event):void
 		{
 			currentCount++;
-			loadScreen.adjustFill();
+			loadScreen.adjustFill(currentCount);
+			var fullURL:String = String(event.target.url);
+			var index:int = fullURL.search("./");
+			var asset:String = fullURL.substring(index);
+			loadScreen.changeAsset(asset);
 			if(currentCount == paths.length)
 			{
 				dispatchEvent(new UIEvent(UIEvent.LOAD_COMPLETE,null));
 			}
-			
 		}
 		
 		

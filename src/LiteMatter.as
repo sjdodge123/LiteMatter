@@ -80,6 +80,7 @@ package
 		private function Initialize(event:UIEvent):void
 		{
 			removeChild(sentinel);
+			sentinel.removeEventListener(UIEvent.LOAD_COMPLETE,Initialize);
 			stage.stageFocusRect = false;
 			uiHub = new UIHub(stage, this);
 			xbc = new GamePadController(uiHub);
