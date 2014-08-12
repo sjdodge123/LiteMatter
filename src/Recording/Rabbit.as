@@ -1,7 +1,9 @@
 package Recording
 {
 
+	import Classes.GameObject;
 	import Classes.PlayerObject;
+	
 	import Interfaces.IInputHandling;
 	import Interfaces.IWeaponModel;
 
@@ -25,7 +27,7 @@ package Recording
 		}
 		
 		
-		public function record(deltaT:Number,ship:PlayerObject,objectArray:Array):void
+		public function record(deltaT:Number,ship:PlayerObject,objectArray:Vector.<GameObject>):void
 		{
 			eventInfo = new Array();
 			eventInfo.push(deltaT);

@@ -103,7 +103,7 @@ package Classes
 			physicsModel.buildModel(staticArray,width,height,x,y,initialRotation,inputModel);
 		}
 		
-		public function update(deltaT:Number):void
+		override public function update(deltaT:Number):void
 		{
 			updatePhysics(deltaT);
 			if(checkHitStatic())
@@ -136,7 +136,7 @@ package Classes
 			}
 			return false;
 		}
-		public function checkHitDyn(objectArray:Array):Boolean
+		public function checkHitDyn(objectArray:Vector.<GameObject>):Boolean
 		{
 			for(var i:int=0;i<objectArray.length;i++)
 			{
@@ -146,12 +146,12 @@ package Classes
 					{	
 						if(objectArray[i] as PlayerObject && this as PlayerObject)
 						{
-							var damageToOtherShip:int = calcDamage(this, objectArray[i]);
+							var damageToOtherShip:int = calcDamage(this, objectArray[i] as PlayerObject);
 							objectArray[i].takeAwayHP(damageToOtherShip);
 							shipRam.play();
 							if (objectArray[i].getHP() <= 0) 
 							{
-								recordKill(objectArray[i]);
+								recordKill(objectArray[i] as PlayerObject);
 								objectArray[i].explode();
 								
 							}

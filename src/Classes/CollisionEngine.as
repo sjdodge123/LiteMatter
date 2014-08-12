@@ -2,7 +2,7 @@ package Classes
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import Interfaces.IObjectMethods;
+	import Interfaces.IGameObject;
 	
 	public class CollisionEngine
 	{	
@@ -12,7 +12,7 @@ package Classes
 			
 		}
 		
-		public function testGeneralCollision(movingObj:GameObject, staticObj:IObjectMethods,boxArray:Array):Boolean
+		public function testGeneralCollision(movingObj:GameObject, staticObj:IGameObject,boxArray:Array):Boolean
 		{
 			if(testCollisionCheap(movingObj,staticObj.getHitArea()))
 			{

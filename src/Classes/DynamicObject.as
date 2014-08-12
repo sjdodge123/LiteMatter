@@ -42,7 +42,7 @@ package Classes
 			objHitBox = collisionModel.buildModel(this);
 			physicsModel.buildModel(staticArray,width,height,x,y,rotationZ,null);
 		}
-		public function update(deltaT:Number):void
+		override public function update(deltaT:Number):void
 		{
 			updatePhysics(deltaT);
 			if(checkHitStatic())
@@ -70,7 +70,7 @@ package Classes
 			}
 			return false;
 		}
-		public function checkHitDyn(objectArray:Array):Boolean
+		public function checkHitDyn(objectArray:Vector.<GameObject>):Boolean
 		{
 			for(var i:int=0;i<objectArray.length;i++)
 			{
@@ -80,11 +80,11 @@ package Classes
 					{
 						if (objectArray[i].isPlayer()) 
 						{
-							owner.recordHit(objectArray[i]);
+							owner.recordHit(objectArray[i] as PlayerObject);
 							var currentHP:int = objectArray[i].takeAwayHP(25);
 							if (currentHP <= 0) 
 							{
-								owner.recordKill(objectArray[i]);
+								owner.recordKill(objectArray[i] as PlayerObject);
 								objectArray[i].explode();
 							}	
 						}

@@ -25,7 +25,7 @@ package Classes.GameBoard
 
 	public class GameBoardObjects extends GameObject 
 	{
-		public var objectArray:Array = new Array();
+		public var objectArray:Vector.<GameObject>;
 		public var ship:PlayerObject;
 		public var ship2:PlayerObject;
 		private var planet:StaticObject;
@@ -39,6 +39,7 @@ package Classes.GameBoard
 		
 		public function GameBoardObjects(stage:Stage)
 		{
+			objectArray = new Vector.<GameObject>;
 			this.gameStage = stage;
 			objectBuilder = new ObjectBuilder(this,stage);
 			soundLoader = new SoundLoader();
