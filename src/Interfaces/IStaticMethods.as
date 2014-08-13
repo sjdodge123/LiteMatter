@@ -6,5 +6,6 @@ package Interfaces
 	{
 		function getGravityConst():Number
 		function getPosition():Point
+		function getRadius():Number;
 	}
 }

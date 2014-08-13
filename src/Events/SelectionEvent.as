@@ -13,7 +13,7 @@ package Events
 		}
 		public override function clone():Event
 		{
-			return new EFireCannon(type, this.params, bubbles, cancelable);
+			return new SelectionEvent(type, this.params, bubbles, cancelable);
 		}
 		public override function toString():String
 		{

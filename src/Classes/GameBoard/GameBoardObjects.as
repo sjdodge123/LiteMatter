@@ -3,11 +3,13 @@ package Classes.GameBoard
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	
-	import Classes.DynamicObject;
+	import Classes.BasicObject;
 	import Classes.GameObject;
 	import Classes.ObjectBuilder;
 	import Classes.PlayerObject;
 	import Classes.StaticObject;
+	
+	import Events.GameBoardEvent;
 	
 	import Interfaces.IInputHandling;
 	
@@ -25,23 +27,27 @@ package Classes.GameBoard
 
 	public class GameBoardObjects extends GameObject 
 	{
-		public var objectArray:Vector.<GameObject>;
+		
 		public var ship:PlayerObject;
 		public var ship2:PlayerObject;
-		private var planet:StaticObject;
-		public var gameStage:Stage;
-		private var backGround:MovieClip;
-		private var objectBuilder:ObjectBuilder;
-		public var soundLoader:SoundLoader;
-		private var defaultAI:BasicAIModel;
 		public var inputPlayer1:IInputHandling;
 		public var inputPlayer2:IInputHandling;
+		public var gameObjects:Vector.<GameObject>;
+		private var planet:StaticObject;
+		private var gameStage:Stage;
+		private var backGround:MovieClip;
+		private var objectBuilder:ObjectBuilder;
+		private var soundLoader:SoundLoader;
+		private var defaultAI:BasicAIModel;
+		private var staticObjects:Vector.<StaticObject>;
 		
 		public function GameBoardObjects(stage:Stage)
 		{
-			objectArray = new Vector.<GameObject>;
+			gameObjects = new Vector.<GameObject>;
+			staticObjects = new Vector.<StaticObject>;
 			this.gameStage = stage;
-			objectBuilder = new ObjectBuilder(this,stage);
+			objectBuilder = new ObjectBuilder(stage);
+			objectBuilder.addEventListener(GameBoardEvent.ADD,addObject);
 			soundLoader = new SoundLoader();
 			inputPlayer1 = new Player1InputModel(gameStage);
 			inputPlayer2 = new Player2InputModel(gameStage);
@@ -59,7 +65,7 @@ package Classes.GameBoard
 			planet.scaleX = .50;
 			planet.scaleY = .50;
 			//var planet2:StaticObject = objectBuilder.buildTokenPlanet(stageWidth-200, stageHeight-200);
-			var cannonball:DynamicObject = objectBuilder.buildAsteroid(gameStage.stageWidth/2, (gameStage.stageHeight/2)+350);
+			var cannonball:BasicObject = objectBuilder.buildAsteroid(gameStage.stageWidth/2, (gameStage.stageHeight/2)+350);
 			cannonball.scaleX = .08;
 			cannonball.scaleY = .08;
 			cannonball.changeVelX(250);
@@ -71,7 +77,7 @@ package Classes.GameBoard
 		}
 		private function addPlayer1(scorePage:ScorePage):void
 		{
-			defaultAI = new BasicAIModel(gameStage, this, objectBuilder.staticArray);
+			defaultAI = new BasicAIModel(gameStage, this,staticObjects);
 			if (inputPlayer1 != null) 
 			{
 				ship = objectBuilder.buildPiratePlayer(inputPlayer1, 50, 50, scorePage);
@@ -82,13 +88,17 @@ package Classes.GameBoard
 			}
 				
 		}
-		public function addExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip
+		private function addCannonBall(event:GameBoardEvent):void
 		{
-			return objectBuilder.buildExplosion(x, y,scaleX,scaleY);
-		}
-		public function addCannonBall(x:int,y:int):DynamicObject
-		{
-			return objectBuilder.buildTokenCannonBall(x, y);
+			var player:PlayerObject = event.target as PlayerObject;
+			var infoArray:Array = event.params as Array;
+			var bulletOne:BasicObject = objectBuilder.buildTokenCannonBall(infoArray[0].x, infoArray[0].y);
+			var bulletTwo:BasicObject = objectBuilder.buildTokenCannonBall(infoArray[1].x, infoArray[1].y);
+			bulletOne.changeVelX(infoArray[2]);
+			bulletOne.changeVelY(infoArray[3]);
+			bulletTwo.changeVelX(infoArray[2]);
+			bulletTwo.changeVelY(infoArray[3]);
+			player.recordShot(bulletOne,bulletTwo);
 		}
 		public function changeInputType(playerNum:int,inputType:IInputHandling):void 
 		{
@@ -125,9 +135,9 @@ package Classes.GameBoard
 			ship2 =  objectBuilder.buildPiratePlayer(inputPlayer2, gameStage.stageWidth - 50, gameStage.stageHeight - 50,scorePage);
 		}
 		
-		public function removeObject(obj:GameObject):void
+		private function deleteObject(obj:GameObject):void
 		{
-			objectArray.splice(objectArray.lastIndexOf(obj),1);
+			gameObjects.splice(gameObjects.lastIndexOf(obj),1);
 			removeChild(obj);
 			obj = null;
 		}
@@ -135,10 +145,9 @@ package Classes.GameBoard
 		
 		public function updateGameBoard(deltaT:Number):void 
 		{
-			//mousePoint = new Point(mouseX,mouseY);
-			for(var i:int=0;i<objectArray.length;i++) 
+			for(var i:int=0;i<gameObjects.length;i++) 
 			{
-				objectArray[i].update(deltaT);
+				gameObjects[i].update(deltaT,staticObjects,gameObjects);
 			}	
 		}
 		
@@ -152,10 +161,67 @@ package Classes.GameBoard
 			PlayBackModel(inputPlayer1).setShip(ship);
 			PlayBackModel(inputPlayer2).setShip(ship2);
 		}
+		public function addObject(event:GameBoardEvent):void
+		{
+			var obj:Object;
+			if(event.params as GameObject)
+			{
+				obj =  event.params as GameObject;
+				addChild(obj as GameObject);
+			}
+			if(event.params as MovieClip)
+			{
+				obj =  event.params as MovieClip;
+				addChild(obj as MovieClip);
+			}
+			
+			if(obj as BasicObject)
+			{
+				gameObjects.push(obj);
+				obj.addEventListener(GameBoardEvent.EXPLODE,explodeObject);
+				obj.addEventListener(GameBoardEvent.REMOVE,removeObjectEvent);
+			}
+			if( obj as PlayerObject)
+			{
+				gameObjects.push(obj);
+				obj.addEventListener(GameBoardEvent.ADD_TO_POINT,addCannonBall);
+				obj.addEventListener(GameBoardEvent.EXPLODE,explodeObject);
+				obj.addEventListener(GameBoardEvent.REMOVE,removeObjectEvent);
+			}
+			if(obj as StaticObject)
+			{
+				staticObjects.push(obj);	
+			}
+			
+		}
 		
+		public function removeObjectEvent(event:GameBoardEvent):void
+		{
+			var obj:GameObject =  GameObject(event.params);
+			if(contains(obj))
+			{
+				if(obj as BasicObject)
+				{
+					deleteObject(obj);	
+				}
+				if(obj as PlayerObject)
+				{
+					deleteObject(obj);	
+				}
+				if(obj as StaticObject)
+				{
+					//TODO Delete Static Object
+				}
+			}
+		}
+		public function explodeObject(event:GameBoardEvent):void
+		{
+			var obj:GameObject =  GameObject(event.params);
+			addChild(objectBuilder.buildExplosion(obj.x, obj.y,obj.getScale(),obj.getScale()));
+		}
 		public function playBack(infoArray:Array):void
 		{
-			objectArray = infoArray[1];
+			gameObjects = infoArray[1];
 		}
 	}
 }

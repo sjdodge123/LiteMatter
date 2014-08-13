@@ -1,14 +1,18 @@
 package Models.Input 
 {
-	import Classes.GameBoard.GameBoardObjects;
-	import Classes.ObjectBuilder;
-	import Classes.PlayerObject;
-	import flash.events.Event;
 	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.events.TimerEvent;
-	import Interfaces.IInputHandling;
 	import flash.geom.Point;
 	import flash.utils.Timer;
+	
+	import Classes.ObjectBuilder;
+	import Classes.PlayerObject;
+	import Classes.StaticObject;
+	import Classes.GameBoard.GameBoardObjects;
+	
+	import Interfaces.IInputHandling;
+
 	public class BasicAIModel implements IInputHandling
 	{
 		private var moveForward:Boolean = false;
@@ -27,15 +31,15 @@ package Models.Input
 		private var dist:Number = 0;
 		private var startAI:Timer;
 		private var fireTimer:Timer;
-		private var staticArray:Array;
 		private var dontSkip:Boolean = true;
+		private var staticObjects:Vector.<StaticObject>;
 		
 		
-		public function BasicAIModel(gameStage:Stage, gameBoard:GameBoardObjects, staticArray:Array) 
+		public function BasicAIModel(gameStage:Stage, gameBoard:GameBoardObjects, staticObjects:Vector.<StaticObject>) 
 		{
 			this.gameStage = gameStage;
 			this.gameBoard = gameBoard;
-			this.staticArray = staticArray;
+			this.staticObjects = staticObjects;
 		}
 		
 		public function buildModel(AIShip:PlayerObject):void
@@ -63,9 +67,9 @@ package Models.Input
 		
 		private function checkForPlanets():void 
 		{
-			for(var i:int=0;i<staticArray.length;i++)
+			for(var i:int=0;i<staticObjects.length;i++)
 			{
-				calcDist(staticArray[i].getPosition());
+				calcDist(staticObjects[i].getPosition());
 				if(dist<randomRange(300,850))
 				{
 					avoidPlanet()

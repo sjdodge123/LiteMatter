@@ -1,22 +1,25 @@
 package Classes
 {
 	
-	import flash.display.MovieClip;
+	import flash.display.Stage;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.utils.Timer;
 	
 	import Classes.HealthBar;
-	import Classes.GameBoard.GameBoardObjects;
 	
 	import Events.EFireCannon;
+	import Events.GameBoardEvent;
+	import Events.PageEvent;
 	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IImmunityModel;
 	import Interfaces.IInputHandling;
 	import Interfaces.IPhysicsModel;
 	import Interfaces.IWeaponModel;
+	
+	import Loaders.SoundLoader;
 	
 	import UI.ScoreBoard.ScorePage;
 
@@ -35,11 +38,9 @@ package Classes
 		private var collisionModel:ICollisionModel;
 		private var physicsModel:IPhysicsModel;
 		private var immuneModel:IImmunityModel;
-		private var gameBoard:GameBoardObjects;
 		private var shipHitBox:GameObject;
 		private var weaponModel:IWeaponModel;
 		private var scorePage:ScorePage;
-		private var staticArray:Array;
 		private var respawnX:int;
 		private var respawnY:int;
 		private var respawnsEmpty:Boolean;
@@ -49,24 +50,28 @@ package Classes
 		private var shipExplode:Sound;
 		private var shipRam:Sound;
 		private var positionInfo:Vector.<Number>;
+		private var soundLoader:SoundLoader;
+		private var gameStage:Stage;
+		private var gameObjects:Vector.<GameObject>;
 		
-		public function PlayerObject(staticArray:Array, inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,physicsModel:IPhysicsModel,staticArray:Array, gameBoard:GameBoardObjects,immuneModel:IImmunityModel,initialX:int,initialY:int,scorePage:ScorePage)
+		public function PlayerObject(inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,physicsModel:IPhysicsModel,immuneModel:IImmunityModel,initialX:int,initialY:int,scorePage:ScorePage,stage:Stage)
 		{
-			
-			this.gameBoard = gameBoard;
 			this.inputModel = inputModel;
 			this.weaponModel = weaponModel;
 			this.physicsModel = physicsModel;
 			this.collisionModel = collisionModel;
 			this.immuneModel = immuneModel;
 			this.scorePage = scorePage;
-			this.staticArray = staticArray;
+			this.gameStage = stage;
+			soundLoader = new SoundLoader();
 			width = 0;
 			height = 0;
 			physicsModel.addEventListener(EFireCannon.FIRE_ONE,fireWeaponOne);
 			physicsModel.addEventListener(EFireCannon.FIRE_TWO,fireWeaponTwo);
-			shipExplode = gameBoard.soundLoader.loadSound("./Sounds/shipExplode.mp3");
-			shipRam =  gameBoard.soundLoader.loadSound("./Sounds/shipRam.mp3");
+			weaponModel.addEventListener(PageEvent.SHOT_FIRED,recordShot)
+			weaponModel.addEventListener(GameBoardEvent.ADD_TO_POINT,addShot)
+			shipExplode = soundLoader.loadSound("./Sounds/shipExplode.mp3");
+			shipRam =  soundLoader.loadSound("./Sounds/shipRam.mp3");
 			canRecord = true;
 			recordTimer = new Timer(100,1);
 			recordTimer.addEventListener(TimerEvent.TIMER_COMPLETE,changeRecord);
@@ -86,8 +91,8 @@ package Classes
 			{
 				initialRotation = 180;
 				rotationZ = initialRotation;
-				x = gameBoard.gameStage.stageWidth - 50;
-				y = gameBoard.gameStage.stageHeight - 50;
+				x = gameStage.stageWidth - 50;
+				y = gameStage.stageHeight - 50;
 			}
 			playerColor = scorePage.getColor();
 			bulletArray = new Array();
@@ -100,23 +105,23 @@ package Classes
 			shipHitBox = collisionModel.buildModel(this);
 			immuneModel.buildModel(this);
 			weaponModel.buildModel(this);
-			physicsModel.buildModel(staticArray,width,height,x,y,initialRotation,inputModel);
+			physicsModel.buildModel(width,height,x,y,initialRotation,inputModel);
 		}
 		
-		override public function update(deltaT:Number):void
+		override public function update(deltaT:Number,staticObjects:Vector.<StaticObject>,gameObjects:Vector.<GameObject>):void
 		{
-			updatePhysics(deltaT);
-			if(checkHitStatic())
+			this.gameObjects = gameObjects;
+			updatePhysics(deltaT,staticObjects);
+			if(checkHitStatic(staticObjects))
 			{
 				explode();
 			}
-			
-			checkHitDyn(gameBoard.objectArray);
+			checkHitDyn(gameObjects);
 		}
 		
-		private function updatePhysics(deltaT:Number):void
+		private function updatePhysics(deltaT:Number,staticObjects:Vector.<StaticObject>):void
 		{
-			positionInfo = physicsModel.update(deltaT);
+			positionInfo = physicsModel.update(deltaT,staticObjects);
 			x = positionInfo[0];
 			y = positionInfo[1];
 			location.x = x;
@@ -124,11 +129,11 @@ package Classes
 			rotationZ = positionInfo[2];
 		}
 		
-		public function checkHitStatic():Boolean
+		public function checkHitStatic(staticObjects:Vector.<StaticObject>):Boolean
 		{
-			for(var i:int=0;i<staticArray.length;i++)
+			for(var i:int=0;i<staticObjects.length;i++)
 			{
-				if (collisionModel.checkHit(staticArray[i]))
+				if (collisionModel.checkHit(staticObjects[i]))
 				{
 					this.scorePage.addDeathByPlanet();
 					return true
@@ -200,17 +205,16 @@ package Classes
 		
 		public function explode():void
 		{	
+			dispatchEvent(new GameBoardEvent(GameBoardEvent.EXPLODE,this));
 			canRecord = false;
 			recordTimer.reset();
 			recordTimer.start();
-			var explosion:MovieClip = gameBoard.addExplosion(x, y,.5,.5);
 			shipExplode.play();
-			gameBoard.addChild(explosion);
 			respawnCount--;
 			scorePage.removeLife();
-			if (gameBoard.contains(this) && respawnCount < 1)
+			if (respawnCount < 1)
 			{
-				gameBoard.removeObject(this);
+				dispatchEvent(new GameBoardEvent(GameBoardEvent.REMOVE,this));
 			}
 			else if (respawnCount >= 0)
 			{
@@ -220,11 +224,11 @@ package Classes
 		
 		public function fireWeaponOne(event:EFireCannon):void
 		{
-			weaponModel.fireWeaponOne(event);
+			weaponModel.fireWeaponOne();
 		}
 		public function fireWeaponTwo(event:EFireCannon):void
 		{
-			weaponModel.fireWeaponTwo(event);
+			weaponModel.fireWeaponTwo();
 		}
 		
 		public function getImmuneStatus():Boolean 
@@ -296,13 +300,16 @@ package Classes
 		{
 			return true;
 		}
-		public function recordShot(cannonBallOne:DynamicObject,cannonBallTwo:DynamicObject):void 
+		public function recordShot(bulletOne:BasicObject,bulletTwo:BasicObject):void 
 		{
 			scorePage.shotFired();
-			cannonBallOne.setOwner(this);
-			cannonBallTwo.setOwner(this);
-			bulletArray.push(cannonBallOne, cannonBallTwo);
-			
+			bulletOne.setOwner(this);
+			bulletTwo.setOwner(this);
+			bulletArray.push(bulletOne ,bulletTwo);	
+		}
+		private function addShot(event:GameBoardEvent):void 
+		{
+			dispatchEvent(event);
 		}
 		public function recordHit(victim:PlayerObject):void 
 		{
@@ -362,6 +369,10 @@ package Classes
 			{
 				dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO, null));
 			}
+		}
+		override public function getScale():Number
+		{
+			return .5;
 		}
 		protected function changeRecord(event:TimerEvent):void
 		{

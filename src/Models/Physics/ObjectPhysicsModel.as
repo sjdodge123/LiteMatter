@@ -4,6 +4,8 @@ package Models.Physics
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	
+	import Classes.StaticObject;
+	
 	import Interfaces.IInputHandling;
 	import Interfaces.IPhysicsModel;
 	import Interfaces.IStaticMethods;
@@ -12,7 +14,6 @@ package Models.Physics
 	{
 		private var returnInfo:Vector.<Number>;
 		private var gameStage:Stage;
-		protected var staticArray:Array;
 		protected var positionX:Number = 0;
 		protected var positionY:Number = 0;
 		protected var rotationZ:Number = 0;
@@ -35,9 +36,8 @@ package Models.Physics
 		{
 			this.gameStage = stage;
 		}
-		public function buildModel(staticArray:Array,width:Number,height:Number,initialX:Number,initialY:Number,rotationZ:Number,inputModel:IInputHandling):void
+		public function buildModel(width:Number,height:Number,initialX:Number,initialY:Number,rotationZ:Number,inputModel:IInputHandling):void
 		{
-			this.staticArray = staticArray;
 			this.width = width;
 			this.height = height;
 			positionX = initialX;
@@ -45,9 +45,9 @@ package Models.Physics
 			this.rotationZ = rotationZ;
 		}
 		
-		public function update(deltaT:Number):Vector.<Number>
+		public function update(deltaT:Number,staticObjects:Vector.<StaticObject>):Vector.<Number>
 		{
-			calculateGravity();
+			calculateGravity(staticObjects);
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
 			updateRotation(deltaT);
@@ -59,14 +59,14 @@ package Models.Physics
 			return returnInfo;
 		}
 		
-		protected function calculateGravity():void
+		protected function calculateGravity(staticObjects:Vector.<StaticObject>):void
 		{
-			for(var i:int=0;i<staticArray.length;i++)
+			for(var i:int=0;i<staticObjects.length;i++)
 			{
-				calcDist(staticArray[i].getPosition());
-				if(dist>83.5)
+				calcDist(staticObjects[i].getPosition());
+				if(dist>staticObjects[i].getRadius())
 				{
-					calcGravAccel(staticArray[i]);
+					calcGravAccel(staticObjects[i]);
 				}
 			}
 		}

@@ -16,9 +16,12 @@ package
 	import Classes.GameBoard.GameBoardObjects;
 	import Classes.GameBoard.StopWatch;
 	
+	import Events.UIEvent;
+	
 	import Interfaces.IInputHandling;
 	
 	import Loaders.Sentinel;
+	import Loaders.SoundLoader;
 	
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
@@ -29,7 +32,6 @@ package
 	
 	import UI.UserInterfaceController;
 	import UI.ScoreBoard.ScorePage;
-	import Events.UIEvent;
 	
 	
 	[SWF(backgroundColor= "0x000000", width="1200", height ="900", frameRate='30')]
@@ -65,6 +67,7 @@ package
 		private var normalPace:Number = 0.034;	
 		private var fastPace:Number = 0.045;
 		private var currentPace:Number;
+		private var soundLoader:SoundLoader;
 		
 		public function LiteMatter()
 		{
@@ -90,7 +93,8 @@ package
 			addChild(gameBoard);
 			popUpMenu(uiHub.screenController);
 			soundChannel = new SoundChannel();
-			menuTheme = gameBoard.soundLoader.loadSound("./Sounds/mainMenuTheme.mp3");
+			soundLoader = new SoundLoader();
+			menuTheme = soundLoader.loadSound("./Sounds/mainMenuTheme.mp3");
 			soundChannel = menuTheme.play(0, 150);
 			gameBoard.intitalizeBackgroundObjects();
 			stopWatch = new StopWatch();
@@ -131,12 +135,12 @@ package
 				gameBoard.updateGameBoard(currentPace);
 				if(gameBoard.ship.getCanRecord())
 				{
-					rabbit1.record(deltaT,gameBoard.ship,gameBoard.objectArray);
+					rabbit1.record(deltaT,gameBoard.ship,gameBoard.gameObjects);
 				}
 				
 				if(gameBoard.ship2.getCanRecord())
 				{
-					rabbit2.record(deltaT,gameBoard.ship2,gameBoard.objectArray);
+					rabbit2.record(deltaT,gameBoard.ship2,gameBoard.gameObjects);
 				}
 				//mousePoint = new Point(stage.mouseX,stage.mouseY);
 				

@@ -14,7 +14,7 @@ package Events
 		}
 		public override function clone():Event
         {
-            return new UIEvent(type, this.params, bubbles, cancelable);
+            return new PageEvent(type, this.params, bubbles, cancelable);
         }
 		 public override function toString():String
         {

@@ -1,6 +1,6 @@
 package Interfaces
 {
-	import Classes.DynamicObject;
+	import Classes.BasicObject;
 
 	public interface IInputHandling
 	{

@@ -3,7 +3,6 @@ package Models.Animation
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
-	import flash.display.Sprite;
 	import Interfaces.IAnimationPart;
 	import Interfaces.IWeaponModel;
 	import Events.EFireCannon;
@@ -18,7 +17,7 @@ package Models.Animation
 		public function StarCannonsAnimationPart(weaponModel:IWeaponModel)
 		{
 			this.weaponModel = weaponModel;
-			Sprite(weaponModel).addEventListener(EFireCannon.FIRE_TWO, fire);
+			weaponModel.addEventListener(EFireCannon.FIRE_TWO, fire);
 		}
 		public function buildModel(ldrCont:DisplayObject):void
 		{

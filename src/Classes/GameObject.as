@@ -9,10 +9,10 @@ package Classes {
 	{
 		public function GameObject()
 		{
-
+			
 		}
 		
-		public function update(deltaT:Number):void
+		public function update(deltaT:Number,staticObjects:Vector.<StaticObject>,gameObjects:Vector.<GameObject>):void
 		{
 			
 		}
@@ -20,6 +20,10 @@ package Classes {
 		public function getHitArea():GameObject
 		{
 			return null; 
+		}
+		public function getScale():Number
+		{
+			return 0;
 		}
 	}
 }

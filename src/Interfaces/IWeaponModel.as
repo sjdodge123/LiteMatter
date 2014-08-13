@@ -1,15 +1,14 @@
 package Interfaces
 {
 	import Classes.PlayerObject;
+	import flash.events.IEventDispatcher
 	
-	import Events.EFireCannon;
-	
-	public interface IWeaponModel
+	public interface IWeaponModel extends IEventDispatcher
 	{
-		function buildModel(playerObject:PlayerObject):void
-		function fireWeaponOne(event:EFireCannon):void 
-		function fireWeaponTwo(event:EFireCannon):void 
-		function getOneReadyToShoot():Boolean
-		function getTwoReadyToShoot():Boolean
+		function buildModel(playerObject:PlayerObject):void;
+		function fireWeaponOne():void ;
+		function fireWeaponTwo():void;
+		function getOneReadyToShoot():Boolean;
+		function getTwoReadyToShoot():Boolean;
 	}
 }

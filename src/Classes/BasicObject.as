@@ -6,64 +6,65 @@ package Classes
 	
 	import Classes.GameBoard.GameBoardObjects;
 	
+	import Events.GameBoardEvent;
+	
 	import Interfaces.ICollisionModel;
 	import Interfaces.IDynamicObjects;
 	import Interfaces.IPhysicsModel;
+	
+	import Loaders.SoundLoader;
 
-	public class DynamicObject extends GameObject implements IDynamicObjects
+	public class BasicObject extends GameObject implements IDynamicObjects
 	{
 		
 		private var owner:PlayerObject;
-		private var gameBoard:GameBoardObjects;
 		private var collisionModel:ICollisionModel;
 		private var physicsModel:IPhysicsModel;
 		private var collisionPoint:Point;
 		private var objHitBox:GameObject;
 		private var positionInfo:Vector.<Number>;
-		protected var staticArray:Array;
 		protected var explodeSound:Sound;
+		private var soundLoader:SoundLoader;
 		
-		public function DynamicObject(staticArray:Array,gameBoard:GameBoardObjects,collisionModel:ICollisionModel,physicsModel:IPhysicsModel,initialX:int,initialY:int)
+		public function BasicObject(collisionModel:ICollisionModel,physicsModel:IPhysicsModel,initialX:int,initialY:int)
 		{	
-			this.staticArray = new Array();
-			this.gameBoard = gameBoard;
-			this.staticArray = staticArray;
 			this.collisionModel = collisionModel;
 			this.physicsModel = physicsModel;
 			this.width = width;
 			this.height = height;
+			soundLoader = new SoundLoader();
 			x = initialX;
 			y = initialY;
-			explodeSound = gameBoard.soundLoader.loadSound("./Sounds/explode.mp3");
+			explodeSound = soundLoader.loadSound("./Sounds/explode.mp3");
 			buildModel();
 		}
 		public function buildModel():void
 		{
 			objHitBox = collisionModel.buildModel(this);
-			physicsModel.buildModel(staticArray,width,height,x,y,rotationZ,null);
+			physicsModel.buildModel(width,height,x,y,rotationZ,null);
 		}
-		override public function update(deltaT:Number):void
+		override public function update(deltaT:Number,staticObjects:Vector.<StaticObject>,gameObjects:Vector.<GameObject>):void
 		{
-			updatePhysics(deltaT);
-			if(checkHitStatic())
+			updatePhysics(deltaT,staticObjects);
+			if(checkHitStatic(staticObjects))
 			{
 				explode();
 			}
-			checkHitDyn(gameBoard.objectArray);
+			checkHitDyn(gameObjects);
 		}
 		
-		private function updatePhysics(deltaT:Number):void
+		private function updatePhysics(deltaT:Number,staticObjects:Vector.<StaticObject>):void
 		{
-			positionInfo = physicsModel.update(deltaT);
+			positionInfo = physicsModel.update(deltaT,staticObjects);
 			x = positionInfo[0];
 			y = positionInfo[1];
 			rotationZ = positionInfo[2];
 		}
-		public function checkHitStatic():Boolean
+		public function checkHitStatic(staticObjects:Vector.<StaticObject>):Boolean
 		{
-			for(var i:int=0;i<staticArray.length;i++)
+			for(var i:int=0;i<staticObjects.length;i++)
 			{
-				if (collisionModel.checkHit(staticArray[i]))
+				if (collisionModel.checkHit(staticObjects[i]))
 				{
 					return true
 				}
@@ -101,13 +102,9 @@ package Classes
 		}
 		public function explode():void
 		{	
-			var explosion:MovieClip = gameBoard.addExplosion(x, y,.15,.15);
+			dispatchEvent(new GameBoardEvent(GameBoardEvent.EXPLODE,this));
 			explodeSound.play();
-			gameBoard.addChild(explosion);
-			if (gameBoard.contains(this))
-			{
-				gameBoard.removeObject(this);
-			}
+			dispatchEvent(new GameBoardEvent(GameBoardEvent.REMOVE,this));
 		}
 		
 		public function changeVelX(value:Number):void
@@ -144,8 +141,12 @@ package Classes
 		{
 			this.owner = owner;
 		}
+		override public function getScale():Number
+		{
+			return .15
+		}
 		
-		public function getOwner(bullet:DynamicObject):PlayerObject
+		public function getOwner(bullet:BasicObject):PlayerObject
 		{
 			return owner;
 		}

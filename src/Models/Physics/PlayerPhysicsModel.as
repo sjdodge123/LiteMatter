@@ -11,6 +11,7 @@ package Models.Physics
 	import Loaders.SoundLoader;
 	
 	import Models.Sound.thrusterModel;
+	import Classes.StaticObject;
 	
 	public class PlayerPhysicsModel extends ObjectPhysicsModel implements IPhysicsModel
 	{
@@ -42,9 +43,8 @@ package Models.Physics
 			burstSoundRight.buildModel(soundLoader.loadSound("./Sounds/thrusterspart1.mp3"), 200, .8);
 			burstSoundLeft.buildModel(soundLoader.loadSound("./Sounds/thrusterspart1.mp3"), 200, .8);
 		}
-		override public function buildModel(staticArray:Array,width:Number,height:Number,initialX:Number,initialY:Number,rotationZ:Number,inputModel:IInputHandling):void
+		override public function buildModel(width:Number,height:Number,initialX:Number,initialY:Number,rotationZ:Number,inputModel:IInputHandling):void
 		{
-			this.staticArray = staticArray;
 			this.width = width;
 			this.height = height;
 			this.positionX = initialX;
@@ -53,10 +53,10 @@ package Models.Physics
 			this.inputModel = inputModel;
 		}
 		
-		override public function update(deltaT:Number):Vector.<Number>
+		override public function update(deltaT:Number,staticObjects:Vector.<StaticObject>):Vector.<Number>
 		{
 			updateRotation(deltaT);
-			calculateGravity();
+			calculateGravity(staticObjects);
 			updateVelocity(deltaT);
 			updatePosition(deltaT);
 			checkScreenBounds();
@@ -95,14 +95,14 @@ package Models.Physics
 			gravAccelY = 0;
 			
 		}
-		override protected function calculateGravity():void
+		override protected function calculateGravity(staticObjects:Vector.<StaticObject>):void
 		{
-			for(var i:int=0;i<staticArray.length;i++)
+			for(var i:int=0;i<staticObjects.length;i++)
 			{
-				calcDist(staticArray[i].getPosition());
+				calcDist(staticObjects[i].getPosition());
 				if(dist>83.5)
 				{
-					calcGravAccel(staticArray[i]);
+					calcGravAccel(staticObjects[i]);
 				}
 			}
 		}
