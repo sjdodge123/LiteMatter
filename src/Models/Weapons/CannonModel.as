@@ -6,9 +6,6 @@ package Models.Weapons
 	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.utils.Timer;
-	
-	import Classes.PlayerObject;
-	
 	import Events.EFireCannon;
 	import Events.GameBoardEvent;
 	

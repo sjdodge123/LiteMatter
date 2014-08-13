@@ -28,7 +28,7 @@ package Classes
 	import Models.Animation.StarThrustAnimationModel;
 	import Models.Animation.StopAnimationModel;
 	import Models.Animation.TokenAnimationModel;
-	import Models.Basic.ImmunityModel;
+	import Models.Immunity.ImmunityModel;
 	import Models.Collision.AsteriodCollisionModel;
 	import Models.Collision.CannonBallCollisionModel;
 	import Models.Collision.PirateShipCollisionModel;

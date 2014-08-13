@@ -1,4 +1,4 @@
-package Models.Basic
+package Models.Immunity
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
