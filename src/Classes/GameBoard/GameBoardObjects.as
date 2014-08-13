@@ -2,6 +2,7 @@ package Classes.GameBoard
 {
 	import flash.display.MovieClip;
 	import flash.display.Stage;
+	import flash.geom.Point;
 	
 	import Classes.BasicObject;
 	import Classes.GameObject;
@@ -92,8 +93,10 @@ package Classes.GameBoard
 		{
 			var player:PlayerObject = event.target as PlayerObject;
 			var infoArray:Array = event.params as Array;
-			var bulletOne:BasicObject = objectBuilder.buildTokenCannonBall(infoArray[0].x, infoArray[0].y);
-			var bulletTwo:BasicObject = objectBuilder.buildTokenCannonBall(infoArray[1].x, infoArray[1].y);
+			var convertedPoint:Point = player.localToGlobal(infoArray[0]);
+			var bulletOne:BasicObject = objectBuilder.buildTokenCannonBall(convertedPoint.x, convertedPoint.y);
+			convertedPoint = player.localToGlobal(infoArray[1]);
+			var bulletTwo:BasicObject = objectBuilder.buildTokenCannonBall(convertedPoint.x, convertedPoint.y);
 			bulletOne.changeVelX(infoArray[2]);
 			bulletOne.changeVelY(infoArray[3]);
 			bulletTwo.changeVelX(infoArray[2]);

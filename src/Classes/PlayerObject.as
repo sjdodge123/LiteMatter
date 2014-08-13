@@ -104,7 +104,6 @@ package Classes
 		{
 			shipHitBox = collisionModel.buildModel(this);
 			immuneModel.buildModel(this);
-			weaponModel.buildModel(this);
 			physicsModel.buildModel(width,height,x,y,initialRotation,inputModel);
 		}
 		
@@ -224,11 +223,21 @@ package Classes
 		
 		public function fireWeaponOne(event:EFireCannon):void
 		{
-			weaponModel.fireWeaponOne();
+			var travelInfo:Vector.<Number> = new Vector.<Number>;
+			travelInfo.push(getDirX());
+			travelInfo.push(getDirY());
+			travelInfo.push(getVelX());
+			travelInfo.push(getVelY());
+			weaponModel.fireWeaponOne(travelInfo);
 		}
 		public function fireWeaponTwo(event:EFireCannon):void
 		{
-			weaponModel.fireWeaponTwo();
+			var travelInfo:Vector.<Number> = new Vector.<Number>;
+			travelInfo.push(getDirX());
+			travelInfo.push(getDirY());
+			travelInfo.push(getVelX());
+			travelInfo.push(getVelY());
+			weaponModel.fireWeaponTwo(travelInfo);
 		}
 		
 		public function getImmuneStatus():Boolean 

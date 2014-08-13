@@ -6,9 +6,12 @@ package Models.Weapons
 	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.utils.Timer;
-	import Events.EFireCannon;
+	
 	import Classes.PlayerObject;
+	
+	import Events.EFireCannon;
 	import Events.GameBoardEvent;
+	
 	import Interfaces.IWeaponModel;
 	
 	import Loaders.SoundLoader;
@@ -16,7 +19,6 @@ package Models.Weapons
 	public class CannonModel extends EventDispatcher implements IWeaponModel
 	{
 		private var weaponCoolDownSeconds:int = 3;
-		private var playerObject:PlayerObject;
 		private var weaponOneTimer:Timer;
 		private var weaponTwoTimer:Timer;
 		private var oneCanShoot:Boolean = true;
@@ -41,27 +43,21 @@ package Models.Weapons
 			weaponOneTimer.start();
 			weaponTwoTimer.start();
 		}
-		public function buildModel(playerObject:PlayerObject):void
-		{
-			this.playerObject = playerObject;
-		}
 		
-		public function fireWeaponOne():void 
+		public function fireWeaponOne(travelInfo:Vector.<Number>):void 
 		{
 			if(oneCanShoot)
 				{
 					bulletInfo = new Array();
 					//FIRE ONE
 					playerPoint = new Point(-8, -17.5);
-					convertedPoint = playerObject.localToGlobal(playerPoint);
-					bulletInfo.push(convertedPoint);
+					bulletInfo.push(playerPoint);
 					//FIRE TWO
 					playerPoint = new Point(9, -17.5);
-					convertedPoint = playerObject.localToGlobal(playerPoint);
-					bulletInfo.push(convertedPoint);
+					bulletInfo.push(playerPoint);
 					//Finalize
-					velX = (350*playerObject.getDirY())+playerObject.getVelX();
-					velY = (-350*playerObject.getDirX())+playerObject.getVelY();
+					velX = (350*travelInfo[1])+travelInfo[2];
+					velY = (-350*travelInfo[0])+travelInfo[3];
 					bulletInfo.push(velX);
 					bulletInfo.push(velY);
 					fireSound.play();
@@ -72,7 +68,7 @@ package Models.Weapons
 					dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD_TO_POINT,bulletInfo));
 				}
 		}
-		public function fireWeaponTwo():void 
+		public function fireWeaponTwo(travelInfo:Vector.<Number>):void 
 		{
 			if(twoCanShoot)
 				{
@@ -80,17 +76,15 @@ package Models.Weapons
 					
 					//FIRE ONE
 					playerPoint = new Point(-8, 17.5);
-					convertedPoint = playerObject.localToGlobal(playerPoint);
-					bulletInfo.push(convertedPoint);
+					bulletInfo.push(playerPoint);
 					
 					//FIRE TWO
 					playerPoint = new Point(9, 17.5);
-					convertedPoint = playerObject.localToGlobal(playerPoint);
-					bulletInfo.push(convertedPoint);
+					bulletInfo.push(playerPoint);
 					
 					//Finalize
-					velX = (-350*playerObject.getDirY())+playerObject.getVelX();
-					velY = (350*playerObject.getDirX())+playerObject.getVelY();
+					velX = (-350*travelInfo[1])+travelInfo[2];
+					velY = (350*travelInfo[0])+travelInfo[3];
 					bulletInfo.push(velX);
 					bulletInfo.push(velY);
 					fireSound.play();
