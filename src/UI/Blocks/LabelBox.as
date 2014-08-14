@@ -11,7 +11,7 @@ package UI.Blocks
 		private var xPass:int;
 		private var myFormat:TextFormat;
 		private var color:uint;
-		public function LabelBox(message:String,x:int, y:int,size:int,height:int = 100,color:uint = 0x000000, alignment:String = "CENTER") 
+		public function LabelBox(message:String,x:int=0, y:int=0,size:int=15,height:int = 100,color:uint = 0x000000, alignment:String = "CENTER") 
 		{
 			this.x = x;
 			this.y = y;

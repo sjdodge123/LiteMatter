@@ -7,9 +7,9 @@ package UI.Screens
 	import Events.UIEvent;
 	
 	import UI.Blocks.AnimatedClipLabel;
+	import UI.Blocks.LabelBox;
 	import UI.Blocks.StaticClipLabel;
 	import UI.Components.AnimatedScrollBox;
-	import UI.Blocks.LabelBox;
 
 	public class OptionsScreen extends Sprite
 	{
@@ -29,9 +29,9 @@ package UI.Screens
 			pacingTitle = new LabelBox("GAME PACE",xLoc - 375,yLoc -27.5,40);
 			pacingTitle.changeWidth(300);
 			addChild(pacingTitle);
-			slow = new StaticClipLabel("./Images/oneText.swf",xLoc+100,yLoc,"SLOW",1);
-			normal = new StaticClipLabel("./Images/twoText.swf",xLoc+100,yLoc,"NORMAL",2);
-			fast = new StaticClipLabel("./Images/threeText.swf",xLoc+100,yLoc,"FAST",3);
+			slow = new StaticClipLabel("./Images/oneText.swf",xLoc+100,yLoc,"SLOW",new LabelBox("Slow paced gameplay resulting in a more strategic match."),1);
+			normal = new StaticClipLabel("./Images/twoText.swf",xLoc+100,yLoc,"NORMAL",new LabelBox("Normally paced gameplay. Fine tuned for new and experienced pilots alike."),2);
+			fast = new StaticClipLabel("./Images/threeText.swf",xLoc+100,yLoc,"FAST",new LabelBox("Fast paced gameplay resulting in a more twitch based match"),3);
 			pacingMenu = new AnimatedScrollBox(xLoc,yLoc,slow);
 			pacingMenu.addLabel(normal);
 			pacingMenu.addLabel(fast);

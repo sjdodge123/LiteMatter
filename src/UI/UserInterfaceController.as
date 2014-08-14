@@ -43,10 +43,31 @@ package UI
 			reader = new Reader();
 			optionsScreen = new OptionsScreen();
 			gameSelection = new GameSelectionScreen(scoreBoard);
+			mainMenu.addEventListener(ButtonEvent.ON_HOVER,displayToolTip,true);
+			optionsScreen.addEventListener(ButtonEvent.ON_HOVER,displayToolTip,true);
+			gameSelection.addEventListener(ButtonEvent.ON_HOVER,displayToolTip,true);
 			reader.readFile("version.txt"); 
 			controllerArray = new Array();
 			displayMainMenuScreen();
 			
+		}
+		
+		protected function displayToolTip(event:ButtonEvent):void
+		{
+			event.stopPropagation();
+			event.currentTarget.addEventListener(ButtonEvent.OFF_HOVER,removeToolTip);
+			if(event.params != null)
+			{
+				addChild(Sprite(event.params));
+			}
+		}
+		protected function removeToolTip(event:ButtonEvent):void
+		{
+			event.currentTarget.removeEventListener(ButtonEvent.OFF_HOVER,removeToolTip);
+			if(event.params != null && contains(Sprite(event.params)))
+			{
+				removeChild(Sprite(event.params));
+			}
 		}
 		
 		public function displayMainMenuScreen():void
@@ -97,6 +118,7 @@ package UI
 		{
 			endScreen = new EndScreen(winPlayerNum,scoreBoard);
 			addChild(endScreen);
+			endScreen.addEventListener(ButtonEvent.ON_HOVER,displayToolTip,true);
 			endScreen.addEventListener(UIEvent.PLAY,playAgain);
 			endScreen.addEventListener(UIEvent.BACK,backToMain);
 		}

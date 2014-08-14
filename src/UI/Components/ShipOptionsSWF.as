@@ -77,8 +77,8 @@ package UI.Components
 			}
 			addChild(playerNumber);
 			
-			computerLabel = new StaticClipLabel("./Images/compText.swf",x+225,15,"COMP");
-			humanLabel = new StaticClipLabel("./Images/playerText.swf",x+225,15,"PLAYER");
+			computerLabel = new StaticClipLabel("./Images/compText.swf",x+225,15,"COMP",new LabelBox("Computer Player"));
+			humanLabel = new StaticClipLabel("./Images/playerText.swf",x+225,15,"PLAYER",new LabelBox("Human Player"));
 			playerType = new AnimatedScrollBox(x+125,y+5,humanLabel);
 			playerType.addLabel(computerLabel);
 			addComp(playerType);
@@ -86,8 +86,8 @@ package UI.Components
 			
 			
 			
-			firstPlayer = new StaticClipLabel("./Images/wasdText.swf",x+225,15,"WASD");
-			secondPlayer = new StaticClipLabel("./Images/ijklText.swf",x+225,15,"IJKL");
+			firstPlayer = new StaticClipLabel("./Images/wasdText.swf",x+225,15,"WASD",new LabelBox("Control with WASD. Fire with Q+E"));
+			secondPlayer = new StaticClipLabel("./Images/ijklText.swf",x+225,15,"IJKL",new LabelBox("Control with IJKL. Fire with U+O"));
 			humanInputs = new AnimatedScrollBox(x+125,y+5,firstPlayer);
 			humanInputs.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			humanInputs.addLabel(secondPlayer);
@@ -96,16 +96,16 @@ package UI.Components
 			AIEasy = new StaticClipLabel("./Images/oneText.swf",x+225,15,"ONE");
 			computerInputs =  new AnimatedScrollBox(x+125,y+05,AIEasy);
 			
-			redColor = new StaticClipLabel("./Images/redText.swf",x+225,15,"RED",0xFF0000);
-			blueColor = new StaticClipLabel("./Images/blueText.swf",x+225,15,"BLUE",0x0000FF);
+			redColor = new StaticClipLabel("./Images/redText.swf",x+225,15,"RED",null,0xFF0000);
+			blueColor = new StaticClipLabel("./Images/blueText.swf",x+225,15,"BLUE",null,0x0000FF);
 			
 			colorSelection = new AnimatedScrollBox(x+125,y+05,redColor);
 			colorSelection.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);
 			colorSelection.addLabel(blueColor);
-			colorSelection.addLabel(new StaticClipLabel("./Images/greenText.swf",x+225,15,"GREEN",0x00FF00));
-			colorSelection.addLabel(new StaticClipLabel("./Images/yellowText.swf",x+225,15,"YELLOW",0xFFFF00));
-			colorSelection.addLabel(new StaticClipLabel("./Images/tealText.swf",x+225,15,"TEAL",0x00CC99));
-			colorSelection.addLabel(new StaticClipLabel("./Images/magentaText.swf",x+225,15,"MAGENTA",0xFF00FF));
+			colorSelection.addLabel(new StaticClipLabel("./Images/greenText.swf",x+225,15,"GREEN",null,0x00FF00));
+			colorSelection.addLabel(new StaticClipLabel("./Images/yellowText.swf",x+225,15,"YELLOW",null,0xFFFF00));
+			colorSelection.addLabel(new StaticClipLabel("./Images/tealText.swf",x+225,15,"TEAL",null,0x00CC99));
+			colorSelection.addLabel(new StaticClipLabel("./Images/magentaText.swf",x+225,15,"MAGENTA",null,0xFF00FF));
 			
 			//If Player 1
 			if(page.getPlayerNum()+1 == 1)

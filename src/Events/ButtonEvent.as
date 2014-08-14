@@ -8,7 +8,8 @@ package Events
 	public class ButtonEvent extends Event
 	{
 		public static const PRESSED:String = "pressed";
-		public static const ON_HOVER:String = "hover";
+		public static const ON_HOVER:String = "hoverOn";
+		public static const OFF_HOVER:String = "hoverOff";
 		public var params:Object
 		public function ButtonEvent(type:String,params:Object,bubbles:Boolean = false,cancelable:Boolean = false) 
 		{
