@@ -89,7 +89,7 @@ package
 			xbc = new GamePadController(uiHub);
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
-			gameBoard = new GameBoardObjects(stage);
+			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			addChild(gameBoard);
 			popUpMenu(uiHub.screenController);
 			soundChannel = new SoundChannel();
@@ -110,7 +110,7 @@ package
 			var player2Input:IInputHandling = gameBoard.inputPlayer2;
 			gameBoard.removeChildren();
 			gameBoard = null;
-			gameBoard = new GameBoardObjects(stage);
+			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			gameBoard.inputPlayer1 = player1Input;
 			gameBoard.inputPlayer2 = player2Input;
 			text2.x = stageWidth - 110;
@@ -257,7 +257,7 @@ package
 			replayPage2 = uiHub.getPlayerTwoPage();
 			uiHub.clearAllPages();
 			gameBoard = null;
-			gameBoard = new GameBoardObjects(stage);
+			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 		}
 		
 		public function print(o:Object, field:TextField):void
@@ -294,7 +294,7 @@ package
 		}
 		public function initiatePlayBack():void
 		{
-			gameBoard = new GameBoardObjects(stage);
+			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			addChild(gameBoard);
 			onEndScreen = true;
 			gameBoard.initializePlayBack(rabbit1.getEventArray(),rabbit2.getEventArray(),replayPage1,replayPage2,rabbit1);

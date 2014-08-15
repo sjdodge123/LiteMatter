@@ -1,10 +1,12 @@
 package Models.Collision 
 {
 	import flash.geom.Point;
-	import Classes.GameObject;
-	import Interfaces.ICollisionModel;
+	
 	import Classes.CollisionBuilder;
 	import Classes.CollisionEngine;
+	import Classes.GameObject;
+	
+	import Interfaces.ICollisionModel;
 	
 	/**
 	 * ...

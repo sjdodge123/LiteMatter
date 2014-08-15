@@ -2,61 +2,39 @@ package Classes
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import Interfaces.IGameObject;
 	
 	public class CollisionEngine
 	{	
 		private var collisionPoint:Point;
+		private var hit:Boolean = false;
 		public function CollisionEngine()
 		{
 			
 		}
 		
-		public function testGeneralCollision(movingObj:GameObject, staticObj:IGameObject,boxArray:Array):Boolean
+		public function testGeneralCollision(movingObj:GameObject, staticObj:GameObject,boxArray:Array):Boolean
 		{
-			if(testCollisionCheap(movingObj,staticObj.getHitArea()))
+			
+			hit = testCollisionCheap(movingObj,staticObj);
+			if(hit && (boxArray != null))
 			{
-				if(boxArray != null)
+				for(var i:int=0; i<boxArray.length;i++)
 				{
-					for(var i:int=0; i<boxArray.length;i++)
+					hit = testCollisionExp(boxArray[i],staticObj)
+					if(hit)
 					{
-						if(testCollisionExp(boxArray[i],staticObj.getHitArea()))
-						{
-						return true;
-						}
+						break;
 					}
-				}				
-				else
-				{
-					if(testCollisionExp(movingObj,staticObj.getHitArea()))
-					{
-						return true;
-					}
-					else
-					{
-						return false;
-					}	
 				}
-				return false;
 			}
-			else
-			{
-				return false;
-			}
-		}	
-		public function testCollisionCheap(movingObj:GameObject, staticObj:GameObject):Boolean
+			return hit;
+		}
+		private function testCollisionCheap(movingObj:GameObject, staticObj:GameObject):Boolean
 		{
-			if(staticObj.hitTestObject(movingObj))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return staticObj.hitTestObject(movingObj)
 		}
 		
-		public function testCollisionExp(movingObj:GameObject, staticObj:GameObject):Boolean
+		private function testCollisionExp(movingObj:GameObject, staticObj:GameObject):Boolean
 		{
 			var ob1Bounds:Rectangle = movingObj.getBounds(movingObj);
 			var topLeftPoint:Point = movingObj.localToGlobal(ob1Bounds.topLeft);	

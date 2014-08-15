@@ -1,7 +1,5 @@
 package Interfaces
 {
-	import Classes.BasicObject;
-
 	public interface IInputHandling
 	{
 		function getMoveForward():Boolean

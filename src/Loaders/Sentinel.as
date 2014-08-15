@@ -109,7 +109,6 @@ package Loaders
 				
 			}
 		}
-		
 		protected function loadPartComplete(event:Event):void
 		{
 			currentCount++;

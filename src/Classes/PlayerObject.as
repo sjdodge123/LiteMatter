@@ -53,6 +53,8 @@ package Classes
 		private var soundLoader:SoundLoader;
 		private var gameStage:Stage;
 		private var gameObjects:Vector.<GameObject>;
+		private var colOkay:Boolean = true;
+		private var colTimer:Timer;
 		
 		public function PlayerObject(inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,physicsModel:IPhysicsModel,immuneModel:IImmunityModel,initialX:int,initialY:int,scorePage:ScorePage,stage:Stage)
 		{
@@ -73,6 +75,8 @@ package Classes
 			shipExplode = soundLoader.loadSound("./Sounds/shipExplode.mp3");
 			shipRam =  soundLoader.loadSound("./Sounds/shipRam.mp3");
 			canRecord = true;
+			colTimer = new Timer(500,1);
+			colTimer.addEventListener(TimerEvent.TIMER_COMPLETE,changeColOkay);
 			recordTimer = new Timer(100,1);
 			recordTimer.addEventListener(TimerEvent.TIMER_COMPLETE,changeRecord);
 			if (inputModel.getInputType() == 1) 
@@ -100,6 +104,8 @@ package Classes
 			buildModel();
 		}
 		
+		
+		
 		public function buildModel():void
 		{
 			shipHitBox = collisionModel.buildModel(this);
@@ -110,12 +116,13 @@ package Classes
 		override public function update(deltaT:Number,staticObjects:Vector.<StaticObject>,gameObjects:Vector.<GameObject>):void
 		{
 			this.gameObjects = gameObjects;
+			checkHitDyn(gameObjects);
 			updatePhysics(deltaT,staticObjects);
 			if(checkHitStatic(staticObjects))
 			{
 				explode();
 			}
-			checkHitDyn(gameObjects);
+			
 		}
 		
 		private function updatePhysics(deltaT:Number,staticObjects:Vector.<StaticObject>):void
@@ -146,23 +153,27 @@ package Classes
 			{
 				if(objectArray[i] != this && objectArray[i] as PlayerObject && collisionModel.checkHit(objectArray[i]))
 				{
-					if (objectArray[i].getImmuneStatus() == false && !immuneModel.getImmuneStatus())
+					if (objectArray[i].getImmuneStatus() == false && immuneModel.getImmuneStatus() == false)
 					{	
-						if(objectArray[i] as PlayerObject && this as PlayerObject)
+						if(colOkay && objectArray[i] as PlayerObject && this as PlayerObject)
 						{
+							colOkay = false;
+							colTimer.reset();
+							colTimer.start();
 							var damageToOtherShip:int = calcDamage(this, objectArray[i] as PlayerObject);
+							trace("Ship " + scorePage.getPlayerNum() +" hit Ship " + PlayerObject(objectArray[i]).scorePage.getPlayerNum());
 							objectArray[i].takeAwayHP(damageToOtherShip);
 							shipRam.play();
-							if (objectArray[i].getHP() <= 0) 
-							{
-								recordKill(objectArray[i] as PlayerObject);
-								objectArray[i].explode();
-								
-							}
 							if (getHP() <= 0) 
 							{
 								objectArray[i].recordKill(this);
 								explode();
+								
+							}
+							if (objectArray[i].getHP() <= 0) 
+							{
+								recordKill(objectArray[i] as PlayerObject);
+								objectArray[i].explode();
 								
 							}
 							return true;
@@ -173,21 +184,22 @@ package Classes
 			return false;
 		}
 		
-		private function calcDamage(ship1:PlayerObject, ship2:PlayerObject):int 
+		private function calcDamage(ship1:PlayerObject, ship2:PlayerObject):int
 		{
-			var damageDone:int;
-			ship1.setImmuneStatus(true);
-			ship2.setImmuneStatus(true);
-			ship2.changeVelX(ship1.getVelX() + ship2.getVelX() - (ship1.getVelX() * .25));
-			ship2.changeVelY(ship1.getVelY() + ship2.getVelY() - (ship1.getVelY() * .25));
-			ship1.changeVelX((-ship2.getVelX()*.35)+50);
-			ship1.changeVelY(( -ship2.getVelY()*.35)+50);
-			ship1.setImmuneStatus(false);
-			ship2.setImmuneStatus(false);
+			var damageDone:int = 0;
+			
+			//Update Ship 2
+			ship2.changeVelX(ship1.getVelX()/2- ship2.getVelX()); //* .65));
+			ship2.changeVelY(ship1.getVelY()/2 - ship2.getVelY()); //* .65));
+			
+			//Update Ship 1
+			ship1.changeVelX((-ship2.getVelX()));
+			ship1.changeVelY((-ship2.getVelY()));
+			
 			var ship1Mag:Number = Math.sqrt(Math.pow(ship1.getVelX(), 2) + Math.pow(ship1.getVelY(), 2));
 			var ship2Mag:Number = Math.sqrt(Math.pow(ship2.getVelX(), 2) + Math.pow(ship2.getVelY(), 2));
-			damageDone =((int(ship1Mag * .20)));
-			takeAwayHP((int(ship2Mag * .10)));
+			damageDone =((int(ship1Mag * .25)));
+			takeAwayHP((int(ship2Mag * .125 )));
 			return damageDone;
 		}
 		
@@ -386,6 +398,10 @@ package Classes
 		protected function changeRecord(event:TimerEvent):void
 		{
 			canRecord = true;
+		}
+		protected function changeColOkay(event:TimerEvent):void
+		{
+			colOkay = true;
 		}
 	}
 }

@@ -15,7 +15,7 @@ package UI.Screens
 		
 		public function MainMenu() 
 		{
-			title = new LabelBox("SPACE PIRATES",250,150,80,100);
+			title = new LabelBox("SPACE RAIDERZ",250,150,80,100);
 			title.changeWidth(750);
 			addChild(title);
 			playButton = new AnimatedClipLabel("./Images/play.swf",600,600,UIEvent.PLAY);

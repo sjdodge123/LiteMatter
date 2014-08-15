@@ -15,7 +15,7 @@ package Models.Input
 		private var fireWeaponTwo:Boolean = false;
 		private var gameStage:Stage;
 
-		public function Player1InputModel(gameStage:Stage) 
+		public function Player1InputModel(gameStage:Stage)
 		{
 			this.gameStage = gameStage;
 			gameStage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);

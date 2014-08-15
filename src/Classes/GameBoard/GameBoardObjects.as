@@ -35,19 +35,23 @@ package Classes.GameBoard
 		public var inputPlayer2:IInputHandling;
 		public var gameObjects:Vector.<GameObject>;
 		private var planet:StaticObject;
-		private var gameStage:Stage;
 		private var backGround:MovieClip;
 		private var objectBuilder:ObjectBuilder;
 		private var soundLoader:SoundLoader;
 		private var defaultAI:BasicAIModel;
 		private var staticObjects:Vector.<StaticObject>;
+		private var stageWidth:int;
+		private var stageHeight:int;
+		private var gameStage:Stage;
 		
-		public function GameBoardObjects(stage:Stage)
+		public function GameBoardObjects(stageWidth:int,stageHeight:int,gameStage:Stage)
 		{
 			gameObjects = new Vector.<GameObject>;
 			staticObjects = new Vector.<StaticObject>;
-			this.gameStage = stage;
-			objectBuilder = new ObjectBuilder(stage);
+			this.stageWidth = stageWidth;
+			this.stageHeight = stageHeight;
+			this.gameStage = gameStage;
+			objectBuilder = new ObjectBuilder(gameStage);
 			objectBuilder.addEventListener(GameBoardEvent.ADD,addObject);
 			soundLoader = new SoundLoader();
 			inputPlayer1 = new Player1InputModel(gameStage);
@@ -62,11 +66,11 @@ package Classes.GameBoard
 		public function intitalizeBackgroundObjects():void 
 		{
 			backGround = objectBuilder.buildBackGroundImage();
-			planet = objectBuilder.buildTokenPlanet(gameStage.stageWidth/2, gameStage.stageHeight/2);
+			planet = objectBuilder.buildTokenPlanet(stageWidth/2, stageHeight/2);
 			planet.scaleX = .50;
 			planet.scaleY = .50;
 			//var planet2:StaticObject = objectBuilder.buildTokenPlanet(stageWidth-200, stageHeight-200);
-			var cannonball:BasicObject = objectBuilder.buildAsteroid(gameStage.stageWidth/2, (gameStage.stageHeight/2)+350);
+			var cannonball:BasicObject = objectBuilder.buildAsteroid(stageWidth/2, (stageHeight/2)+350);
 			cannonball.scaleX = .08;
 			cannonball.scaleY = .08;
 			cannonball.changeVelX(250);
@@ -74,7 +78,7 @@ package Classes.GameBoard
 		private function addStaticObjects():void
 		{
 			backGround = objectBuilder.buildBackGroundImage();
-			planet = objectBuilder.buildTokenPlanet(gameStage.stageWidth / 2, gameStage.stageHeight / 2);
+			planet = objectBuilder.buildTokenPlanet(stageWidth / 2, stageHeight / 2);
 		}
 		private function addPlayer1(scorePage:ScorePage):void
 		{
@@ -130,12 +134,12 @@ package Classes.GameBoard
 		public function addPlayer2AI(scorePage:ScorePage):void 
 		{
 			inputPlayer2 = defaultAI;
-			ship2 =  objectBuilder.buildPiratePlayer(inputPlayer2, gameStage.stageWidth - 50, gameStage.stageHeight - 50,scorePage);
+			ship2 =  objectBuilder.buildPiratePlayer(inputPlayer2, stageWidth - 50, stageHeight - 50,scorePage);
 			defaultAI.buildModel(ship2);
 		}
 		public function addPlayer2HU(scorePage:ScorePage):void 
 		{
-			ship2 =  objectBuilder.buildPiratePlayer(inputPlayer2, gameStage.stageWidth - 50, gameStage.stageHeight - 50,scorePage);
+			ship2 =  objectBuilder.buildPiratePlayer(inputPlayer2, stageWidth - 50, stageHeight - 50,scorePage);
 		}
 		
 		private function deleteObject(obj:GameObject):void
@@ -160,7 +164,7 @@ package Classes.GameBoard
 			inputPlayer2 = new PlayBackModel(player2Events);
 			addStaticObjects();
 			addPlayer1(scorePage1);
-			ship2 =  objectBuilder.buildPiratePlayer(inputPlayer2, gameStage.stageWidth - 50, gameStage.stageHeight - 50,scorePage2);
+			ship2 =  objectBuilder.buildPiratePlayer(inputPlayer2, stageWidth - 50, stageHeight - 50,scorePage2);
 			PlayBackModel(inputPlayer1).setShip(ship);
 			PlayBackModel(inputPlayer2).setShip(ship2);
 		}

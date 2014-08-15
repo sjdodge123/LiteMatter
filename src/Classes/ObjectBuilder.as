@@ -5,8 +5,6 @@ package Classes
 	import flash.display.Stage;
 	import flash.events.EventDispatcher;
 	
-	import Classes.GameBoard.GameBoardObjects;
-	
 	import Events.GameBoardEvent;
 	
 	import Interfaces.IAnimationModel;
