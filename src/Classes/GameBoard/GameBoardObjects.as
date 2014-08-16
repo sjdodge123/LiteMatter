@@ -19,6 +19,8 @@ package Classes.GameBoard
 	import Models.Input.BasicAIModel;
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
+	import Models.Weapons.CannonModel;
+	import Models.Weapons.FlakModel;
 	
 	import Recording.PlayBackModel;
 	import Recording.Rabbit;
@@ -93,7 +95,9 @@ package Classes.GameBoard
 			}
 				
 		}
-		private function addCannonBall(event:GameBoardEvent):void
+	
+		
+		private function addMunitions(event:GameBoardEvent):void
 		{
 			var player:PlayerObject = event.target as PlayerObject;
 			var infoArray:Array = event.params as Array;
@@ -191,7 +195,7 @@ package Classes.GameBoard
 			if( obj as PlayerObject)
 			{
 				gameObjects.push(obj);
-				obj.addEventListener(GameBoardEvent.ADD_TO_POINT,addCannonBall);
+				obj.addEventListener(GameBoardEvent.ADD_TO_POINT,addMunitions);
 				obj.addEventListener(GameBoardEvent.EXPLODE,explodeObject);
 				obj.addEventListener(GameBoardEvent.REMOVE,removeObjectEvent);
 			}

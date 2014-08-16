@@ -16,15 +16,29 @@ package Classes
 		{
 			
 			hit = testCollisionCheap(movingObj,staticObj);
-			if(hit && (boxArray != null))
+			if(hit)
 			{
-				for(var i:int=0; i<boxArray.length;i++)
+				if(boxArray != null)
 				{
-					hit = testCollisionExp(boxArray[i],staticObj)
-					if(hit)
+					for(var i:int=0; i<boxArray.length;i++)
 					{
-						break;
+						hit = testCollisionExp(boxArray[i],staticObj)
+						if(hit)
+						{
+							break;
+						}
 					}
+				}
+				else
+				{
+					if(testCollisionExp(movingObj,staticObj.getHitArea()))
+					{
+						return true;
+					}
+					else
+					{
+						return false;
+					}	
 				}
 			}
 			return hit;

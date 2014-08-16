@@ -326,6 +326,7 @@ package Classes
 			scorePage.shotFired();
 			bulletOne.setOwner(this);
 			bulletTwo.setOwner(this);
+			//weaponModel.injectBullets(bulletOne,bulletOne);
 			bulletArray.push(bulletOne ,bulletTwo);	
 		}
 		private function addShot(event:GameBoardEvent):void 

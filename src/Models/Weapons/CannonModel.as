@@ -6,6 +6,9 @@ package Models.Weapons
 	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.utils.Timer;
+	
+	import Classes.BasicObject;
+	
 	import Events.EFireCannon;
 	import Events.GameBoardEvent;
 	
@@ -91,6 +94,10 @@ package Models.Weapons
 					dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO,null));
 					dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD_TO_POINT,bulletInfo));
 				}
+		}
+		public function injectBullets(bulletOne:BasicObject,bulletTwo:BasicObject):void
+		{
+			
 		}
 		private function oneReadyToShoot(e:Event):void
 		{
