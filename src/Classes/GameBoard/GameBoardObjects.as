@@ -19,8 +19,6 @@ package Classes.GameBoard
 	import Models.Input.BasicAIModel;
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
-	import Models.Weapons.CannonModel;
-	import Models.Weapons.FlakModel;
 	
 	import Recording.PlayBackModel;
 	import Recording.Rabbit;

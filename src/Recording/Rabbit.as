@@ -29,22 +29,22 @@ package Recording
 		
 		public function record(deltaT:Number,ship:PlayerObject,objectArray:Vector.<GameObject>):void
 		{
-			eventInfo = new Array();
-			eventInfo.push(deltaT);
-			eventInfo.push(inputModel.getMoveForward());
-			eventInfo.push(inputModel.getMoveReverse());
-			eventInfo.push(inputModel.getMoveLeft());
-			eventInfo.push(inputModel.getMoveRight());
-			eventInfo.push(inputModel.getFireWeaponOne());
-			eventInfo.push(inputModel.getFireWeaponTwo());
-			eventInfo.push(ship.x);
-			eventInfo.push(ship.y);
-			eventInfo.push(ship.rotationZ);
-			eventInfo.push(ship.getHP());
-			eventInfo.push(ship.getRespawnCount());
-			eventInfo.push(ship.getImmuneModel());
-			eventInfo.push(count);
-			events[count] = eventInfo;
+			var frameState:FrameState = new FrameState();
+			frameState.deltaT = deltaT;
+			frameState.moveForward = inputModel.getMoveForward();
+			frameState.moveReverse = inputModel.getMoveReverse();
+			frameState.moveLeft = inputModel.getMoveLeft();
+			frameState.moveRight = inputModel.getMoveRight();
+			frameState.fireOne = inputModel.getFireWeaponOne();
+			frameState.fireTwo = inputModel.getFireWeaponTwo();
+			frameState.shipX = ship.x;
+			frameState.shipY = ship.y;
+			frameState.shipZ = ship.rotationZ;
+			frameState.shipHP = ship.getHP();
+			frameState.shipRespawn = ship.getRespawnCount();
+			frameState.shipImmune = ship.getImmuneModel();
+			frameState.frameCount = count;
+			events[count] = frameState;
 			count += 1; 
 		}
 		public function getEventArray():Array

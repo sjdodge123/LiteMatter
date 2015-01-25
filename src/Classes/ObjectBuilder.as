@@ -3,6 +3,7 @@ package Classes
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
 	import Events.GameBoardEvent;
@@ -19,26 +20,28 @@ package Classes
 	import Loaders.AnimationPartLoader;
 	import Loaders.GraphicLoader;
 	
+	import Models.Animation.PirateShipAnimationModel;
 	import Models.Animation.PlayAnimationModel;
+	import Models.Animation.PlayToEndAnimationModel;
 	import Models.Animation.PortCannonsAnimationPart;
 	import Models.Animation.PortThrustAnimationModel;
 	import Models.Animation.StarCannonsAnimationPart;
 	import Models.Animation.StarThrustAnimationModel;
 	import Models.Animation.StopAnimationModel;
 	import Models.Animation.TokenAnimationModel;
-	import Models.Immunity.ImmunityModel;
 	import Models.Collision.AsteriodCollisionModel;
 	import Models.Collision.CannonBallCollisionModel;
 	import Models.Collision.PirateShipCollisionModel;
 	import Models.Collision.PlanetCollisionModel;
 	import Models.Collision.TokenCollisionModel;
+	import Models.Immunity.ImmunityModel;
 	import Models.Physics.ObjectPhysicsModel;
 	import Models.Physics.PlanetPhysicsModel;
 	import Models.Physics.PlayerPhysicsModel;
 	import Models.Weapons.CannonModel;
+	import Models.Weapons.FlakModel;
 	
 	import UI.ScoreBoard.ScorePage;
-	import Models.Weapons.FlakModel;
 
 	/**
 	 * ...
@@ -62,7 +65,7 @@ package Classes
 		}
 		public function buildPirateShip(inputModel:IInputHandling,x:int,y:int,scorePage:ScorePage):PlayerObject
 		{
-			return addPlayer("./Images/PirateShip.swf",0,0,x,y,inputModel,new PirateShipCollisionModel(),new CannonModel() , new StopAnimationModel(), new ImmunityModel(),scorePage);
+			return addPlayer("./Images/PirateShip.swf",0,0,x,y,inputModel,new PirateShipCollisionModel(),new CannonModel() , new PlayToEndAnimationModel(), new ImmunityModel(),scorePage);
 		}
 		public function buildTokenPlanet(x:int,y:int):StaticObject 
 		{
@@ -70,7 +73,7 @@ package Classes
 		}
 		public function buildExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip 
 		{
-			return addClip("./Images/explosion.swf", -321, -185, x, y, scaleX, scaleY, new StopAnimationModel());
+			return addClip("./Images/explosion.swf", -321, -185, x, y, scaleX, scaleY, new PlayToEndAnimationModel());
 		}
 		public function buildTokenCannonBall(x:int, y:int):BasicObject
 		{
@@ -82,12 +85,12 @@ package Classes
 		}
 		public function buildPiratePlayer(inputModel:IInputHandling,x:int,y:int,scorePage:ScorePage):PlayerObject
 		{
-			return addPiratePlayer("./Images/ShipBody.swf","./Images/ShipPortThrust.swf","./Images/ShipStarThrust.swf","./Images/ShipPortCannons.swf","./Images/ShipStarCannons.swf",0,0,x,y,inputModel,new PirateShipCollisionModel(), new CannonModel(), new StopAnimationModel(), new PortThrustAnimationModel(inputModel), new StarThrustAnimationModel(inputModel), new ImmunityModel(),scorePage);
+			return addPiratePlayer("./Images/shipNEWWORK.swf","./Images/ShipPortThrust.swf","./Images/ShipStarThrust.swf","./Images/ShipPortCannons.swf","./Images/ShipStarCannons.swf",0,0,x,y,inputModel,new PirateShipCollisionModel(), new CannonModel(), new StopAnimationModel(), new PortThrustAnimationModel(inputModel), new StarThrustAnimationModel(inputModel), new ImmunityModel(),scorePage);
 		}
 		
 		public function buildBackGroundImage():MovieClip 
 		{
-			return addClip("./Images/Background.swf", 0, 0, 0, 0, 1, 1, new StopAnimationModel());
+			return addClip("./Images/Background.swf", 0, 0, 0, 0, 1, 1, new PlayToEndAnimationModel());
 		}
 
 		private function addPlayer(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,animationModel:IAnimationModel,respawnModel:IImmunityModel,scorePage:ScorePage):PlayerObject
@@ -96,7 +99,7 @@ package Classes
 			Sprite(tempSprite);
 			var imageLoad:AnimationLoader;
 			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY,animationModel);
-			tempSprite = new PlayerObject(inputModel,collisionModel, weaponModel,new PlayerPhysicsModel(gameStage),respawnModel,objInitialX,objInitialY,scorePage,gameStage);
+			//tempSprite = new PlayerObject(inputModel,collisionModel, weaponModel,new PlayerPhysicsModel(gameStage),respawnModel,objInitialX,objInitialY,scorePage,gameStage);
 			tempSprite.addChild(imageLoad);
 			dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD,tempSprite));
 			return tempSprite;
@@ -114,23 +117,22 @@ package Classes
 			var portCannonsPart:IAnimationPart = new PortCannonsAnimationPart(weaponModel);
 			var starCannonsPart:IAnimationPart = new StarCannonsAnimationPart(weaponModel);
 			
+			
+			//Spawn Animations
+		
 			imageLoadBody = new AnimationLoader(imageLocationMain,imageOffsetX, imageOffsetY,aniModelBody);
 			imageLoadPortThrust = new AnimationLoader(imageLocationPortThrust,imageOffsetX, imageOffsetY,aniModelPortThrust);
 			imageLoadStarThrust = new AnimationLoader(imageLocationStarThrust,imageOffsetX, imageOffsetY,aniModelStarThrust);
 			imageLoadPortCannons = new AnimationPartLoader(imageLocationPortCannons,imageOffsetX, imageOffsetY,portCannonsPart);
 			imageLoadStarCannons = new AnimationPartLoader(imageLocationStarCannons,imageOffsetX, imageOffsetY,starCannonsPart);
-
-			tempSprite = new PlayerObject(inputModel,collisionModel,weaponModel,new PlayerPhysicsModel(gameStage),respawnModel,objInitialX,objInitialY,scorePage,gameStage);
 			
-			tempSprite.addChild(imageLoadPortThrust);
-			tempSprite.addChild(imageLoadStarThrust);
-			tempSprite.addChild(imageLoadPortCannons);
-			tempSprite.addChild(imageLoadStarCannons);
-			tempSprite.addChild(imageLoadBody);
-			tempSprite.addChild(tempSprite.getHealthBar());
+			var aniModel:PirateShipAnimationModel = new PirateShipAnimationModel(imageLoadBody,imageLoadPortThrust,imageLoadStarThrust,imageLoadPortCannons,imageLoadStarCannons);
+			tempSprite = new PlayerObject(inputModel,collisionModel,weaponModel,new PlayerPhysicsModel(gameStage),respawnModel,aniModel,objInitialX,objInitialY,scorePage,gameStage);
+			//tempSprite.addChild(tempSprite.getHealthBar());
 			dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD,tempSprite));
 			return tempSprite;
 		}
+	
 		private function addDynamic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,collisionModel:ICollisionModel,animationModel:IAnimationModel):BasicObject
 		{
 			var tempSprite:BasicObject;

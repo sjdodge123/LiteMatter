@@ -7,6 +7,8 @@ package Events
 		public static const PLAY:String = "playGame";
 		public static const OPTIONS:String = "options";
 		public static const BACK:String = "back";
+		public static const UP:String = "up";
+		public static const DOWN:String = "down";
 		public static const SINGLE_PLAYER:String = "singlePlayer";
 		public static const MULTI_PLAYER:String = "multiPlayer";
 		public static const STOP:String = "stopGame";

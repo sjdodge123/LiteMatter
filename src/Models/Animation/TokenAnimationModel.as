@@ -5,11 +5,13 @@ package Models.Animation
 	import flash.events.Event;
 	import flash.display.MovieClip;
 	import Interfaces.IInputHandling;
+	import flash.events.EventDispatcher;
+
 	/**
 	 * ...
 	 * @author Jake
 	 */
-	public class TokenAnimationModel implements IAnimationModel
+	public class TokenAnimationModel  extends EventDispatcher  implements IAnimationModel
 	{
 		private var ldrCont:DisplayObject;
 		private var inputModel:IInputHandling;

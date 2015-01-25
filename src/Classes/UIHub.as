@@ -165,10 +165,6 @@ package Classes
 		{
 			game.changePace(event.params[0]);		
 		}
-		protected function aPressed(event:ButtonEvent):void
-		{
-			screenController.buttonPressed(event);
-		}
 		
 		private function pauseGame(event:UIEvent):void
 		{
@@ -236,12 +232,14 @@ package Classes
 		}
 		private function addControllerListeners():void 
 		{
-			ioMonitor.addEventListener(ButtonEvent.PRESSED, aPressed);
+			ioMonitor.addEventListener(UIEvent.DOWN, shiftDown);
+			ioMonitor.addEventListener(UIEvent.UP, shiftUP);
 		}
 		
 		private function removeControllerListeners():void 
 		{
-			ioMonitor.removeEventListener(ButtonEvent.PRESSED, aPressed);
+			ioMonitor.removeEventListener(UIEvent.DOWN, shiftDown);
+			ioMonitor.removeEventListener(UIEvent.UP, shiftUP);
 		}
 	
 		private function resetGameVariables():void 
@@ -257,6 +255,7 @@ package Classes
 		*/
 		public function controllerAdded(device:GameInputDevice):void 
 		{
+			gameStage.stageFocusRect = true;
 			numControllers += 1;
 			ioMonitor.controllerAdded(device);
 			addControllerListeners();
@@ -274,6 +273,15 @@ package Classes
 			{
 				screenController.removeControllerPopScreen(playNum);
 			}
+		}
+		
+		public function shiftUP(event:UIEvent):void
+		{
+			trace("up");
+		}
+		public function shiftDown(event:UIEvent):void
+		{
+			trace("down");
 		}
 		
 		/*

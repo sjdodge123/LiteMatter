@@ -1,15 +1,17 @@
 package Models.Animation 
 {
 	import flash.display.DisplayObject;
-	import flash.events.Event;
-	import Interfaces.IAnimationModel;
 	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	
+	import Interfaces.IAnimationModel;
 	
 	/**
 	 * ...
 	 * @author Jake
 	 */
-	public class StopAnimationModel implements IAnimationModel 
+	public class StopAnimationModel extends EventDispatcher implements IAnimationModel 
 	{
 		private var ldr:DisplayObject;
 		
@@ -23,16 +25,12 @@ package Models.Animation
 		}
 		public function update(event:Event):void 
 		{
-			var currentFrame:int = MovieClip(ldr).currentFrame;
-			var endFrame:int = MovieClip(ldr).totalFrames;
-			if(currentFrame === endFrame)
-			{
-				MovieClip(ldr).stop();
-			}
+			MovieClip(ldr).gotoAndStop(1);
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
 		
 		
 	}
-
+	
 }

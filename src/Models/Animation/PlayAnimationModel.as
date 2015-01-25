@@ -4,12 +4,13 @@ package Models.Animation
 	import flash.display.DisplayObject;
 	import Interfaces.IAnimationModel;
 	import flash.display.MovieClip;
+	import flash.events.EventDispatcher;
 	
 	/**
 	 * ...
 	 * @author Jake
 	 */
-	public class PlayAnimationModel implements IAnimationModel 
+	public class PlayAnimationModel  extends EventDispatcher  implements IAnimationModel 
 	{
 		private var ldrCont:DisplayObject;
 		

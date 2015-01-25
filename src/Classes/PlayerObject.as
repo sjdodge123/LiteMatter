@@ -1,6 +1,7 @@
 package Classes
 {
 	
+	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -20,6 +21,8 @@ package Classes
 	import Interfaces.IWeaponModel;
 	
 	import Loaders.SoundLoader;
+	
+	import Models.Animation.PirateShipAnimationModel;
 	
 	import UI.ScoreBoard.ScorePage;
 
@@ -55,8 +58,10 @@ package Classes
 		private var gameObjects:Vector.<GameObject>;
 		private var colOkay:Boolean = true;
 		private var colTimer:Timer;
+		private var aniModel:PirateShipAnimationModel;
+
 		
-		public function PlayerObject(inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,physicsModel:IPhysicsModel,immuneModel:IImmunityModel,initialX:int,initialY:int,scorePage:ScorePage,stage:Stage)
+		public function PlayerObject(inputModel:IInputHandling,collisionModel:ICollisionModel,weaponModel:IWeaponModel,physicsModel:IPhysicsModel,immuneModel:IImmunityModel,aniModel:PirateShipAnimationModel,initialX:int,initialY:int,scorePage:ScorePage,stage:Stage)
 		{
 			this.inputModel = inputModel;
 			this.weaponModel = weaponModel;
@@ -65,6 +70,7 @@ package Classes
 			this.immuneModel = immuneModel;
 			this.scorePage = scorePage;
 			this.gameStage = stage;
+			this.aniModel = aniModel;
 			soundLoader = new SoundLoader();
 			width = 0;
 			height = 0;
@@ -110,6 +116,7 @@ package Classes
 		{
 			shipHitBox = collisionModel.buildModel(this);
 			immuneModel.buildModel(this);
+			addChild(aniModel);
 			physicsModel.buildModel(width,height,x,y,initialRotation,inputModel);
 		}
 		
@@ -161,7 +168,7 @@ package Classes
 							colTimer.reset();
 							colTimer.start();
 							var damageToOtherShip:int = calcDamage(this, objectArray[i] as PlayerObject);
-							trace("Ship " + scorePage.getPlayerNum() +" hit Ship " + PlayerObject(objectArray[i]).scorePage.getPlayerNum());
+							//trace("Ship " + scorePage.getPlayerNum() +" hit Ship " + PlayerObject(objectArray[i]).scorePage.getPlayerNum());
 							objectArray[i].takeAwayHP(damageToOtherShip);
 							shipRam.play();
 							if (getHP() <= 0) 
@@ -212,8 +219,9 @@ package Classes
 			HP = respawnHP;
 			healthBar.updateHealthBar(respawnHP);
 			immuneModel.resetImmuneTimer();
+			aniModel.reset();
 		}
-		
+			
 		public function explode():void
 		{	
 			dispatchEvent(new GameBoardEvent(GameBoardEvent.EXPLODE,this));
@@ -263,6 +271,7 @@ package Classes
 		public function takeAwayHP(i:int):int
 		{
 			this.HP -= i;
+			aniModel.updateHP(this.HP);
 			healthBar.updateHealthBar(this.HP);
 			return this.HP;
 		}

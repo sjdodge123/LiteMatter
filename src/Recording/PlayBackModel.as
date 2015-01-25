@@ -28,20 +28,20 @@ package Recording
 			var objectArray:Array = new Array();
 			if(eventArray[count] != null)
 			{
-				var value:Array = eventArray[count];
-				deltaT = value[0];
-				moveForward = value[1];
-				moveReverse = value[2];
-				moveLeft = value[3];
-				moveRight = value[4];
-				ship.fireOne(value[5]);
-				ship.fireTwo(value[6]);
-				ship.x = value[7];
-				ship.y = value[8];
-				ship.rotationZ = value[9];
-				ship.setHP(value[10]);
-				ship.setRespawnCount(value[11]);
-				ship.setImmuneModel(value[12]);
+				var value:FrameState = eventArray[count];
+				deltaT = value.deltaT;
+				moveForward = value.moveForward;
+				moveReverse = value.moveReverse;
+				moveLeft = value.moveLeft;
+				moveRight = value.moveRight;
+				ship.fireOne(value.fireOne);
+				ship.fireTwo(value.fireTwo);
+				ship.x = value.shipX;
+				ship.y = value.shipY;
+				ship.rotationZ = value.shipZ;
+				ship.setHP(value.shipHP);
+				ship.setRespawnCount(value.shipRespawn);
+				ship.setImmuneModel(value.shipImmune);
 			}
 			else
 			{

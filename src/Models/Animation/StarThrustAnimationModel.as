@@ -6,8 +6,9 @@ package Models.Animation
 	
 	import Interfaces.IAnimationModel;
 	import Interfaces.IInputHandling;
+	import flash.events.EventDispatcher;
 	
-	public class StarThrustAnimationModel implements IAnimationModel
+	public class StarThrustAnimationModel  extends EventDispatcher  implements IAnimationModel
 	{
 		private var ldrCont:DisplayObject;
 		private var inputModel:Object;

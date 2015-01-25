@@ -15,6 +15,8 @@ package Classes
 		private var aButton:GameInputControl;
 		private var backButton:GameInputControl;
 		public var currentDevice:GameInputDevice
+		private var leftThumb:GameInputControl;
+		private var defaultValue:Number;
 		public function IOMonitor(gameStage:Stage) 
 		{
 			gameStage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
@@ -28,8 +30,11 @@ package Classes
 			startButton.addEventListener(Event.CHANGE, startPressed);
 			backButton = device.getControlAt(12);
 			backButton.addEventListener(Event.CHANGE, backPressed);
+			leftThumb = device.getControlAt(1);
+			leftThumb.addEventListener(Event.CHANGE, thumbMoved);
 			deviceList.push(device);
 		}
+		
 		
 		private function keyPressed(event:KeyboardEvent):void
 		{
@@ -71,6 +76,23 @@ package Classes
 		private function backPressed(event:Event):void 
 		{
 			if (event.target.value == 1) { dispatchEvent(new UIEvent(UIEvent.RESET, null)); }
+		}
+		private function thumbMoved(event:Event):void
+		{
+			defaultValue = leftThumb.value;
+			switch(true) 
+			{
+				case (leftThumb.value == 1): 
+				{
+					dispatchEvent(new UIEvent(UIEvent.UP, null))
+					break;
+				}
+				case  (leftThumb.value == -1):
+				{
+					dispatchEvent(new UIEvent(UIEvent.DOWN, null))
+					break;
+				}
+			}
 		}
 		
 		

@@ -8,6 +8,7 @@ package Loaders
 	import Classes.GameBoard.GameBoardObjects;
 	
 	import Interfaces.IAnimationModel;
+	import Events.AnimationEvent;
 	
 	
 	public class AnimationLoader extends MovieClip 
@@ -31,7 +32,15 @@ package Loaders
 		{
 			animationModel.buildModel(ldr.content);
 			addEventListener(Event.ENTER_FRAME,animationModel.update);
+			animationModel.addEventListener(Event.COMPLETE,removeController);
+			dispatchEvent(new AnimationEvent(AnimationEvent.LOAD_COMPLETE,ldr.content));
 			addChild(ldr.content);
+		}
+		
+		protected function removeController(event:Event):void
+		{
+			removeEventListener(Event.ENTER_FRAME,animationModel.update);
+			
 		}
 		
 	}

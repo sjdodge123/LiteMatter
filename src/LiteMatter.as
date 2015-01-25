@@ -84,11 +84,11 @@ package
 		{
 			removeChild(sentinel);
 			sentinel.removeEventListener(UIEvent.LOAD_COMPLETE,Initialize);
-			stage.stageFocusRect = false;
 			uiHub = new UIHub(stage, this);
 			xbc = new GamePadController(uiHub);
 			this.stageWidth = stage.stageWidth;
 			this.stageHeight = stage.stageHeight;
+			stage.stageFocusRect = false;
 			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
 			addChild(gameBoard);
 			popUpMenu(uiHub.screenController);
