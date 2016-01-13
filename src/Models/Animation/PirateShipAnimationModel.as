@@ -36,19 +36,19 @@ package Models.Animation
 				//75 % health
 				case (HP <= 75 && HP > 50):
 				{
-					aniLoop(10,45);
+					aniLoop(10,44);
 					break;
 				}
 					//50 % health
 				case (HP <= 50 && HP > 25):
 				{
-					aniLoop(45,98);
+					aniLoop(45,97);
 					break;
 				}
-					//20 % health
+					//25 % health
 				case (HP <= 25):
 				{
-					aniLoop(98,149);
+					aniLoop(98,150);
 					break;
 				}
 			}
@@ -61,8 +61,9 @@ package Models.Animation
 		
 		private function aniLoop(startIndex:int,endIndex:int):void
 		{
-			ldrContent.gotoAndPlay(startIndex);
+			
 			this.startIndex = startIndex;
+			ldrContent.gotoAndPlay(startIndex);
 			this.endIndex = endIndex;
 			if(!this.hasEventListener(Event.ENTER_FRAME))
 			{
@@ -75,6 +76,10 @@ package Models.Animation
 			if(ldrContent.currentFrame >= endIndex)
 			{
 				ldrContent.gotoAndPlay(startIndex);
+			}
+			if(startIndex == 98)
+			{
+				trace();
 			}
 		}		
 	
