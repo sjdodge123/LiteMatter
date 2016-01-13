@@ -255,7 +255,7 @@ package Classes
 		*/
 		public function controllerAdded(device:GameInputDevice):void 
 		{
-			gameStage.stageFocusRect = true;
+			gameStage.stageFocusRect = false;
 			numControllers += 1;
 			ioMonitor.controllerAdded(device);
 			addControllerListeners();

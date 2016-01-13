@@ -33,19 +33,22 @@ package Models.Animation
 			this.HP = HP;
 			switch(true)
 			{
+				//75 % health
 				case (HP <= 75 && HP > 50):
 				{
 					aniLoop(10,45);
 					break;
 				}
+					//50 % health
 				case (HP <= 50 && HP > 25):
 				{
-					aniLoop(1,2);
+					aniLoop(45,98);
 					break;
 				}
+					//20 % health
 				case (HP <= 25):
 				{
-					aniLoop(1,2);
+					aniLoop(98,149);
 					break;
 				}
 			}
