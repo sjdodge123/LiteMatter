@@ -37,6 +37,7 @@ package UI.Components
 		private var maskOne:MaskBox;
 		private var maskTwo:MaskBox;
 		private var controllerNum:StaticClipLabel;
+		private var shipBox:ShipBox;
 		public function ShipOptionsSWF(x:int,y:int,page:ScorePage)
 		{
 			this.x = x;
@@ -49,10 +50,8 @@ package UI.Components
 			border.graphics.endFill();
 			addChild(border);
 			
-			var shipBox:Sprite = new Sprite();
-			shipBox.graphics.beginFill(0x333333,1);
-			shipBox.graphics.drawRect(x,y,450,250);
-			shipBox.graphics.endFill();
+			
+			this.shipBox = new ShipBox(x,y,page);
 			addChild(shipBox);
 			
 			
@@ -189,7 +188,7 @@ package UI.Components
 				var colorChanges:Array = new Array();
 				var newColor:StaticClipLabel = colorSelection.getCurrentLabel();
 				page.setColor(newColor.getColor());
-				playerColor = page.getColor();;
+				playerColor = page.getColor();
 				addMaskOne(playerTitle);
 				addMaskTwo(playerNumber);
 //				unlockedColor = lockedColor;
