@@ -16,6 +16,8 @@ package
 	import Classes.GameBoard.GameBoardObjects;
 	import Classes.GameBoard.StopWatch;
 	
+	import Classes.WindowHandler;
+	
 	import Events.UIEvent;
 	
 	import Interfaces.IInputHandling;
@@ -68,6 +70,7 @@ package
 		private var fastPace:Number = 0.045;
 		private var currentPace:Number;
 		private var soundLoader:SoundLoader;
+		private var gameWindow:WindowHandler;
 		
 		public function LiteMatter()
 		{
@@ -84,12 +87,13 @@ package
 		{
 			removeChild(sentinel);
 			sentinel.removeEventListener(UIEvent.LOAD_COMPLETE,Initialize);
+			gameWindow = new WindowHandler(this.stage.nativeWindow);
+			this.stageHeight = gameWindow.getHeight();
+			this.stageWidth = gameWindow.getWidth();
 			uiHub = new UIHub(stage, this);
 			xbc = new GamePadController(uiHub);
-			this.stageWidth = stage.stageWidth;
-			this.stageHeight = stage.stageHeight;
 			stage.stageFocusRect = false;
-			gameBoard = new GameBoardObjects(stageWidth,stageHeight,stage);
+			gameBoard = new GameBoardObjects(gameWindow.getWidth(),gameWindow.getHeight(),stage);
 			addChild(gameBoard);
 			popUpMenu(uiHub.screenController);
 			soundChannel = new SoundChannel();

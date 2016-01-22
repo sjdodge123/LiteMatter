@@ -1,11 +1,7 @@
 package Classes
 {
-	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.media.Sound;
-	
-	import Classes.GameBoard.GameBoardObjects;
-	
 	import Events.GameBoardEvent;
 	
 	import Interfaces.ICollisionModel;
