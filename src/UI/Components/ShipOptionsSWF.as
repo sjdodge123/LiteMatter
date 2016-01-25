@@ -128,6 +128,7 @@ package UI.Components
 			maskTwo = new MaskBox(0,0,0,0,playerColor);
 			addChild(maskTwo);
 			page.setColor(playerColor);
+			shipBox.reDraw();
 			addMaskOne(playerTitle);
 			addMaskTwo(playerNumber);
 		}
@@ -159,29 +160,6 @@ package UI.Components
 			if(event.params[0] == humanInputs)
 			{
 				currentLabel = humanInputs.getCurrentLabel();
-//				if(currentLabel == xbox)
-//				{
-//					
-//					deviceID = xbox.getColor();
-//					if(deviceID == 1)
-//					{
-//						controllerNum = new StaticClipLabel("./Images/oneText.swf",x+310,610,"ONE");
-//						addChild(controllerNum);
-//					}
-//					if(deviceID == 2)
-//					{
-//						controllerNum = new StaticClipLabel("./Images/twoText.swf",x+310,610,"TWO");
-//						addChild(controllerNum);
-//					}
-//				}
-//				else
-//				{
-//					if(contains(controllerNum))
-//					{
-//						removeChild(controllerNum);	
-//					}
-//					
-//				}
 			}
 			if(event.params[0] == colorSelection)
 			{
@@ -191,10 +169,7 @@ package UI.Components
 				playerColor = page.getColor();
 				addMaskOne(playerTitle);
 				addMaskTwo(playerNumber);
-//				unlockedColor = lockedColor;
-//				lockedColor = newColor;
-//				colorChanges.push(unlockedColor,lockedColor);
-//				dispatchEvent(new SelectionEvent(SelectionEvent.INPUT_CHANGE,colorChanges));
+				shipBox.reDraw();
 			}
 		}
 		
