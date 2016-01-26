@@ -6,7 +6,7 @@ package Classes
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
 	import flash.ui.GameInputDevice;
-	
+	import Events.GameBoardEvent;
 	import Classes.GameBoard.StopWatch;
 	
 	import Events.ButtonEvent;
@@ -26,6 +26,7 @@ package Classes
 		private var gamePaused:Boolean;
 		private var onMenu:Boolean = true;
 		public var screenController:UserInterfaceController;
+		
 		private var game:LiteMatter;
 		private var gameStage:Stage;
 		private var stopWatch:StopWatch;
@@ -40,13 +41,14 @@ package Classes
 		public function UIHub(gameStage:Stage,game:LiteMatter) 
 		{
 			scoreBoard = new ScoreBoard();
-			screenController = new UserInterfaceController(scoreBoard);
+			screenController = new UserInterfaceController(scoreBoard,gameStage);
 			this.gameStage = gameStage;
 			ioMonitor = new IOMonitor(gameStage);
 			this.game = game;
 			addGlobalListeners();
 			resetGameVariables();
 		}
+		
 		/*
 		  ************************************************
 						  *** STARTGAME *** 
@@ -212,11 +214,24 @@ package Classes
 			ioMonitor.addEventListener(UIEvent.PAUSE_GAME, pauseGame);
 			ioMonitor.addEventListener(UIEvent.FULL_SCREEN, displayFullScreen);
 			screenController.addEventListener(UIEvent.BACK,optionsInfo);
-			
 		}
+		
 		private function addMenuListeners():void 
 		{
 			screenController.addEventListener(UIEvent.PLAY, playGame);
+			screenController.addEventListener(GameBoardEvent.ADD,addSelectionObject);
+			screenController.addEventListener(GameBoardEvent.REMOVE,addSelectionObject);
+		}
+		
+		protected function addSelectionObject(event:GameBoardEvent):void
+		{
+			if(event.type == GameBoardEvent.ADD){
+				this.game.addSelectionObject(event);
+			}
+			if(event.type == GameBoardEvent.REMOVE){
+				this.game.removeSelectionObject(event);
+			}
+			
 		}
 		private function addGameListeners():void 
 		{

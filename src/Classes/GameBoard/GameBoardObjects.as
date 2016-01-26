@@ -70,10 +70,10 @@ package Classes.GameBoard
 			planet.scaleX = .50;
 			planet.scaleY = .50;
 			//var planet2:StaticObject = objectBuilder.buildTokenPlanet(stageWidth-200, stageHeight-200);
-			var cannonball:BasicObject = objectBuilder.buildAsteroid(stageWidth/2, (stageHeight/2)+350);
-			cannonball.scaleX = .08;
-			cannonball.scaleY = .08;
-			cannonball.changeVelX(250);
+			//var cannonball:BasicObject = objectBuilder.buildAsteroid(stageWidth/2, (stageHeight/2)+350);
+			//cannonball.scaleX = .08;
+			//cannonball.scaleY = .08;
+			//cannonball.changeVelX(250);
 		}
 		private function addStaticObjects():void
 		{

@@ -1,9 +1,17 @@
 package UI.Components
 {
 	import flash.display.Sprite;
+	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.ui.GameInputDevice;
 	
+	import Events.GameBoardEvent;
 	import Events.SelectionEvent;
+	
+	import Interfaces.IInputHandling;
+	
+	import Models.Input.Player1InputModel;
+	import Models.Input.Player2InputModel;
 	
 	import UI.Blocks.LabelBox;
 	import UI.Blocks.MaskBox;
@@ -38,11 +46,14 @@ package UI.Components
 		private var maskTwo:MaskBox;
 		private var controllerNum:StaticClipLabel;
 		private var shipBox:ShipBox;
-		public function ShipOptionsSWF(x:int,y:int,page:ScorePage)
+		private var gameStage:Stage;
+		private var inputModel:IInputHandling;
+		public function ShipOptionsSWF(x:int,y:int,page:ScorePage,gameStage)
 		{
 			this.x = x;
 			this.y = y;
 			this.page = page;
+			this.gameStage = gameStage;
 			compList = new Array();
 			var border:Sprite = new Sprite();
 			border.graphics.beginFill(0x333333,0);
@@ -50,10 +61,7 @@ package UI.Components
 			border.graphics.endFill();
 			addChild(border);
 			
-			
-			this.shipBox = new ShipBox(x,y,page);
-			addChild(shipBox);
-			
+		
 			
 			var inputBox:Sprite = new Sprite();
 			inputBox.graphics.beginFill(0x333333,1);
@@ -112,6 +120,7 @@ package UI.Components
 				playerColor = redColor.getColor();
 				addComp(humanInputs);
 				addComp(colorSelection);
+				this.inputModel = new Player1InputModel(this.gameStage);
 			}
 			//If Player 2
 			if(page.getPlayerNum()+1 == 2)
@@ -121,16 +130,29 @@ package UI.Components
 				playerType.changeLabel(computerLabel);
 				addComp(computerInputs);
 				addComp(colorSelection);
+				this.inputModel = new Player2InputModel(this.gameStage);
 			}
+			
+
+			this.shipBox = new ShipBox(x,y,page,this.gameStage);
+			addChild(shipBox);
+			shipBox.addEventListener(GameBoardEvent.ADD,addSelectionObject);
+			
+			
 			
 			maskOne = new MaskBox(0,0,0,0,playerColor);
 			addChild(maskOne);
 			maskTwo = new MaskBox(0,0,0,0,playerColor);
 			addChild(maskTwo);
 			page.setColor(playerColor);
-			shipBox.reDraw();
+			shipBox.reDraw(this.inputModel);
 			addMaskOne(playerTitle);
 			addMaskTwo(playerNumber);
+		}
+		
+		protected function addSelectionObject(event:GameBoardEvent):void
+		{
+			dispatchEvent(event);
 		}
 		public function resetPage(page:ScorePage,color:uint):void
 		{
@@ -160,6 +182,7 @@ package UI.Components
 			if(event.params[0] == humanInputs)
 			{
 				currentLabel = humanInputs.getCurrentLabel();
+				shipBox.reDraw(this.inputModel);
 			}
 			if(event.params[0] == colorSelection)
 			{
@@ -169,7 +192,7 @@ package UI.Components
 				playerColor = page.getColor();
 				addMaskOne(playerTitle);
 				addMaskTwo(playerNumber);
-				shipBox.reDraw();
+				shipBox.reDraw(this.inputModel);
 			}
 		}
 		
@@ -316,7 +339,6 @@ package UI.Components
 		{
 //			colorSelection.addColorLabel(unlockedColor.text.text,unlockedColor.getColor());
 //			colorSelection.removeLabel(lockedColor);
-			
 		}
 	}
 }

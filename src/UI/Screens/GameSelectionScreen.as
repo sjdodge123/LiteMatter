@@ -1,9 +1,12 @@
 package UI.Screens
 {
 	import flash.display.Sprite;
+	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.media.Sound;
 	import flash.ui.GameInputDevice;
 	
+	import Events.GameBoardEvent;
 	import Events.SelectionEvent;
 	import Events.UIEvent;
 	
@@ -11,9 +14,9 @@ package UI.Screens
 	
 	import UI.Blocks.AnimatedClipLabel;
 	import UI.Blocks.LabelBox;
+	import UI.Components.ShipOptionsSWF;
 	import UI.Components.SideScrollBox;
 	import UI.ScoreBoard.ScoreBoard;
-	import UI.Components.ShipOptionsSWF;
 
 	public class GameSelectionScreen extends Sprite
 	{
@@ -30,15 +33,16 @@ package UI.Screens
 		private var lives:int = 2;
 		private var livesSelection:SideScrollBox;
 		private var respawnBox:LabelBox;
-		public function GameSelectionScreen(scoreBoard:ScoreBoard)
+		public function GameSelectionScreen(scoreBoard:ScoreBoard,gameStage:Stage)
 		{
 			this.scoreBoard = scoreBoard;
 			scoreBoard.addPlayer(1);
 			scoreBoard.addPlayer(2);
-			shipOne = new ShipOptionsSWF(25,10,scoreBoard.getNextPage());
+			
+			shipOne = new ShipOptionsSWF(25,10,scoreBoard.getNextPage(),gameStage);
 			//shipOne.addEventListener(SelectionEvent.INPUT_CHANGE,colorShipOneChange);
 			addChild(shipOne);
-			shipTwo = new ShipOptionsSWF(350,10,scoreBoard.getNextPage());
+			shipTwo = new ShipOptionsSWF(350,10,scoreBoard.getNextPage(),gameStage);
 			//shipTwo.addEventListener(SelectionEvent.INPUT_CHANGE,colorShipTwoChange);
 			addChild(shipTwo);
 			soundLoader = new SoundLoader();

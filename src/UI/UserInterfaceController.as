@@ -1,6 +1,7 @@
 package UI 
 {
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.media.Sound;
 	import flash.ui.GameInputDevice;
@@ -8,6 +9,7 @@ package UI
 	import Classes.Config.Reader;
 	
 	import Events.ButtonEvent;
+	import Events.GameBoardEvent;
 	import Events.UIEvent;
 	
 	import Loaders.SoundLoader;
@@ -35,17 +37,18 @@ package UI
 		private var controllerCount:int;
 		private var controllerArray:Array;
 
-		public function UserInterfaceController(scoreBoard:ScoreBoard) 
+		public function UserInterfaceController(scoreBoard:ScoreBoard,gameStage:Stage) 
 		{
 			mainMenu = new MainMenu();
 			soundLoader = new SoundLoader();
 			selectSound = soundLoader.loadSound("./Sounds/select.mp3");
 			reader = new Reader();
 			optionsScreen = new OptionsScreen();
-			gameSelection = new GameSelectionScreen(scoreBoard);
+			gameSelection = new GameSelectionScreen(scoreBoard,gameStage);
 			mainMenu.addEventListener(ButtonEvent.ON_HOVER,displayToolTip,true);
 			optionsScreen.addEventListener(ButtonEvent.ON_HOVER,displayToolTip,true);
 			gameSelection.addEventListener(ButtonEvent.ON_HOVER,displayToolTip,true);
+			//gameSelection.addEventListener(GameBoardEvent.ADD,addSelectionObject,true);
 			reader.readFile("version.txt"); 
 			controllerArray = new Array();
 			displayMainMenuScreen();

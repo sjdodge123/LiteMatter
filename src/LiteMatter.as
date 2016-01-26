@@ -13,11 +13,11 @@ package
 	import Classes.GamePadController;
 	import Classes.IOMonitor;
 	import Classes.UIHub;
+	import Classes.WindowHandler;
 	import Classes.GameBoard.GameBoardObjects;
 	import Classes.GameBoard.StopWatch;
 	
-	import Classes.WindowHandler;
-	
+	import Events.GameBoardEvent;
 	import Events.UIEvent;
 	
 	import Interfaces.IInputHandling;
@@ -105,6 +105,8 @@ package
 			currentPace = normalPace;
 			stage.addEventListener(Event.ENTER_FRAME, update);
 		}
+		
+		
 		
 		public function InitializeGameBoard():void 
 		{
@@ -334,6 +336,16 @@ package
 			{
 				currentPace = fastPace;
 			}
+			
+		}
+		public function addSelectionObject(event:GameBoardEvent):void
+		{
+			gameBoard.addObject(event);
+		}
+		
+		public function removeSelectionObject(event:GameBoardEvent):void
+		{
+			gameBoard.removeObjectEvent(event);
 			
 		}
 	}
