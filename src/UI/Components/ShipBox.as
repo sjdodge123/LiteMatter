@@ -22,12 +22,11 @@ package UI.Components
 	import Models.Animation.StopAnimationModel;
 	import Models.Collision.PirateShipCollisionModel;
 	import Models.Immunity.ImmunityModel;
-	import Models.Physics.PlayerPhysicsModel;
 	import Models.Weapons.CannonModel;
 	
 	import UI.ScoreBoard.ScorePage;
-	import flash.geom.Point;
 	import Classes.GameObject;
+	import Models.Physics.SelectionPhysicsModel;
 
 	public class ShipBox extends Sprite
 	{
@@ -92,7 +91,7 @@ package UI.Components
 			imageLoadPortCannons = new AnimationPartLoader("./Images/ShipPortCannons.swf",imageOffsetX, imageOffsetY,portCannonsPart);
 			imageLoadStarCannons = new AnimationPartLoader("./Images/ShipStarCannons.swf",imageOffsetX, imageOffsetY,starCannonsPart);		
 			var aniModel:PirateShipAnimationModel = new PirateShipAnimationModel(imageLoadBody,imageLoadPortThrust,imageLoadStarThrust,imageLoadPortCannons,imageLoadStarCannons);
-			tempSprite = new PlayerObject(this.inputModel,new PirateShipCollisionModel(),weaponModel,new PlayerPhysicsModel(this.gameStage),new ImmunityModel(),aniModel,drawX,drawY,this.page,this.gameStage);
+			tempSprite = new PlayerObject(this.inputModel,new PirateShipCollisionModel(),weaponModel,new SelectionPhysicsModel(this.gameStage),new ImmunityModel(),aniModel,drawX,drawY,this.page,this.gameStage);
 			tempSprite.scaleX = 2.5;
 			tempSprite.scaleY = 2.5;
 			dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD,tempSprite,true));

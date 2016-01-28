@@ -244,10 +244,17 @@ package Classes
 		public function fireWeaponOne(event:EFireCannon):void
 		{
 			var travelInfo:Vector.<Number> = new Vector.<Number>;
-			travelInfo.push(getDirX());
-			travelInfo.push(getDirY());
-			travelInfo.push(getVelX());
-			travelInfo.push(getVelY());
+				travelInfo.push(getDirX());
+				travelInfo.push(getDirY());
+				travelInfo.push(getVelX());
+				travelInfo.push(getVelY());
+				if(event.params == 'selection')
+				{ 
+					travelInfo.push(-1);
+				}
+				else{
+					travelInfo.push(1);
+				}
 			weaponModel.fireWeaponOne(travelInfo);
 		}
 		public function fireWeaponTwo(event:EFireCannon):void
@@ -257,6 +264,13 @@ package Classes
 			travelInfo.push(getDirY());
 			travelInfo.push(getVelX());
 			travelInfo.push(getVelY());
+			if(event.params == 'selection')
+			{ 
+				travelInfo.push(-1);
+			}
+			else{
+				travelInfo.push(1);
+			}
 			weaponModel.fireWeaponTwo(travelInfo);
 		}
 		
@@ -340,7 +354,7 @@ package Classes
 		}
 		private function addShot(event:GameBoardEvent):void 
 		{
-			dispatchEvent(event);
+				dispatchEvent(event);
 		}
 		public function recordHit(victim:PlayerObject):void 
 		{

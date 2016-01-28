@@ -65,7 +65,9 @@ package Models.Weapons
 					weaponOneTimer.reset();
 					weaponOneTimer.start();
 					dispatchEvent(new EFireCannon(EFireCannon.FIRE_ONE,null));
-					dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD_TO_POINT,bulletInfo));
+					if(travelInfo[4] != -1) {
+						dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD_TO_POINT,bulletInfo));
+					}
 				}
 		}
 		public function fireWeaponTwo(travelInfo:Vector.<Number>):void 
@@ -92,7 +94,9 @@ package Models.Weapons
 					weaponTwoTimer.reset();
 					weaponTwoTimer.start();
 					dispatchEvent(new EFireCannon(EFireCannon.FIRE_TWO,null));
-					dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD_TO_POINT,bulletInfo));
+					if(travelInfo[4] != -1) {
+						dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD_TO_POINT,bulletInfo));
+					}
 				}
 		}
 		public function injectBullets(bulletOne:BasicObject,bulletTwo:BasicObject):void
