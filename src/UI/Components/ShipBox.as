@@ -69,7 +69,7 @@ package UI.Components
 		
 		private function buildShip(drawX,drawY):Sprite
 		{
-			dispatchEvent(new GameBoardEvent(GameBoardEvent.REMOVE,tempSprite,true));
+			removeShip();
 			Sprite(tempSprite);
 			var weaponModel:IWeaponModel = new CannonModel();
 			var imageOffsetX:Number = 0;
@@ -92,11 +92,15 @@ package UI.Components
 			imageLoadStarCannons = new AnimationPartLoader("./Images/ShipStarCannons.swf",imageOffsetX, imageOffsetY,starCannonsPart);		
 			var aniModel:PirateShipAnimationModel = new PirateShipAnimationModel(imageLoadBody,imageLoadPortThrust,imageLoadStarThrust,imageLoadPortCannons,imageLoadStarCannons);
 			tempSprite = new PlayerObject(this.inputModel,new PirateShipCollisionModel(),weaponModel,new SelectionPhysicsModel(this.gameStage),new ImmunityModel(),aniModel,drawX,drawY,this.page,this.gameStage);
-			tempSprite.scaleX = 2.5;
-			tempSprite.scaleY = 2.5;
+			tempSprite.scaleX = 3.5;
+			tempSprite.scaleY = 3.5;
 			dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD,tempSprite,true));
 			//tempSprite.addChild(tempSprite.getHealthBar());
 			return tempSprite;
+		}
+		
+		public function removeShip():void{
+			dispatchEvent(new GameBoardEvent(GameBoardEvent.REMOVE,tempSprite,true));
 		}
 	}
 }

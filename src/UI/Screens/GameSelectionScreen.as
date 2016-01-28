@@ -185,5 +185,17 @@ package UI.Screens
 			shipTwo.resetPage(scoreBoard.getNextPage(),colorTwo);
 			playGame(null);
 		}
+		
+		public function drawShips():void
+		{
+			shipOne.drawShip();
+			shipTwo.drawShip();
+			
+		}
+		public function removeShips():void
+		{
+			shipOne.removeShip();
+			shipTwo.removeShip();
+		}
 	}
 }

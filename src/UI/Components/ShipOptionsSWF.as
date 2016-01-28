@@ -19,6 +19,7 @@ package UI.Components
 	import UI.Blocks.StartGameObject;
 	import UI.Blocks.StaticClipLabel;
 	import UI.ScoreBoard.ScorePage;
+	import Models.Input.BasicAIModel;
 
 	public class ShipOptionsSWF extends Sprite
 	{
@@ -326,6 +327,16 @@ package UI.Components
 		{
 //			colorSelection.addColorLabel(unlockedColor.text.text,unlockedColor.getColor());
 //			colorSelection.removeLabel(lockedColor);
+		}
+		
+		public function drawShip():void
+		{
+			shipBox.reDraw(this.inputModel);			
+		}
+		
+		public function removeShip():void
+		{
+			shipBox.removeShip();
 		}
 	}
 }

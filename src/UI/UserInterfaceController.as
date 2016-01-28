@@ -95,11 +95,13 @@ package UI
 			clearScreen();
 			addBackListners();
 			addChild(gameSelection);
+			gameSelection.drawShips();
 		}
 		
 		protected function backToMain(event:Event):void
 		{
 			selectSound.play();
+			gameSelection.removeShips();
 			clearScreen();
 			gameSelection.removeEventListener(UIEvent.PLAY,playGame);
 			displayMainMenuScreen();
