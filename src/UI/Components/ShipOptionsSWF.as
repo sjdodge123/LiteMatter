@@ -145,7 +145,6 @@ package UI.Components
 			maskTwo = new MaskBox(0,0,0,0,playerColor);
 			addChild(maskTwo);
 			page.setColor(playerColor);
-			shipBox.reDraw(this.inputModel);
 			addMaskOne(playerTitle);
 			addMaskTwo(playerNumber);
 		}
@@ -243,8 +242,6 @@ package UI.Components
 			maskTwo.mask = obj;
 		}
 		
-		
-		
 		public function deviceAdded(deviceID:int,device:GameInputDevice):void
 		{
 			if(deviceID == 1)
@@ -262,28 +259,7 @@ package UI.Components
 			}
 			humanInputs.changeLabel(xbox);
 			this.device = device;
-			this.deviceID = deviceID;
-//			xbox = new StaticClipLabel("./Images/controllerText.swf",x+170,15,"XBOX",deviceID);
-//			humanInputs.addLabel(xbox);
-//			if(page.getPlayerNum()+1 == deviceID)
-//			{
-//				if(deviceID == 1)
-//				{
-//					controllerNum = new StaticClipLabel("./Images/oneText.swf",x+310,610,"ONE");
-//					addChild(controllerNum);
-//				}
-//				if(deviceID == 2)
-//				{
-//					playerType.changeLabel(humanLabel);
-//					var id:int = removeComp(computerInputs);
-//					addCompAt(id,humanInputs);
-//					controllerNum = new StaticClipLabel("./Images/twoText.swf",x+310,610,"TWO");
-//					addChild(controllerNum);
-//				}
-//				humanInputs.changeLabel(xbox);
-//			}
-//			
-			
+			this.deviceID = deviceID;		
 			
 		}
 		public function deviceRemoved(deviceID:int):void

@@ -27,6 +27,7 @@ package UI.Components
 	
 	import UI.ScoreBoard.ScorePage;
 	import flash.geom.Point;
+	import Classes.GameObject;
 
 	public class ShipBox extends Sprite
 	{
@@ -34,7 +35,7 @@ package UI.Components
 		private var shipBox:Sprite = new Sprite();
 		private var inputModel:IInputHandling;
 		private var gameStage:Stage;
-		private var tempSprite:PlayerObject;
+		private var tempSprite:GameObject = new GameObject();
 		public function ShipBox(x,y,page,gameStage:Stage) 
 		{
 			this.x = x;
@@ -58,7 +59,12 @@ package UI.Components
 			shipBox.graphics.endFill();
 			this.inputModel = inputModel;
 			//this.addChild(shipBox);
-			buildShip(x+250,y+150);
+			if(page.getPlayerNum() == 0){
+				buildShip(this.x+250,this.y+125);
+			}
+			if(page.getPlayerNum() == 1){
+				buildShip(this.x+575,this.y+125);
+			}
 		}
 		
 		

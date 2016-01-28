@@ -97,12 +97,12 @@ package Classes
 			location = new Point(x, y);
 			respawnCount = scorePage.getLives();
 			shipId = scorePage.getPlayerNum();
-			if(shipId+1 == 2)
+			if(shipId==1)
 			{
 				initialRotation = 180;
 				rotationZ = initialRotation;
-				x = gameStage.stageWidth - 50;
-				y = gameStage.stageHeight - 50;
+				x = initialX;
+				y = initialY;
 			}
 			playerColor = scorePage.getColor();
 			bulletArray = new Array();

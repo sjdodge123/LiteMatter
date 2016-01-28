@@ -19,6 +19,7 @@ package UI.ScoreBoard
 		private var suicides:int;
 		private var accuracy:int;
 		private var color:uint;
+		private var selection:Boolean;
 		public function ScorePage(playerNum:int) 
 		{
 			this.playerNum = playerNum-1;
@@ -114,10 +115,6 @@ package UI.ScoreBoard
 		{
 			return color;
 		}
-		
-		
-		
-		
 	}
 
 }
