@@ -12,6 +12,7 @@ package UI.Components
 	
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
+	import Models.Input.XboxControllerModel;
 	
 	import UI.Blocks.LabelBox;
 	import UI.Blocks.MaskBox;
@@ -181,6 +182,16 @@ package UI.Components
 			if(event.params[0] == humanInputs)
 			{
 				currentLabel = humanInputs.getCurrentLabel();
+				
+				if(currentLabel.getID() == "WASD"){
+					this.inputModel = new Player1InputModel(this.gameStage);
+				}
+				if(currentLabel.getID() == "IJKL"){
+					this.inputModel = new Player2InputModel(this.gameStage);
+				}
+				if(currentLabel.getID() == "XBOX"){
+					this.inputModel = new XboxControllerModel(this.gameStage,this.device);
+				}
 				shipBox.reDraw(this.inputModel);
 			}
 			if(event.params[0] == colorSelection)
