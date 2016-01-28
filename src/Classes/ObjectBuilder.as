@@ -13,6 +13,7 @@ package Classes
 	import Interfaces.ICollisionModel;
 	import Interfaces.IImmunityModel;
 	import Interfaces.IInputHandling;
+	import Interfaces.IPhysicsModel;
 	import Interfaces.IStaticPhysicsModel;
 	import Interfaces.IWeaponModel;
 	
@@ -67,10 +68,16 @@ package Classes
 		{
 			return addPlayer("./Images/PirateShip.swf",0,0,x,y,inputModel,new PirateShipCollisionModel(),new CannonModel() , new PlayToEndAnimationModel(), new ImmunityModel(),scorePage);
 		}
-		public function buildTokenPlanet(x:int,y:int):StaticObject 
+		public function buildTokenMoon(x:int,y:int):StaticObject 
 		{
 			return addStatic("./Images/moon.swf",0,0,x,y,83.5, new PlanetCollisionModel(),new PlanetPhysicsModel());  
 		}
+		
+		public function buildTokenPlanet(x:int,y:int):StaticObject
+		{
+			return addAnimationStatic("./Images/planet2WIP.swf",0,0,x,y,83.5, new PlanetCollisionModel(),new PlanetPhysicsModel(),new PlayAnimationModel());  
+		}
+		
 		public function buildExplosion(x:int,y:int,scaleX:Number,scaleY:Number):MovieClip 
 		{
 			return addClip("./Images/explosion.swf", -321, -185, x, y, scaleX, scaleY, new PlayToEndAnimationModel());
@@ -143,6 +150,18 @@ package Classes
 			dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD,tempSprite));
 			return tempSprite;
 		}
+		
+		private function addAnimationStatic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,radius:Number,collisionModel:ICollisionModel,physicsModel:IStaticPhysicsModel,animationModel:IAnimationModel):StaticObject
+		{
+			var tempSprite:StaticObject;
+			var imageLoad:AnimationLoader;
+			imageLoad = new AnimationLoader(imageLocation,imageOffsetX, imageOffsetY,animationModel);
+			tempSprite = new StaticObject(objInitialX, objInitialY,radius,collisionModel,physicsModel);
+			tempSprite.addChild(imageLoad);
+			dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD,tempSprite));
+			return tempSprite;
+		}
+		
 		private function addStatic(imageLocation:String, imageOffsetX:Number, imageOffsetY:Number , objInitialX:Number, objInitialY:Number,radius:Number,collisionModel:ICollisionModel,physicsModel:IStaticPhysicsModel):StaticObject
 		{
 			var tempSprite:StaticObject;

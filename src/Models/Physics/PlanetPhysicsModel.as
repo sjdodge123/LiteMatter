@@ -4,9 +4,9 @@ package Models.Physics
 
 	public class PlanetPhysicsModel implements IStaticPhysicsModel
 	{
-//		private const gravConst:Number = 26000000;   // Normal
+		private const gravConst:Number = 26000000;   // Normal
 		//private const gravConst:Number = 26000000/2; // Low Gravity
-		private const gravConst:Number = 0;          // No Gravity
+//		private const gravConst:Number = 0;          // No Gravity
 		public function PlanetPhysicsModel()
 		{
 		}

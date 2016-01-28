@@ -67,18 +67,20 @@ package Classes.GameBoard
 		{
 			backGround = objectBuilder.buildBackGroundImage();
 			planet = objectBuilder.buildTokenPlanet(stageWidth/2, stageHeight/2);
-			planet.scaleX = .50;
-			planet.scaleY = .50;
-			//var planet2:StaticObject = objectBuilder.buildTokenPlanet(stageWidth-200, stageHeight-200);
-			//var cannonball:BasicObject = objectBuilder.buildAsteroid(stageWidth/2, (stageHeight/2)+350);
-			//cannonball.scaleX = .08;
-			//cannonball.scaleY = .08;
-			//cannonball.changeVelX(250);
+			planet.scaleX = 1.518;
+			planet.scaleY = 1.518;
+			//var planet2:StaticObject = objectBuilder.buildTokenPlanet(stageWidth-475, stageHeight/3);
+			var cannonball:BasicObject = objectBuilder.buildAsteroid(stageWidth/2, (stageHeight/2)+350);
+			cannonball.scaleX = .08;
+			cannonball.scaleY = .08;
+			cannonball.changeVelX(250);
 		}
 		private function addStaticObjects():void
 		{
 			backGround = objectBuilder.buildBackGroundImage();
 			planet = objectBuilder.buildTokenPlanet(stageWidth / 2, stageHeight / 2);
+			planet.scaleX = 1.518;
+			planet.scaleY = 1.518;
 		}
 		private function addPlayer1(scorePage:ScorePage):void
 		{
