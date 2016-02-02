@@ -106,6 +106,7 @@ package Classes
 			}
 			playerColor = scorePage.getColor();
 			bulletArray = new Array();
+			aniModel.setColor(playerColor);
 			healthBar = new HealthBar(respawnHP, playerColor);
 			buildModel();
 		}

@@ -121,19 +121,21 @@ package Classes
 			var imageLoadPortCannons:AnimationPartLoader;
 			var imageLoadStarCannons:AnimationPartLoader;
 			
+			var indicators:AnimationLoader = new AnimationLoader("./Images/indicators.swf",0,0,new PlayAnimationModel());
 			var portCannonsPart:IAnimationPart = new PortCannonsAnimationPart(weaponModel);
 			var starCannonsPart:IAnimationPart = new StarCannonsAnimationPart(weaponModel);
 			
 			
 			//Spawn Animations
 		
+			
 			imageLoadBody = new AnimationLoader(imageLocationMain,imageOffsetX, imageOffsetY,aniModelBody);
 			imageLoadPortThrust = new AnimationLoader(imageLocationPortThrust,imageOffsetX, imageOffsetY,aniModelPortThrust);
 			imageLoadStarThrust = new AnimationLoader(imageLocationStarThrust,imageOffsetX, imageOffsetY,aniModelStarThrust);
 			imageLoadPortCannons = new AnimationPartLoader(imageLocationPortCannons,imageOffsetX, imageOffsetY,portCannonsPart);
 			imageLoadStarCannons = new AnimationPartLoader(imageLocationStarCannons,imageOffsetX, imageOffsetY,starCannonsPart);
 			
-			var aniModel:PirateShipAnimationModel = new PirateShipAnimationModel(imageLoadBody,imageLoadPortThrust,imageLoadStarThrust,imageLoadPortCannons,imageLoadStarCannons);
+			var aniModel:PirateShipAnimationModel = new PirateShipAnimationModel(imageLoadBody,indicators,imageLoadPortThrust,imageLoadStarThrust,imageLoadPortCannons,imageLoadStarCannons);
 			tempSprite = new PlayerObject(inputModel,collisionModel,weaponModel,new PlayerPhysicsModel(gameStage),respawnModel,aniModel,objInitialX,objInitialY,scorePage,gameStage);
 			//tempSprite.addChild(tempSprite.getHealthBar());
 			dispatchEvent(new GameBoardEvent(GameBoardEvent.ADD,tempSprite));

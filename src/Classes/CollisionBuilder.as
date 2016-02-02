@@ -22,7 +22,7 @@ package Classes
 			var hitCircle:GameObject = new GameObject();
 			hitCircle.x = x;
 			hitCircle.y = y;
-			hitCircle.graphics.beginFill(0x000000, opacity);
+			hitCircle.graphics.beginFill(0xFFFFFF, opacity);
 			hitCircle.graphics.drawCircle(0,0,radius);
 			hitCircle.graphics.endFill();
 			ob1.addChild(hitCircle);

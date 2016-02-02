@@ -3,6 +3,7 @@ package UI.Components
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	
+	import Classes.GameObject;
 	import Classes.PlayerObject;
 	
 	import Events.GameBoardEvent;
@@ -15,6 +16,7 @@ package UI.Components
 	import Loaders.AnimationPartLoader;
 	
 	import Models.Animation.PirateShipAnimationModel;
+	import Models.Animation.PlayAnimationModel;
 	import Models.Animation.PortCannonsAnimationPart;
 	import Models.Animation.PortThrustAnimationModel;
 	import Models.Animation.StarCannonsAnimationPart;
@@ -22,11 +24,10 @@ package UI.Components
 	import Models.Animation.StopAnimationModel;
 	import Models.Collision.PirateShipCollisionModel;
 	import Models.Immunity.ImmunityModel;
+	import Models.Physics.SelectionPhysicsModel;
 	import Models.Weapons.CannonModel;
 	
 	import UI.ScoreBoard.ScorePage;
-	import Classes.GameObject;
-	import Models.Physics.SelectionPhysicsModel;
 
 	public class ShipBox extends Sprite
 	{
@@ -80,6 +81,7 @@ package UI.Components
 			var imageLoadPortCannons:AnimationPartLoader;
 			var imageLoadStarCannons:AnimationPartLoader;
 			
+			var overLay:AnimationLoader = new AnimationLoader("./Images/indicators.swf",0,0,new PlayAnimationModel());
 			var portCannonsPart:IAnimationPart = new PortCannonsAnimationPart(weaponModel);
 			var starCannonsPart:IAnimationPart = new StarCannonsAnimationPart(weaponModel);
 			
@@ -90,7 +92,7 @@ package UI.Components
 			imageLoadStarThrust = new AnimationLoader("./Images/ShipStarThrust.swf",imageOffsetX, imageOffsetY, new StarThrustAnimationModel(this.inputModel));
 			imageLoadPortCannons = new AnimationPartLoader("./Images/ShipPortCannons.swf",imageOffsetX, imageOffsetY,portCannonsPart);
 			imageLoadStarCannons = new AnimationPartLoader("./Images/ShipStarCannons.swf",imageOffsetX, imageOffsetY,starCannonsPart);		
-			var aniModel:PirateShipAnimationModel = new PirateShipAnimationModel(imageLoadBody,imageLoadPortThrust,imageLoadStarThrust,imageLoadPortCannons,imageLoadStarCannons);
+			var aniModel:PirateShipAnimationModel = new PirateShipAnimationModel(imageLoadBody,overLay,imageLoadPortThrust,imageLoadStarThrust,imageLoadPortCannons,imageLoadStarCannons);
 			tempSprite = new PlayerObject(this.inputModel,new PirateShipCollisionModel(),weaponModel,new SelectionPhysicsModel(this.gameStage),new ImmunityModel(),aniModel,drawX,drawY,this.page,this.gameStage);
 			tempSprite.scaleX = 3.5;
 			tempSprite.scaleY = 3.5;

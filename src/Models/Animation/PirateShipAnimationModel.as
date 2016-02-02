@@ -1,8 +1,13 @@
 package Models.Animation
 {
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
+	
 	import Events.AnimationEvent;
+	
+	import UI.Blocks.MaskBox;
+	import flash.display.DisplayObject;
 	
 	public class PirateShipAnimationModel extends MovieClip
 	{
@@ -11,15 +16,24 @@ package Models.Animation
 		private var HP:int = 100;
 		private var startIndex:int;
 		private var endIndex:int;
+		private var indicators:MovieClip;
+		private var maskOne:MaskBox;
 		
-		public function PirateShipAnimationModel(shipBody:MovieClip , ... AnimationLoaders)
+		public function PirateShipAnimationModel(shipBody:MovieClip,indicators:MovieClip, ... AnimationLoaders)
 		{
+			
+			maskOne = new MaskBox(0,0,0,0,0x000000);
+			addChild(maskOne);
 			this.shipBody = shipBody;
+			this.indicators = indicators;
+			addChild(indicators);
 			shipBody.addEventListener(AnimationEvent.LOAD_COMPLETE,getContent);
 			for each (var animation:MovieClip in AnimationLoaders)
 			{
 				addChild(animation);
 			}
+			
+			
 		}
 		protected function getContent(event:AnimationEvent):void
 		{
@@ -83,5 +97,20 @@ package Models.Animation
 			}
 		}		
 	
+		public function setColor(playerColor:uint):void
+		{
+			setChildIndex(this.indicators,0);
+			addMaskOne(this.indicators,playerColor);		
+		}
+		
+		private function addMaskOne(obj:Sprite,color:uint):void
+		{
+			
+			removeChild(maskOne);
+			maskOne = new MaskBox(obj.x-200,obj.y-35,500,500,color);
+			maskOne.alpha = .3;
+			addChild(maskOne);
+			maskOne.mask = obj;
+		}
 	}
 }
