@@ -35,7 +35,7 @@ package UI.Screens
 			pacingMenu = new AnimatedScrollBox(xLoc,yLoc,slow);
 			pacingMenu.addLabel(normal);
 			pacingMenu.addLabel(fast);
-			pacingMenu.changeLabel(normal);
+			pacingMenu.changeLabel(slow);
 			optionsInfo.push(pacingMenu.getCurrentLabel());
 			addChild(pacingMenu);
 			pacingMenu.addEventListener(SelectionEvent.INPUT_CHANGE,inputTypeChanged);

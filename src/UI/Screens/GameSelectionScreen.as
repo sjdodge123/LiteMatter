@@ -30,7 +30,7 @@ package UI.Screens
 		private var soundLoader:SoundLoader;
 		private var selectSound:Sound;
 		private var lockedColor:uint;
-		private var lives:int = 2;
+		private var lives:int = 5;
 		private var livesSelection:SideScrollBox;
 		private var respawnBox:LabelBox;
 		public function GameSelectionScreen(scoreBoard:ScoreBoard,gameStage:Stage)
@@ -91,16 +91,6 @@ package UI.Screens
 				livesSelection.removeLabel(oldLabel);
 			}
 		}		
-		
-		protected function colorShipOneChange(event:SelectionEvent):void
-		{
-			shipTwo.addColor(LabelBox(event.params[0]),LabelBox(event.params[1]));
-		}
-		protected function colorShipTwoChange(event:SelectionEvent):void
-		{
-			shipOne.addColor(LabelBox(event.params[0]),LabelBox(event.params[1]));
-		}
-		
 		
 		protected function playGame(event:UIEvent):void
 		{

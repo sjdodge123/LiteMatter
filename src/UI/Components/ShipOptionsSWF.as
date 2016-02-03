@@ -10,6 +10,9 @@ package UI.Components
 	
 	import Interfaces.IInputHandling;
 	
+	import Loaders.GraphicLoader;
+	
+	import Models.Input.BasicAIModel;
 	import Models.Input.Player1InputModel;
 	import Models.Input.Player2InputModel;
 	import Models.Input.XboxControllerModel;
@@ -19,7 +22,6 @@ package UI.Components
 	import UI.Blocks.StartGameObject;
 	import UI.Blocks.StaticClipLabel;
 	import UI.ScoreBoard.ScorePage;
-	import Models.Input.BasicAIModel;
 
 	public class ShipOptionsSWF extends Sprite
 	{
@@ -50,6 +52,9 @@ package UI.Components
 		private var shipBox:ShipBox;
 		private var gameStage:Stage;
 		private var inputModel:IInputHandling;
+		private var inputBox:Sprite;
+		private var inputLabels:Sprite;
+		private var labelMask:MaskBox;
 		public function ShipOptionsSWF(x:int,y:int,page:ScorePage,gameStage)
 		{
 			this.x = x;
@@ -62,14 +67,11 @@ package UI.Components
 			border.graphics.drawRect(x,y,450,700);
 			border.graphics.endFill();
 			addChild(border);
-			
-		
-			
-			var inputBox:Sprite = new Sprite();
-			inputBox.graphics.beginFill(0x333333,1);
-			inputBox.graphics.drawRect(x,y+250,450,150);
-			inputBox.graphics.endFill();
+			inputBox = new Sprite();
+			inputLabels = new Sprite();
+			inputBox.addChild(inputLabels);
 			addChild(inputBox);
+			
 			controllerNum = new StaticClipLabel("./Images/oneText.swf",x+310,610,"ONE");
 			
 			playerTitle = new StaticClipLabel("./Images/playerText.swf",x+175,15,"TITLE");
@@ -146,6 +148,8 @@ package UI.Components
 			addChild(maskOne);
 			maskTwo = new MaskBox(0,0,0,0,playerColor);
 			addChild(maskTwo);
+			labelMask = new MaskBox(0,0,0,0,playerColor);
+			addChild(labelMask);
 			page.setColor(playerColor);
 			addMaskOne(playerTitle);
 			addMaskTwo(playerNumber);
@@ -185,12 +189,15 @@ package UI.Components
 				currentLabel = humanInputs.getCurrentLabel();
 				
 				if(currentLabel.getID() == "WASD"){
+					changeInputBox("WASD");
 					this.inputModel = new Player1InputModel(this.gameStage);
 				}
 				if(currentLabel.getID() == "IJKL"){
+					changeInputBox("IJKL");
 					this.inputModel = new Player2InputModel(this.gameStage);
 				}
 				if(currentLabel.getID() == "XBOX"){
+					changeInputBox("xbox");
 					this.inputModel = new XboxControllerModel(this.gameStage,this.device);
 				}
 				shipBox.reDraw(this.inputModel);
@@ -201,6 +208,7 @@ package UI.Components
 				var newColor:StaticClipLabel = colorSelection.getCurrentLabel();
 				page.setColor(newColor.getColor());
 				playerColor = page.getColor();
+				createLabelBox();
 				addMaskOne(playerTitle);
 				addMaskTwo(playerNumber);
 				shipBox.reDraw(this.inputModel);
@@ -254,15 +262,25 @@ package UI.Components
 			maskTwo.mask = obj;
 		}
 		
+		private function addLabelMask(obj:Sprite):void
+		{
+			removeChild(labelMask);
+			labelMask = new MaskBox(obj.x,obj.y,1000,1000,playerColor);
+			addChild(labelMask);
+			labelMask.mask = obj;
+		}
+		
 		public function deviceAdded(deviceID:int,device:GameInputDevice):void
 		{
 			if(deviceID == 1)
 			{
+				changeInputBox("xbox");
 				xbox = new StaticClipLabel("./Images/oneText.swf",x+220,15,"XBOX");
 				humanInputs.addLabel(xbox);
 			}
 			if(deviceID == 2)
 			{
+				changeInputBox("xbox");
 				playerType.changeLabel(humanLabel);
 				var id:int = removeComp(computerInputs);
 				addCompAt(id,humanInputs);
@@ -322,12 +340,39 @@ package UI.Components
 			
 		}
 		
-		
-		public function addColor(unlockedColor:LabelBox,lockedColor:LabelBox):void
+		private function changeInputBox(type:String):void
 		{
-//			colorSelection.addColorLabel(unlockedColor.text.text,unlockedColor.getColor());
-//			colorSelection.removeLabel(lockedColor);
+			removeChild(inputBox);
+			if(type == "xbox")
+			{
+				inputBox = new GraphicLoader("./Images/controller_graphic.swf",x+230,y+290);
+				inputBox.scaleX = .8;
+				inputBox.scaleY = .8;
+				createLabelBox();
+			}
+			if(type == "WASD")
+			{
+				inputBox = new GraphicLoader("./Images/space ship.png",x+100,y+230);
+				createLabelBox()
+			}
+			if(type == "IJKL")
+			{
+				inputBox = new GraphicLoader("./Images/space ship.png",x+100,y+230);
+				inputBox.scaleX = .55;
+				inputBox.scaleY = .55;
+				createLabelBox()
+			}
+			inputBox.alpha = .5;
+			addChild(inputBox);
 		}
+		
+		private function createLabelBox():void
+		{
+			inputLabels = new GraphicLoader("./Images/controller_texts.swf",0,0);
+			addLabelMask(inputLabels);
+			inputBox.addChild(inputLabels);
+		}
+		
 		
 		public function drawShip():void
 		{
